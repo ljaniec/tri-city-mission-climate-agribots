@@ -1,0 +1,8 @@
+numpy>=2.0
+pillow>=10.0
+pytest>=8.0
+
+# Optional later phases
+# mujoco>=3.1
+# ortools>=9.10
+# networkx>=3.2
