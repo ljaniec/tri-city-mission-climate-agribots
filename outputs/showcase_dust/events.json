@@ -1,0 +1,642 @@
+[
+ {
+  "t": 0.0,
+  "kind": "depart_depot"
+ },
+ {
+  "t": 30.6000000000003,
+  "kind": "arrive_station",
+  "sid": 0
+ },
+ {
+  "t": 8847.154971882937,
+  "kind": "depart_station",
+  "sid": 0
+ },
+ {
+  "t": 8872.204971882573,
+  "kind": "arrive_station",
+  "sid": 1
+ },
+ {
+  "t": 15876.665568259734,
+  "kind": "depart_station",
+  "sid": 1
+ },
+ {
+  "t": 15901.71556825937,
+  "kind": "arrive_station",
+  "sid": 2
+ },
+ {
+  "t": 20626.114615620507,
+  "kind": "depart_station",
+  "sid": 2
+ },
+ {
+  "t": 20651.164615620142,
+  "kind": "arrive_station",
+  "sid": 3
+ },
+ {
+  "t": 24980.825131871617,
+  "kind": "depart_station",
+  "sid": 3
+ },
+ {
+  "t": 25005.875131871253,
+  "kind": "arrive_station",
+  "sid": 4
+ },
+ {
+  "t": 34975.574227017205,
+  "kind": "depart_station",
+  "sid": 4
+ },
+ {
+  "t": 35088.72422702379,
+  "kind": "arrive_station",
+  "sid": 5
+ },
+ {
+  "t": 41670.27637659631,
+  "kind": "depart_station",
+  "sid": 5
+ },
+ {
+  "t": 41688.42637659737,
+  "kind": "arrive_station",
+  "sid": 6
+ },
+ {
+  "t": 48436.206159815425,
+  "kind": "depart_station",
+  "sid": 6
+ },
+ {
+  "t": 48564.85615982291,
+  "kind": "arrive_station",
+  "sid": 7
+ },
+ {
+  "t": 55776.09435778816,
+  "kind": "depart_station",
+  "sid": 7
+ },
+ {
+  "t": 55784.34435778864,
+  "kind": "arrive_station",
+  "sid": 8
+ },
+ {
+  "t": 61486.17120055769,
+  "kind": "depart_station",
+  "sid": 8
+ },
+ {
+  "t": 61581.421200563236,
+  "kind": "obstacle_detected",
+  "oid": "unk_tractor_A",
+  "obstacle_type": "tractor",
+  "range_m": 24.77,
+  "xy": [
+   418537.0035862773,
+   4570595.838143365
+  ],
+  "action": "bypass left +4.9 m"
+ },
+ {
+  "t": 61581.421200563236,
+  "kind": "detour_spliced",
+  "oid": "unk_tractor_A",
+  "length_m": 45.5
+ },
+ {
+  "t": 61593.22120056392,
+  "kind": "arrive_station",
+  "sid": 9
+ },
+ {
+  "t": 69035.80609019847,
+  "kind": "depart_station",
+  "sid": 9
+ },
+ {
+  "t": 69103.85609020243,
+  "kind": "arrive_station",
+  "sid": 10
+ },
+ {
+  "t": 76117.15845513516,
+  "kind": "depart_station",
+  "sid": 10
+ },
+ {
+  "t": 76132.20845513603,
+  "kind": "arrive_station",
+  "sid": 11
+ },
+ {
+  "t": 80759.63048196131,
+  "kind": "depart_station",
+  "sid": 11
+ },
+ {
+  "t": 80784.58048196277,
+  "kind": "arrive_station",
+  "sid": 12
+ },
+ {
+  "t": 84499.92668817035,
+  "kind": "depart_station",
+  "sid": 12
+ },
+ {
+  "t": 84524.9266881718,
+  "kind": "arrive_station",
+  "sid": 13
+ },
+ {
+  "t": 93151.2974437819,
+  "kind": "depart_station",
+  "sid": 13
+ },
+ {
+  "t": 93200.8974437848,
+  "kind": "arrive_station",
+  "sid": 14
+ },
+ {
+  "t": 101781.29986080334,
+  "kind": "depart_station",
+  "sid": 14
+ },
+ {
+  "t": 101806.74986080482,
+  "kind": "arrive_station",
+  "sid": 15
+ },
+ {
+  "t": 105544.31428635638,
+  "kind": "depart_station",
+  "sid": 15
+ },
+ {
+  "t": 105569.76428635787,
+  "kind": "arrive_station",
+  "sid": 16
+ },
+ {
+  "t": 111449.7899866701,
+  "kind": "depart_station",
+  "sid": 16
+ },
+ {
+  "t": 111475.18998667158,
+  "kind": "arrive_station",
+  "sid": 17
+ },
+ {
+  "t": 115212.7180471619,
+  "kind": "depart_station",
+  "sid": 17
+ },
+ {
+  "t": 115238.16804716339,
+  "kind": "arrive_station",
+  "sid": 18
+ },
+ {
+  "t": 123779.94710158536,
+  "kind": "depart_station",
+  "sid": 18
+ },
+ {
+  "t": 123835.19710158858,
+  "kind": "obstacle_detected",
+  "oid": "unk_log_D",
+  "obstacle_type": "log",
+  "range_m": 24.97,
+  "xy": [
+   418510.80841371464,
+   4570890.493668381
+  ],
+  "action": "bypass right +15.9 m"
+ },
+ {
+  "t": 123835.19710158858,
+  "kind": "detour_spliced",
+  "oid": "unk_log_D",
+  "length_m": 58.1
+ },
+ {
+  "t": 123957.84710159572,
+  "kind": "arrive_station",
+  "sid": 19
+ },
+ {
+  "t": 134720.84258040204,
+  "kind": "depart_station",
+  "sid": 19
+ },
+ {
+  "t": 134725.292580401,
+  "kind": "arrive_station",
+  "sid": 20
+ },
+ {
+  "t": 139343.2794474208,
+  "kind": "depart_station",
+  "sid": 20
+ },
+ {
+  "t": 139368.72944741487,
+  "kind": "arrive_station",
+  "sid": 21
+ },
+ {
+  "t": 147322.7888453118,
+  "kind": "depart_station",
+  "sid": 21
+ },
+ {
+  "t": 147348.18884530588,
+  "kind": "arrive_station",
+  "sid": 22
+ },
+ {
+  "t": 151002.6095721885,
+  "kind": "depart_station",
+  "sid": 22
+ },
+ {
+  "t": 151028.05957218257,
+  "kind": "arrive_station",
+  "sid": 23
+ },
+ {
+  "t": 159595.72108150987,
+  "kind": "depart_station",
+  "sid": 23
+ },
+ {
+  "t": 159709.32108148342,
+  "kind": "arrive_station",
+  "sid": 24
+ },
+ {
+  "t": 167486.55716100128,
+  "kind": "depart_station",
+  "sid": 24
+ },
+ {
+  "t": 167508.30716099622,
+  "kind": "arrive_station",
+  "sid": 25
+ },
+ {
+  "t": 177663.61502743725,
+  "kind": "depart_station",
+  "sid": 25
+ },
+ {
+  "t": 177796.66502740627,
+  "kind": "arrive_station",
+  "sid": 26
+ },
+ {
+  "t": 184514.15370486653,
+  "kind": "depart_station",
+  "sid": 26
+ },
+ {
+  "t": 184517.2537048658,
+  "kind": "arrive_station",
+  "sid": 27
+ },
+ {
+  "t": 192032.7446123627,
+  "kind": "depart_station",
+  "sid": 27
+ },
+ {
+  "t": 192173.9946123298,
+  "kind": "arrive_station",
+  "sid": 28
+ },
+ {
+  "t": 200777.88808449183,
+  "kind": "depart_station",
+  "sid": 28
+ },
+ {
+  "t": 200801.43808448635,
+  "kind": "arrive_station",
+  "sid": 29
+ },
+ {
+  "t": 207540.96020521154,
+  "kind": "depart_station",
+  "sid": 29
+ },
+ {
+  "t": 207659.76020518388,
+  "kind": "arrive_station",
+  "sid": 30
+ },
+ {
+  "t": 214788.8558894385,
+  "kind": "depart_station",
+  "sid": 30
+ },
+ {
+  "t": 214799.80588943596,
+  "kind": "arrive_station",
+  "sid": 31
+ },
+ {
+  "t": 221123.65127605578,
+  "kind": "depart_station",
+  "sid": 31
+ },
+ {
+  "t": 221218.9012760336,
+  "kind": "obstacle_detected",
+  "oid": "unk_waterlog_C",
+  "obstacle_type": "waterlogged",
+  "range_m": 19.95,
+  "xy": [
+   418650.1683084315,
+   4570749.945360761
+  ],
+  "action": "bypass left +7.3 m"
+ },
+ {
+  "t": 221218.9012760336,
+  "kind": "detour_spliced",
+  "oid": "unk_waterlog_C",
+  "length_m": 54.5
+ },
+ {
+  "t": 221223.6012760325,
+  "kind": "arrive_station",
+  "sid": 32
+ },
+ {
+  "t": 229837.84638677503,
+  "kind": "depart_station",
+  "sid": 32
+ },
+ {
+  "t": 229918.59638675622,
+  "kind": "arrive_station",
+  "sid": 33
+ },
+ {
+  "t": 234404.6441330919,
+  "kind": "depart_station",
+  "sid": 33
+ },
+ {
+  "t": 234420.0941330883,
+  "kind": "arrive_station",
+  "sid": 34
+ },
+ {
+  "t": 241445.8124321185,
+  "kind": "depart_station",
+  "sid": 34
+ },
+ {
+  "t": 241471.26243211256,
+  "kind": "arrive_station",
+  "sid": 35
+ },
+ {
+  "t": 245205.8358213925,
+  "kind": "depart_station",
+  "sid": 35
+ },
+ {
+  "t": 245231.2358213866,
+  "kind": "arrive_station",
+  "sid": 36
+ },
+ {
+  "t": 254336.386785288,
+  "kind": "depart_station",
+  "sid": 36
+ },
+ {
+  "t": 254449.08678526175,
+  "kind": "arrive_station",
+  "sid": 37
+ },
+ {
+  "t": 264173.4814617235,
+  "kind": "depart_station",
+  "sid": 37
+ },
+ {
+  "t": 264198.8814617176,
+  "kind": "arrive_station",
+  "sid": 38
+ },
+ {
+  "t": 268573.4546266353,
+  "kind": "depart_station",
+  "sid": 38
+ },
+ {
+  "t": 268598.9046266294,
+  "kind": "arrive_station",
+  "sid": 39
+ },
+ {
+  "t": 275768.91236431786,
+  "kind": "depart_station",
+  "sid": 39
+ },
+ {
+  "t": 275794.36236431194,
+  "kind": "arrive_station",
+  "sid": 40
+ },
+ {
+  "t": 280166.6727450661,
+  "kind": "depart_station",
+  "sid": 40
+ },
+ {
+  "t": 280192.0727450602,
+  "kind": "arrive_station",
+  "sid": 41
+ },
+ {
+  "t": 290431.4423288072,
+  "kind": "depart_station",
+  "sid": 41
+ },
+ {
+  "t": 290467.9423287987,
+  "kind": "obstacle_detected",
+  "oid": "unk_pump_B",
+  "obstacle_type": "pump",
+  "range_m": 24.86,
+  "xy": [
+   418702.70519726974,
+   4570720.141553496
+  ],
+  "action": "bypass right +4.1 m"
+ },
+ {
+  "t": 290467.9423287987,
+  "kind": "detour_spliced",
+  "oid": "unk_pump_B",
+  "length_m": 44.3
+ },
+ {
+  "t": 290478.9923287961,
+  "kind": "arrive_station",
+  "sid": 42
+ },
+ {
+  "t": 300096.9218239146,
+  "kind": "depart_station",
+  "sid": 42
+ },
+ {
+  "t": 300163.2218238992,
+  "kind": "arrive_station",
+  "sid": 43
+ },
+ {
+  "t": 305508.75231524854,
+  "kind": "depart_station",
+  "sid": 43
+ },
+ {
+  "t": 305525.6023152446,
+  "kind": "arrive_station",
+  "sid": 44
+ },
+ {
+  "t": 312159.5645630409,
+  "kind": "depart_station",
+  "sid": 44
+ },
+ {
+  "t": 312186.3645630347,
+  "kind": "arrive_station",
+  "sid": 45
+ },
+ {
+  "t": 319853.6123196809,
+  "kind": "depart_station",
+  "sid": 45
+ },
+ {
+  "t": 319880.4123196747,
+  "kind": "arrive_station",
+  "sid": 46
+ },
+ {
+  "t": 328028.2345256086,
+  "kind": "depart_station",
+  "sid": 46
+ },
+ {
+  "t": 328129.73452558497,
+  "kind": "arrive_station",
+  "sid": 47
+ },
+ {
+  "t": 336482.7761082676,
+  "kind": "depart_station",
+  "sid": 47
+ },
+ {
+  "t": 336613.8761082371,
+  "kind": "arrive_station",
+  "sid": 48
+ },
+ {
+  "t": 344347.65533308923,
+  "kind": "depart_station",
+  "sid": 48
+ },
+ {
+  "t": 344362.20533308585,
+  "kind": "arrive_station",
+  "sid": 49
+ },
+ {
+  "t": 347996.8507245062,
+  "kind": "depart_station",
+  "sid": 49
+ },
+ {
+  "t": 348025.9007244994,
+  "kind": "arrive_station",
+  "sid": 50
+ },
+ {
+  "t": 357082.94998204254,
+  "kind": "depart_station",
+  "sid": 50
+ },
+ {
+  "t": 357197.8999820158,
+  "kind": "arrive_station",
+  "sid": 51
+ },
+ {
+  "t": 365762.0961008514,
+  "kind": "depart_station",
+  "sid": 51
+ },
+ {
+  "t": 365788.8961008452,
+  "kind": "arrive_station",
+  "sid": 52
+ },
+ {
+  "t": 369446.56024895975,
+  "kind": "depart_station",
+  "sid": 52
+ },
+ {
+  "t": 369473.3602489535,
+  "kind": "arrive_station",
+  "sid": 53
+ },
+ {
+  "t": 375361.0744293433,
+  "kind": "depart_station",
+  "sid": 53
+ },
+ {
+  "t": 375387.87442933704,
+  "kind": "arrive_station",
+  "sid": 54
+ },
+ {
+  "t": 383292.80079755373,
+  "kind": "depart_station",
+  "sid": 54
+ },
+ {
+  "t": 383319.6007975475,
+  "kind": "arrive_station",
+  "sid": 55
+ },
+ {
+  "t": 391300.6769399563,
+  "kind": "depart_station",
+  "sid": 55
+ },
+ {
+  "t": 391426.726939927,
+  "kind": "arrive_depot"
+ }
+]

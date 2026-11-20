@@ -1,0 +1,26 @@
+[05:14:45] site + digital twin
+[05:14:45] mission simulation (dust, 4 drones)
+[05:14:47]   108.7 h mission, 45,637 sorties, 1360 t, lane x-track RMS 1.1 cm, 4 hidden obstacles found (2.3 s wall)
+[05:14:48] basemap + poster + tracking report
+[05:14:52] MuJoCo world + replay scene
+[world] assets cached (key 323bc3cb39593492)
+[world] world ready in 0.0s -> /home/ljaniec/Repositories/tri-city-mission-climate-agribots/prunemaxxing/sim/assets/world/world_dust_n4.xml
+[05:14:58] cinematic MuJoCo video
+[05:16:59] dashboard video
+[05:29:15] done -> /home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_dust
+  control_log        outputs/showcase_dust/control_log.csv
+  sorties            outputs/showcase_dust/sorties.csv
+  events             outputs/showcase_dust/events.json
+  kpis               outputs/showcase_dust/kpis.json
+  detours            outputs/showcase_dust/detours.json
+  map_poster         outputs/showcase_dust/map_poster.png
+  tracking_report    outputs/showcase_dust/tracking_report.png
+  still_hero_swarm   outputs/showcase_dust/hero_swarm.png
+  still_hero_low     outputs/showcase_dust/hero_low.png
+  still_hero_drone   outputs/showcase_dust/hero_drone.png
+  still_hero_aerial  outputs/showcase_dust/hero_aerial.png
+  still_hero_ms_effector outputs/showcase_dust/hero_ms_effector.png
+  still_hero_overview outputs/showcase_dust/hero_overview_mid_mission.png
+  still_hero_obstacle outputs/showcase_dust/hero_obstacle_bypass.png
+  cinematic          outputs/showcase_dust/cinematic.mp4
+  dashboard          outputs/showcase_dust/dashboard.mp4

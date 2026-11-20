@@ -1,0 +1,71 @@
+{
+  "macro": {
+    "demand_t": 900.0,
+    "local_supply_t": 273.0,
+    "deficit_t": 627.0,
+    "sources": [
+      {
+        "name": "Viladecans municipal chips",
+        "annual_t": 53.0,
+        "kind": "municipal"
+      },
+      {
+        "name": "Local forest biomass",
+        "annual_t": 220.0,
+        "kind": "forest"
+      },
+      {
+        "name": "Sant Pere de Ribes plant",
+        "annual_t": 0.0,
+        "kind": "regional_plant"
+      },
+      {
+        "name": "Baix Llobregat plant",
+        "annual_t": 0.0,
+        "kind": "regional_plant"
+      }
+    ],
+    "notes": [
+      "Heavy trucks stay on farm roads/tracks; drop at perimeter stockpile nodes only.",
+      "Chip to <5 cm length / <3 cm diameter before field delivery.",
+      "Pilot demand \u2248 900 t for 6 ha @ 15 kg/m\u00b2.",
+      "Regional plants fill deficit via multi-source routing (OR-Tools TBD)."
+    ]
+  },
+  "kpis": {
+    "biomass_applied_t": 873.6217151061609,
+    "coverage_uniformity": 0.9987936861574787,
+    "co2e_sequestered_t": 256.2623697644739,
+    "n_retained_kg": 4076.901337162084,
+    "area_regenerated_m2": 58241.44767374406,
+    "area_regenerated_ha": 5.824144767374405,
+    "mean_completion": 0.9997710656018665,
+    "weed_excluded_cells": 14,
+    "mothership_path_km": 1.9576281395698998,
+    "swarm_steps": 486,
+    "drone_flight_km": 2234.755283074935,
+    "drone_deposits": 35161,
+    "tether_utilization": 1.0,
+    "hopper_refills": 351,
+    "road_stockpile_t": 874.3850809258615,
+    "offroad_compaction_m2": 0.0,
+    "cost_eur_per_1000m2_est": 2016.9887100728167,
+    "cost_eur_per_tonne_est": 134.49670492704786,
+    "vs_regensol_delta_eur_per_1000m2": -391.78128992718325,
+    "vs_conventional_delta_eur_per_1000m2": 121.42871007281678
+  },
+  "swarm": {
+    "n_drones": 4,
+    "total_kg": 873621.7151061585,
+    "total_deposits": 35161,
+    "total_flight_m": 2234755.283074935,
+    "sorties": 0,
+    "tether_fraction": 1.0
+  },
+  "path": {
+    "n_waypoints": 162,
+    "length_m": 1957.6281395698998,
+    "lane_spacing_cells": 4,
+    "excluded_cells": 14
+  }
+}

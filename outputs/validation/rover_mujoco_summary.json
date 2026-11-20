@@ -1,0 +1,219 @@
+{
+  "completed": true,
+  "end_reason": "reached_end",
+  "terrain": "dem",
+  "ground_geom": "hfield",
+  "duration_s": 234.95000000000002,
+  "path_length_m": 305.0060257836489,
+  "final_s_m": 305.00286362825045,
+  "distance_travelled_m": 304.8173911026096,
+  "rms_cte": 0.03578901303140909,
+  "max_cte": 0.12927240743384516,
+  "rms_cte_by_label": {
+    "detour": 0.061651645282323204,
+    "headland": 0.0472497571145806,
+    "lane": 0.020922751001647498,
+    "lane_settled": 0.007753224531494225
+  },
+  "max_cte_by_label": {
+    "detour": 0.09122460060735672,
+    "headland": 0.12737212866176328,
+    "lane": 0.12927240743384516,
+    "lane_settled": 0.06637074835195733
+  },
+  "by_label": {
+    "detour": {
+      "rms_cte": 0.061651645282323204,
+      "max_cte": 0.09122460060735672,
+      "rms_cte_front": 0.15708795462731598,
+      "max_cte_front": 0.26991844958766364,
+      "n": 604
+    },
+    "headland": {
+      "rms_cte": 0.0472497571145806,
+      "max_cte": 0.12737212866176328,
+      "rms_cte_front": 0.22152263229389482,
+      "max_cte_front": 0.45629716897677214,
+      "n": 1076
+    },
+    "lane": {
+      "rms_cte": 0.020922751001647498,
+      "max_cte": 0.12927240743384516,
+      "rms_cte_front": 0.05731347802650633,
+      "max_cte_front": 0.44969948389791625,
+      "n": 3020
+    },
+    "lane_settled": {
+      "rms_cte": 0.007753224531494225,
+      "max_cte": 0.06637074835195733,
+      "rms_cte_front": 0.009442257219021848,
+      "max_cte_front": 0.1042956014182721,
+      "n": 2887,
+      "settle_m": 4.0
+    }
+  },
+  "pct_time_steer_saturated": 0.0,
+  "mean_speed": 1.297089524833357,
+  "max_speed": 1.41980687217949,
+  "physics_health": {
+    "max_roll_deg": 1.4530122398664975,
+    "max_pitch_deg": 5.3202179425820795,
+    "rms_roll_rate_dps": 0.09023692766200143,
+    "rms_pitch_rate_dps": 0.2650680002137397,
+    "rms_vertical_speed_mps": 0.03633864974513006,
+    "min_wheels_in_contact": 3,
+    "pct_ticks_all_4_wheels_in_contact": 99.97872340425532,
+    "max_penetration_m": 0.00042075590271490937,
+    "median_penetration_m": 0.0003762578409578427,
+    "deck_ground_contact_ticks": 0,
+    "obstacle_contact_ticks": 0
+  },
+  "actuators": {
+    "max_drive_torque_nm": 545.9356058844742,
+    "pct_ticks_drive_torque_saturated": 0.0,
+    "max_steer_torque_nm": 146.10012376601117,
+    "pct_ticks_steer_torque_saturated": 0.0,
+    "steer_cmd_vs_measured_rms_rad": 0.005471410627951946,
+    "v_cmd_vs_measured_rms_mps": 0.007513946901990784
+  },
+  "model": {
+    "total_mass_kg": 4000.0,
+    "timestep_s": 0.002,
+    "dt_ctrl_s": 0.05,
+    "integrator": "implicitfast",
+    "wheel_collision": "ellipsoid",
+    "steer_kp": 30000.0,
+    "steer_kv": 4000.0,
+    "steer_rate_max": 0.4,
+    "steer_limit_bicycle_rad": 0.38,
+    "drive_kv": 2500.0,
+    "drive_torque_max": 900.0,
+    "nq": 14,
+    "nv": 13
+  },
+  "rover_params": {
+    "wheelbase": 2.4,
+    "track": 1.7,
+    "wheel_radius": 0.45,
+    "wheel_half_width": 0.18,
+    "wheel_geom": "ellipsoid",
+    "chassis_size": [
+      4.2,
+      2.0,
+      0.6
+    ],
+    "chassis_z": 0.85,
+    "chassis_mass": 3550.0,
+    "wheel_mass": 85.0,
+    "knuckle_mass": 20.0,
+    "front_axle_mass": 70.0,
+    "axle_roll_limit": 0.1,
+    "steer_limit": 0.38,
+    "knuckle_limit": 0.46,
+    "steer_rate_max": 0.4,
+    "steer_kp": 30000.0,
+    "steer_kv": 4000.0,
+    "steer_torque_max": 8000.0,
+    "steer_armature": 15.0,
+    "drive_kv": 2500.0,
+    "drive_torque_max": 900.0,
+    "wheel_armature": 2.0,
+    "a_lon_max": 0.4,
+    "a_dec_max": 0.4,
+    "a_lat_max": 0.2,
+    "mu_slide": 0.9,
+    "mu_torsion": 0.01,
+    "mu_roll": 0.0,
+    "wheel_condim": 4,
+    "c_rr": 0.05,
+    "contact_solref": [
+      0.02,
+      1.0
+    ],
+    "contact_solimp": [
+      0.95,
+      0.99,
+      0.002
+    ],
+    "timestep": 0.002,
+    "impratio": 10.0
+  },
+  "controller_params": {
+    "k_ld": 1.0,
+    "ld0": 1.6,
+    "ld_min": 2.2,
+    "ld_max": 5.0,
+    "t_pred": 0.15,
+    "k_ff": 0.0,
+    "ki_cte": 0.0,
+    "kp_v": 0.6,
+    "ki_v": 0.5,
+    "i_v_max": 0.3,
+    "v_creep": 0.2,
+    "a_dec_profile": 0.3,
+    "kappa_window_m": 2.0,
+    "plateau_m": 6.0
+  },
+  "v_max": 1.4,
+  "pose_noise": [
+    0.0,
+    0.0
+  ],
+  "wall_time_sim_s": 2.651586744002998,
+  "realtime_factor": 88.60732183526649,
+  "wall_time_video_s": 5.046463965991279,
+  "video_speedup": 6.0,
+  "wall_time_total_s": 7.698888220998924,
+  "validation": {
+    "targets": {
+      "lane_settled_rms_cte_m": 0.08,
+      "lane_settled_max_cte_m": 0.2,
+      "headland_max_cte_m": 0.6,
+      "wall_time_s": 120.0
+    },
+    "checks": {
+      "completed": true,
+      "lane_settled_rms_cte": true,
+      "lane_settled_max_cte": true,
+      "headland_max_cte": true,
+      "no_flip": true,
+      "no_deck_ground_contact": true,
+      "no_obstacle_contact": true,
+      "wall_time": true
+    },
+    "all_passed": true,
+    "wall_time_script_s": 8.1569372540107
+  },
+  "reference": {
+    "parcel_world": [
+      -160.48529426014284,
+      -145.49697485473007,
+      -3.4852942581637762,
+      1.5030251685529947
+    ],
+    "lane1_x": -131.16029426014285,
+    "lane2_x": -71.66029426014285,
+    "lane_top_y": -17.49697485473007,
+    "detour_start_y": -77.49697485473007,
+    "detour_end_y": -113.49697485473007,
+    "frame": {
+      "center_e": 418566.86764705885,
+      "center_n": 4570731.982248521
+    },
+    "furrow_x0": -160.06029426014283,
+    "obstacle": {
+      "lx": 3.0,
+      "ly": 6.0,
+      "h": 1.6,
+      "x": -71.66029426014285,
+      "y": -95.49697485473007,
+      "yaw": 0.0
+    },
+    "path_points": 1221
+  },
+  "outputs": {
+    "csv": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/validation/rover_mujoco_log.csv",
+    "figure": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/validation/rover_mujoco_tracking.png",
+    "video": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/validation/rover_mujoco_chase.mp4"
+  }
+}

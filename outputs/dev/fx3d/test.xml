@@ -1,0 +1,1464 @@
+<mujoco><visual><global offwidth="1600" offheight="1000"/><quality shadowsize="4096"/></visual>
+<default><default class="robot"><geom group="0" contype="0" conaffinity="0"/></default>
+<default class="tyre"><geom group="0" contype="0" conaffinity="0"/></default>
+<default class="fx"><geom group="2" contype="0" conaffinity="0"/></default><default class="fxvis"><geom group="2" contype="0" conaffinity="0"/></default></default>
+<asset><material name="ms_amber"  rgba="0.97 0.63 0.07 1" specular="0.55" shininess="0.65"/>
+<material name="ms_amber_dark" rgba="0.80 0.48 0.05 1" specular="0.4" shininess="0.5"/>
+<material name="ms_white"  rgba="0.93 0.93 0.91 1" specular="0.45" shininess="0.6"/>
+<material name="ms_dark" rgba="0.17 0.18 0.19 1" specular="0.35" shininess="0.4"/>
+<material name="ms_black" rgba="0.055 0.055 0.06 1" specular="0.25" shininess="0.3"/>
+<material name="ms_rubber" rgba="0.075 0.075 0.08 1" specular="0.08" shininess="0.1"/>
+<material name="ms_rim" rgba="0.74 0.76 0.78 1" specular="0.9" shininess="0.8"/>
+<material name="ms_steel" rgba="0.55 0.57 0.6 1" specular="0.7" shininess="0.7"/>
+<material name="ms_glass" rgba="0.08 0.12 0.16 1" specular="1" shininess="1"/>
+<material name="ms_solar"    specular="0.9" shininess="0.9"/>
+<material name="ms_beacon" rgba="1.0 0.52 0.05 1" emission="1.0" specular="0.5"/>
+<material name="ms_headlight" rgba="1.0 0.98 0.9 1" emission="1.0"/>
+<material name="ms_tail" rgba="0.9 0.05 0.04 1" emission="0.8"/>
+<material name="ms_coil" rgba="0.2 1.0 0.85 1" emission="0.75"/>
+<material name="ms_hazard" rgba="0.08 0.08 0.08 1"/>
+<material name="ms_battery" rgba="0.24 0.27 0.30 1" specular="0.5"/>
+<material name="ms_battery_ok" rgba="0.25 0.95 0.35 1" emission="0.7"/>
+<material name="mulch_dust"    specular="0.05"/>
+<material name="mulch_chips"    specular="0.05"/>
+<material name="puck_brown" rgba="0.55 0.38 0.22 1" specular="0.1"/>
+<material name="puck_green" rgba="0.36 0.55 0.22 1" specular="0.1"/>
+<material name="drone_body" rgba="0.16 0.17 0.19 1" specular="0.6" shininess="0.7"/>
+<material name="drone_carbon" rgba="0.09 0.09 0.1 1" specular="0.5" shininess="0.6"/>
+<material name="drone_blade" rgba="0.05 0.05 0.06 1" specular="0.6" shininess="0.8"/>
+<material name="led_green" rgba="0.2 1 0.3 1" emission="1"/>
+<material name="led_red" rgba="1 0.15 0.1 1" emission="1"/>
+<material name="led_white" rgba="1 1 1 1" emission="1"/>
+<material name="drone_accent0" rgba="0.655 0.545 0.980 1" specular="0.6" shininess="0.7"/>
+<material name="drone_glow0" rgba="0.655 0.545 0.980 1" emission="0.9"/>
+<material name="drone_accent1" rgba="1.000 0.624 0.102 1" specular="0.6" shininess="0.7"/>
+<material name="drone_glow1" rgba="1.000 0.624 0.102 1" emission="0.9"/>
+<material name="drone_accent2" rgba="0.486 0.988 0.000 1" specular="0.6" shininess="0.7"/>
+<material name="drone_glow2" rgba="0.486 0.988 0.000 1" emission="0.9"/>
+<material name="drone_accent3" rgba="1.000 0.176 0.584 1" specular="0.6" shininess="0.7"/>
+<material name="drone_glow3" rgba="1.000 0.176 0.584 1" emission="0.9"/><texture name="grid" type="2d" builtin="checker" rgb1="0.45 0.36 0.25" rgb2="0.4 0.32 0.22" width="64" height="64"/>
+<material name="gnd" texture="grid" texrepeat="20 20"/></asset>
+<worldbody><light pos="5 -6 12" dir="-0.4 0.5 -1" directional="true" castshadow="true"/>
+<geom type="plane" size="30 30 0.1" material="gnd"/><body name="mothership" pos="0 0 0">
+<freejoint name="ms_free"/>
+<inertial pos="0 0 1.25" mass="3800" diaginertia="1980 6300 6850"/>
+<site name="ms_origin" pos="0 0 0" size="0.05" rgba="1 1 1 0"/>
+<geom class="robot" type="box" size="2.1 0.11 0.17" pos="0 -0.82 1.17" material="ms_dark"/>
+<geom class="robot" type="box" size="2.1 0.11 0.17" pos="0 0.82 1.17" material="ms_dark"/>
+<geom class="robot" type="box" size="0.09 0.82 0.12" pos="-1.9 0 1.14" material="ms_dark"/>
+<geom class="robot" type="box" size="0.09 0.82 0.12" pos="-1.2 0 1.14" material="ms_dark"/>
+<geom class="robot" type="box" size="0.09 0.82 0.12" pos="0 0 1.14" material="ms_dark"/>
+<geom class="robot" type="box" size="0.09 0.82 0.12" pos="1.2 0 1.14" material="ms_dark"/>
+<geom class="robot" type="box" size="0.09 0.82 0.12" pos="1.9 0 1.14" material="ms_dark"/>
+<geom name="ms_deck" class="robot" type="box" size="2.1 1 0.03" pos="0 0 1.37" material="ms_dark"/>
+<geom class="robot" type="box" size="2.12 0.02 0.2" pos="0 -1 1.2" material="ms_amber"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-1.95 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-1.65 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-1.35 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-1.05 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-0.75 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-0.45 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-0.15 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="0.15 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="0.45 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="0.75 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="1.05 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="1.35 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="1.65 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="1.95 -1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="2.12 0.02 0.2" pos="0 1 1.2" material="ms_amber"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-1.95 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-1.65 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-1.35 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-1.05 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-0.75 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-0.45 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="-0.15 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="0.15 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="0.45 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="0.75 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="1.05 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="1.35 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="1.65 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom class="robot" type="box" size="0.075 0.006 0.05" pos="1.95 1.022 1.06" quat="0.95534 0 0.29552 0" material="ms_hazard"/>
+<geom name="ms_head" class="robot" type="box" size="0.49 0.98 0.425" pos="1.61 0 1.825" material="ms_amber"/>
+<geom class="robot" type="box" size="0.495 0.985 0.07" pos="1.61 0 2.18" material="ms_white"/>
+<geom class="robot" type="box" size="0.02 0.9 0.22" pos="2.112 0 1.78" material="ms_black"/>
+<geom class="robot" type="box" size="0.015 0.16 0.05" pos="2.125 -0.68 1.78" material="ms_headlight"/>
+<geom class="robot" type="box" size="0.012 0.05 0.05" pos="2.13 -0.32 1.78" material="ms_glass"/>
+<geom class="robot" type="box" size="0.015 0.16 0.05" pos="2.125 0.68 1.78" material="ms_headlight"/>
+<geom class="robot" type="box" size="0.012 0.05 0.05" pos="2.13 0.32 1.78" material="ms_glass"/>
+<geom class="robot" type="box" size="0.012 0.035 0.035" pos="2.13 0 1.78" material="ms_glass"/>
+<geom name="ms_bumper" class="robot" type="box" size="0.08 1.02 0.09" pos="2.18 0 1.12" material="ms_dark"/>
+<geom class="robot" type="box" size="0.006 0.05 0.085" pos="2.262 -0.88 1.12" quat="0.95534 0.29552 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.006 0.05 0.085" pos="2.262 -0.66 1.12" quat="0.95534 0.29552 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.006 0.05 0.085" pos="2.262 -0.44 1.12" quat="0.95534 0.29552 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.006 0.05 0.085" pos="2.262 -0.22 1.12" quat="0.95534 0.29552 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.006 0.05 0.085" pos="2.262 0 1.12" quat="0.95534 0.29552 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.006 0.05 0.085" pos="2.262 0.22 1.12" quat="0.95534 0.29552 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.006 0.05 0.085" pos="2.262 0.44 1.12" quat="0.95534 0.29552 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.006 0.05 0.085" pos="2.262 0.66 1.12" quat="0.95534 0.29552 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.006 0.05 0.085" pos="2.262 0.88 1.12" quat="0.95534 0.29552 0 0" material="ms_amber"/>
+<geom name="ms_solar_front" class="robot" type="box" size="0.42 0.46 0.02" pos="1.62 0 2.28" material="ms_solar"/>
+<geom name="ms_tail" class="robot" type="box" size="0.49 0.98 0.425" pos="-1.61 0 1.825" material="ms_amber"/>
+<geom class="robot" type="box" size="0.495 0.985 0.07" pos="-1.61 0 2.18" material="ms_white"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 -0.988 1.55" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 0.988 1.55" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 -0.988 1.65" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 0.988 1.65" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 -0.988 1.75" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 0.988 1.75" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 -0.988 1.85" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 0.988 1.85" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 -0.988 1.95" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 0.988 1.95" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 -0.988 2.05" material="ms_black"/>
+<geom class="robot" type="box" size="0.3 0.006 0.018" pos="-1.6 0.988 2.05" material="ms_black"/>
+<geom class="robot" type="box" size="0.012 0.12 0.05" pos="-2.112 -0.75 1.62" material="ms_tail"/>
+<geom class="robot" type="box" size="0.012 0.12 0.05" pos="-2.112 0.75 1.62" material="ms_tail"/>
+<geom class="robot" type="box" size="0.08 1.02 0.09" pos="-2.18 0 1.12" material="ms_dark"/>
+<geom class="robot" type="capsule" size="0.018" fromto="-2.18 -0.25 1.15 -2.18 0.25 1.15" material="ms_steel"/>
+<geom class="robot" type="capsule" size="0.018" fromto="-2.18 -0.25 1.45 -2.18 0.25 1.45" material="ms_steel"/>
+<geom class="robot" type="capsule" size="0.018" fromto="-2.18 -0.25 1.75 -2.18 0.25 1.75" material="ms_steel"/>
+<geom class="robot" type="capsule" size="0.018" fromto="-2.18 -0.25 2.05 -2.18 0.25 2.05" material="ms_steel"/>
+<geom class="robot" type="capsule" size="0.022" fromto="-2.18 -0.25 1.05 -2.18 -0.25 2.2" material="ms_steel"/>
+<geom class="robot" type="capsule" size="0.022" fromto="-2.18 0.25 1.05 -2.18 0.25 2.2" material="ms_steel"/>
+<geom name="ms_hopper_sideR" class="robot" type="box" size="1 0.04 0.61" pos="0 -0.86 2.01" material="ms_white"/>
+<geom class="robot" type="box" size="0.04 0.9 0.61" pos="-0.96 0 2.01" material="ms_white"/>
+<geom class="robot" type="box" size="1.01 0.006 0.09" pos="0 -0.904 2.3" material="ms_amber"/>
+<geom class="robot" type="box" size="1.01 0.006 0.025" pos="0 -0.904 2.14" material="ms_black"/>
+<geom name="ms_hopper_sideL" class="robot" type="box" size="1 0.04 0.61" pos="0 0.86 2.01" material="ms_white"/>
+<geom class="robot" type="box" size="0.04 0.9 0.61" pos="0.96 0 2.01" material="ms_white"/>
+<geom class="robot" type="box" size="1.01 0.006 0.09" pos="0 0.904 2.3" material="ms_amber"/>
+<geom class="robot" type="box" size="1.01 0.006 0.025" pos="0 0.904 2.14" material="ms_black"/>
+<geom class="robot" type="box" size="1.03 0.045 0.03" pos="0 -0.9 2.64" material="ms_dark"/>
+<geom class="robot" type="box" size="0.045 0.93 0.03" pos="-1 0 2.64" material="ms_dark"/>
+<geom class="robot" type="box" size="0.03 0.012 0.56" pos="-0.5 -0.912 2.01" material="ms_dark"/>
+<geom class="robot" type="box" size="0.03 0.012 0.56" pos="0.5 -0.912 2.01" material="ms_dark"/>
+<geom class="robot" type="box" size="1.03 0.045 0.03" pos="0 0.9 2.64" material="ms_dark"/>
+<geom class="robot" type="box" size="0.045 0.93 0.03" pos="1 0 2.64" material="ms_dark"/>
+<geom class="robot" type="box" size="0.03 0.012 0.56" pos="-0.5 0.912 2.01" material="ms_dark"/>
+<geom class="robot" type="box" size="0.03 0.012 0.56" pos="0.5 0.912 2.01" material="ms_dark"/>
+<geom class="robot" type="box" size="0.96 0.86 0.02" pos="0 0 1.45" material="ms_dark"/>
+<geom name="ms_dust_fill" class="robot" type="box" size="0.95 0.85 0.42" pos="0 0 2.01" material="mulch_dust"/>
+<geom name="ms_dust_mound0" class="robot" type="ellipsoid" size="0.55 0.45 0.16" pos="0.3 0.2 2.43" material="mulch_dust"/>
+<geom name="ms_dust_mound1" class="robot" type="ellipsoid" size="0.5 0.5 0.13" pos="-0.35 -0.15 2.43" material="mulch_dust"/>
+<geom name="ms_dust_mound2" class="robot" type="ellipsoid" size="0.45 0.35 0.1" pos="0.1 -0.4 2.43" material="mulch_dust"/>
+<geom name="ms_dust_mound3" class="robot" type="ellipsoid" size="0.4 0.35 0.09" pos="-0.45 0.45 2.43" material="mulch_dust"/>
+<geom name="ms_cart_base" class="robot" type="box" size="0.95 0.85 0.36" pos="0 0 1.94" material="mulch_chips"/>
+<geom name="ms_cart_stack0" class="robot" type="cylinder" size="0.075 0.09" pos="-0.78 -0.66 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap0" class="robot" type="cylinder" size="0.073 0.012" pos="-0.78 -0.66 2.49" material="puck_green"/>
+<geom name="ms_cart_stack1" class="robot" type="cylinder" size="0.075 0.15" pos="-0.78 -0.33 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap1" class="robot" type="cylinder" size="0.073 0.012" pos="-0.78 -0.33 2.61" material="puck_green"/>
+<geom name="ms_cart_stack2" class="robot" type="cylinder" size="0.075 0.12" pos="-0.78 0 2.42" material="puck_brown"/>
+<geom name="ms_cart_cap2" class="robot" type="cylinder" size="0.073 0.012" pos="-0.78 0 2.55" material="puck_green"/>
+<geom name="ms_cart_stack3" class="robot" type="cylinder" size="0.075 0.09" pos="-0.78 0.33 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap3" class="robot" type="cylinder" size="0.073 0.012" pos="-0.78 0.33 2.49" material="puck_green"/>
+<geom name="ms_cart_stack4" class="robot" type="cylinder" size="0.075 0.15" pos="-0.78 0.66 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap4" class="robot" type="cylinder" size="0.073 0.012" pos="-0.78 0.66 2.61" material="puck_green"/>
+<geom name="ms_cart_stack5" class="robot" type="cylinder" size="0.075 0.09" pos="-0.468 -0.66 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap5" class="robot" type="cylinder" size="0.073 0.012" pos="-0.468 -0.66 2.49" material="puck_green"/>
+<geom name="ms_cart_stack6" class="robot" type="cylinder" size="0.075 0.15" pos="-0.468 -0.33 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap6" class="robot" type="cylinder" size="0.073 0.012" pos="-0.468 -0.33 2.61" material="puck_green"/>
+<geom name="ms_cart_stack7" class="robot" type="cylinder" size="0.075 0.12" pos="-0.468 0 2.42" material="puck_brown"/>
+<geom name="ms_cart_cap7" class="robot" type="cylinder" size="0.073 0.012" pos="-0.468 0 2.55" material="puck_green"/>
+<geom name="ms_cart_stack8" class="robot" type="cylinder" size="0.075 0.09" pos="-0.468 0.33 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap8" class="robot" type="cylinder" size="0.073 0.012" pos="-0.468 0.33 2.49" material="puck_green"/>
+<geom name="ms_cart_stack9" class="robot" type="cylinder" size="0.075 0.15" pos="-0.468 0.66 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap9" class="robot" type="cylinder" size="0.073 0.012" pos="-0.468 0.66 2.61" material="puck_green"/>
+<geom name="ms_cart_stack10" class="robot" type="cylinder" size="0.075 0.09" pos="-0.156 -0.66 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap10" class="robot" type="cylinder" size="0.073 0.012" pos="-0.156 -0.66 2.49" material="puck_green"/>
+<geom name="ms_cart_stack11" class="robot" type="cylinder" size="0.075 0.15" pos="-0.156 -0.33 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap11" class="robot" type="cylinder" size="0.073 0.012" pos="-0.156 -0.33 2.61" material="puck_green"/>
+<geom name="ms_cart_stack12" class="robot" type="cylinder" size="0.075 0.12" pos="-0.156 0 2.42" material="puck_brown"/>
+<geom name="ms_cart_cap12" class="robot" type="cylinder" size="0.073 0.012" pos="-0.156 0 2.55" material="puck_green"/>
+<geom name="ms_cart_stack13" class="robot" type="cylinder" size="0.075 0.09" pos="-0.156 0.33 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap13" class="robot" type="cylinder" size="0.073 0.012" pos="-0.156 0.33 2.49" material="puck_green"/>
+<geom name="ms_cart_stack14" class="robot" type="cylinder" size="0.075 0.15" pos="-0.156 0.66 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap14" class="robot" type="cylinder" size="0.073 0.012" pos="-0.156 0.66 2.61" material="puck_green"/>
+<geom name="ms_cart_stack15" class="robot" type="cylinder" size="0.075 0.09" pos="0.156 -0.66 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap15" class="robot" type="cylinder" size="0.073 0.012" pos="0.156 -0.66 2.49" material="puck_green"/>
+<geom name="ms_cart_stack16" class="robot" type="cylinder" size="0.075 0.15" pos="0.156 -0.33 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap16" class="robot" type="cylinder" size="0.073 0.012" pos="0.156 -0.33 2.61" material="puck_green"/>
+<geom name="ms_cart_stack17" class="robot" type="cylinder" size="0.075 0.12" pos="0.156 0 2.42" material="puck_brown"/>
+<geom name="ms_cart_cap17" class="robot" type="cylinder" size="0.073 0.012" pos="0.156 0 2.55" material="puck_green"/>
+<geom name="ms_cart_stack18" class="robot" type="cylinder" size="0.075 0.09" pos="0.156 0.33 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap18" class="robot" type="cylinder" size="0.073 0.012" pos="0.156 0.33 2.49" material="puck_green"/>
+<geom name="ms_cart_stack19" class="robot" type="cylinder" size="0.075 0.15" pos="0.156 0.66 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap19" class="robot" type="cylinder" size="0.073 0.012" pos="0.156 0.66 2.61" material="puck_green"/>
+<geom name="ms_cart_stack20" class="robot" type="cylinder" size="0.075 0.09" pos="0.468 -0.66 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap20" class="robot" type="cylinder" size="0.073 0.012" pos="0.468 -0.66 2.49" material="puck_green"/>
+<geom name="ms_cart_stack21" class="robot" type="cylinder" size="0.075 0.15" pos="0.468 -0.33 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap21" class="robot" type="cylinder" size="0.073 0.012" pos="0.468 -0.33 2.61" material="puck_green"/>
+<geom name="ms_cart_stack22" class="robot" type="cylinder" size="0.075 0.12" pos="0.468 0 2.42" material="puck_brown"/>
+<geom name="ms_cart_cap22" class="robot" type="cylinder" size="0.073 0.012" pos="0.468 0 2.55" material="puck_green"/>
+<geom name="ms_cart_stack23" class="robot" type="cylinder" size="0.075 0.09" pos="0.468 0.33 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap23" class="robot" type="cylinder" size="0.073 0.012" pos="0.468 0.33 2.49" material="puck_green"/>
+<geom name="ms_cart_stack24" class="robot" type="cylinder" size="0.075 0.15" pos="0.468 0.66 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap24" class="robot" type="cylinder" size="0.073 0.012" pos="0.468 0.66 2.61" material="puck_green"/>
+<geom name="ms_cart_stack25" class="robot" type="cylinder" size="0.075 0.09" pos="0.78 -0.66 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap25" class="robot" type="cylinder" size="0.073 0.012" pos="0.78 -0.66 2.49" material="puck_green"/>
+<geom name="ms_cart_stack26" class="robot" type="cylinder" size="0.075 0.15" pos="0.78 -0.33 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap26" class="robot" type="cylinder" size="0.073 0.012" pos="0.78 -0.33 2.61" material="puck_green"/>
+<geom name="ms_cart_stack27" class="robot" type="cylinder" size="0.075 0.12" pos="0.78 0 2.42" material="puck_brown"/>
+<geom name="ms_cart_cap27" class="robot" type="cylinder" size="0.073 0.012" pos="0.78 0 2.55" material="puck_green"/>
+<geom name="ms_cart_stack28" class="robot" type="cylinder" size="0.075 0.09" pos="0.78 0.33 2.39" material="puck_brown"/>
+<geom name="ms_cart_cap28" class="robot" type="cylinder" size="0.073 0.012" pos="0.78 0.33 2.49" material="puck_green"/>
+<geom name="ms_cart_stack29" class="robot" type="cylinder" size="0.075 0.15" pos="0.78 0.66 2.45" material="puck_brown"/>
+<geom name="ms_cart_cap29" class="robot" type="cylinder" size="0.073 0.012" pos="0.78 0.66 2.61" material="puck_green"/>
+<geom class="robot" type="box" size="0.55 0.004 0.11" pos="0.1 -0.91 1.82" material="ms_dark"/>
+<geom class="robot" type="box" size="0.5 0.005 0.03" pos="0.1 -0.912 1.86" material="ms_coil"/>
+<geom class="robot" type="box" size="0.55 0.004 0.11" pos="0.1 0.91 1.82" material="ms_dark"/>
+<geom class="robot" type="box" size="0.5 0.005 0.03" pos="0.1 0.912 1.86" material="ms_coil"/>
+<geom class="robot" type="capsule" size="0.06" fromto="-0.9 -0.55 1.75 -1.35 -0.95 2.24" material="ms_steel"/>
+<geom class="robot" type="capsule" size="0.06" fromto="-0.9 0.55 1.75 -1.35 0.95 2.24" material="ms_steel"/>
+<geom class="robot" type="capsule" size="0.06" fromto="0.9 -0.55 1.75 1.35 -0.95 2.24" material="ms_steel"/>
+<geom class="robot" type="capsule" size="0.06" fromto="0.9 0.55 1.75 1.35 0.95 2.24" material="ms_steel"/>
+<geom name="ms_dock0_arm" class="robot" type="box" size="0.2 0.32 0.05" pos="1.45 0.72 2.24" material="ms_dark"/>
+<geom name="ms_dock0_strut" class="robot" type="capsule" size="0.04" fromto="1.45 0.95 2 1.45 1.05 2.3" material="ms_steel"/>
+<geom name="ms_dock0_pad" class="robot" type="cylinder" size="0.58 0.035" pos="1.45 1.05 2.325" material="ms_dark"/>
+<geom name="ms_dock0_coil" class="robot" type="cylinder" size="0.47 0.004" pos="1.45 1.05 2.362" material="ms_coil"/>
+<geom class="robot" type="cylinder" size="0.43 0.005" pos="1.45 1.05 2.364" material="ms_dark"/>
+<geom class="robot" type="box" size="0.03 0.17 0.003" pos="1.33 1.05 2.369" material="ms_white"/>
+<geom class="robot" type="box" size="0.03 0.17 0.003" pos="1.57 1.05 2.369" material="ms_white"/>
+<geom class="robot" type="box" size="0.12 0.03 0.003" pos="1.45 1.05 2.369" material="ms_white"/>
+<site name="ms_dock_0" pos="1.45 1.05 2.36" size="0.06" rgba="0.2 1 0.8 0"/>
+<geom name="ms_dock1_arm" class="robot" type="box" size="0.2 0.32 0.05" pos="1.45 -0.72 2.24" material="ms_dark"/>
+<geom name="ms_dock1_strut" class="robot" type="capsule" size="0.04" fromto="1.45 -0.95 2 1.45 -1.05 2.3" material="ms_steel"/>
+<geom name="ms_dock1_pad" class="robot" type="cylinder" size="0.58 0.035" pos="1.45 -1.05 2.325" material="ms_dark"/>
+<geom name="ms_dock1_coil" class="robot" type="cylinder" size="0.47 0.004" pos="1.45 -1.05 2.362" material="ms_coil"/>
+<geom class="robot" type="cylinder" size="0.43 0.005" pos="1.45 -1.05 2.364" material="ms_dark"/>
+<geom class="robot" type="box" size="0.03 0.17 0.003" pos="1.33 -1.05 2.369" material="ms_white"/>
+<geom class="robot" type="box" size="0.03 0.17 0.003" pos="1.57 -1.05 2.369" material="ms_white"/>
+<geom class="robot" type="box" size="0.12 0.03 0.003" pos="1.45 -1.05 2.369" material="ms_white"/>
+<site name="ms_dock_1" pos="1.45 -1.05 2.36" size="0.06" rgba="0.2 1 0.8 0"/>
+<geom name="ms_dock2_arm" class="robot" type="box" size="0.2 0.32 0.05" pos="-1.45 0.72 2.24" material="ms_dark"/>
+<geom name="ms_dock2_strut" class="robot" type="capsule" size="0.04" fromto="-1.45 0.95 2 -1.45 1.05 2.3" material="ms_steel"/>
+<geom name="ms_dock2_pad" class="robot" type="cylinder" size="0.58 0.035" pos="-1.45 1.05 2.325" material="ms_dark"/>
+<geom name="ms_dock2_coil" class="robot" type="cylinder" size="0.47 0.004" pos="-1.45 1.05 2.362" material="ms_coil"/>
+<geom class="robot" type="cylinder" size="0.43 0.005" pos="-1.45 1.05 2.364" material="ms_dark"/>
+<geom class="robot" type="box" size="0.03 0.17 0.003" pos="-1.57 1.05 2.369" material="ms_white"/>
+<geom class="robot" type="box" size="0.03 0.17 0.003" pos="-1.33 1.05 2.369" material="ms_white"/>
+<geom class="robot" type="box" size="0.12 0.03 0.003" pos="-1.45 1.05 2.369" material="ms_white"/>
+<site name="ms_dock_2" pos="-1.45 1.05 2.36" size="0.06" rgba="0.2 1 0.8 0"/>
+<geom name="ms_dock3_arm" class="robot" type="box" size="0.2 0.32 0.05" pos="-1.45 -0.72 2.24" material="ms_dark"/>
+<geom name="ms_dock3_strut" class="robot" type="capsule" size="0.04" fromto="-1.45 -0.95 2 -1.45 -1.05 2.3" material="ms_steel"/>
+<geom name="ms_dock3_pad" class="robot" type="cylinder" size="0.58 0.035" pos="-1.45 -1.05 2.325" material="ms_dark"/>
+<geom name="ms_dock3_coil" class="robot" type="cylinder" size="0.47 0.004" pos="-1.45 -1.05 2.362" material="ms_coil"/>
+<geom class="robot" type="cylinder" size="0.43 0.005" pos="-1.45 -1.05 2.364" material="ms_dark"/>
+<geom class="robot" type="box" size="0.03 0.17 0.003" pos="-1.57 -1.05 2.369" material="ms_white"/>
+<geom class="robot" type="box" size="0.03 0.17 0.003" pos="-1.33 -1.05 2.369" material="ms_white"/>
+<geom class="robot" type="box" size="0.12 0.03 0.003" pos="-1.45 -1.05 2.369" material="ms_white"/>
+<site name="ms_dock_3" pos="-1.45 -1.05 2.36" size="0.06" rgba="0.2 1 0.8 0"/>
+<geom name="ms_mast_pole" class="robot" type="cylinder" size="0.045 0.55" pos="1.98 0 2.8" material="ms_dark"/>
+<geom class="robot" type="box" size="0.1 0.12 0.05" pos="1.98 0 2.3" material="ms_dark"/>
+<geom name="ms_lidar_body" class="robot" type="cylinder" size="0.085 0.06" pos="1.98 0 3.41" material="ms_black"/>
+<geom class="robot" type="cylinder" size="0.087 0.018" pos="1.98 0 3.41" material="ms_glass"/>
+<geom class="robot" type="cylinder" size="0.06 0.01" pos="1.98 0 3.48" material="ms_beacon"/>
+<site name="ms_lidar" pos="1.98 0 3.41" size="0.05" rgba="1 0 0 0"/>
+<geom class="robot" type="cylinder" size="0.008 0.08" pos="-1.95 -0.35 2.33" material="ms_dark"/>
+<geom class="robot" type="ellipsoid" size="0.07 0.07 0.03" pos="-1.95 -0.35 2.42" material="ms_white"/>
+<geom class="robot" type="cylinder" size="0.008 0.08" pos="-1.95 0.35 2.33" material="ms_dark"/>
+<geom class="robot" type="ellipsoid" size="0.07 0.07 0.03" pos="-1.95 0.35 2.42" material="ms_white"/>
+<geom class="robot" type="cylinder" size="0.05 0.02" pos="2 0.42 2.27" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.04 0.045" pos="2 0.42 2.335" material="ms_beacon"/>
+<geom class="robot" type="cylinder" size="0.05 0.02" pos="2 -0.42 2.27" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.04 0.045" pos="2 -0.42 2.335" material="ms_beacon"/>
+<geom class="robot" type="cylinder" size="0.05 0.02" pos="-2 0.6 2.27" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.04 0.045" pos="-2 0.6 2.335" material="ms_beacon"/>
+<geom class="robot" type="cylinder" size="0.05 0.02" pos="-2 -0.6 2.27" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.04 0.045" pos="-2 -0.6 2.335" material="ms_beacon"/>
+<geom name="ms_carousel" class="robot" type="cylinder" size="0.36 0.05" pos="-1.62 0 2.3" material="ms_dark"/>
+<geom class="robot" type="box" size="0.08 0.055 0.07" pos="-1.36 0 2.42" quat="1 0 0 0" material="ms_battery"/>
+<geom class="robot" type="box" size="0.03 0.03 0.006" pos="-1.36 0 2.492" quat="1 0 0 0" material="ms_battery_ok"/>
+<geom class="robot" type="box" size="0.08 0.055 0.07" pos="-1.49 0.22517 2.42" quat="0.86603 0 0 0.5" material="ms_battery"/>
+<geom class="robot" type="box" size="0.03 0.03 0.006" pos="-1.49 0.22517 2.492" quat="0.86603 0 0 0.5" material="ms_battery_ok"/>
+<geom class="robot" type="box" size="0.08 0.055 0.07" pos="-1.75 0.22517 2.42" quat="0.5 0 0 0.86603" material="ms_battery"/>
+<geom class="robot" type="box" size="0.03 0.03 0.006" pos="-1.75 0.22517 2.492" quat="0.5 0 0 0.86603" material="ms_battery_ok"/>
+<geom class="robot" type="box" size="0.08 0.055 0.07" pos="-1.88 3.1841e-17 2.42" quat="6.1232e-17 0 0 1" material="ms_battery"/>
+<geom class="robot" type="box" size="0.03 0.03 0.006" pos="-1.88 3.1841e-17 2.492" quat="6.1232e-17 0 0 1" material="ms_battery_ok"/>
+<geom class="robot" type="box" size="0.08 0.055 0.07" pos="-1.75 -0.22517 2.42" quat="-0.5 0 0 0.86603" material="ms_battery"/>
+<geom class="robot" type="box" size="0.03 0.03 0.006" pos="-1.75 -0.22517 2.492" quat="-0.5 0 0 0.86603" material="ms_battery_ok"/>
+<geom class="robot" type="box" size="0.08 0.055 0.07" pos="-1.49 -0.22517 2.42" quat="-0.86603 0 0 0.5" material="ms_battery"/>
+<geom class="robot" type="box" size="0.03 0.03 0.006" pos="-1.49 -0.22517 2.492" quat="-0.86603 0 0 0.5" material="ms_battery_ok"/>
+<geom class="robot" type="cylinder" size="0.05 0.12" pos="-1.62 0 2.45" material="ms_steel"/>
+<geom name="ms_arm_base" class="robot" type="cylinder" size="0.11 0.06" pos="-1.22 0 2.31" material="ms_dark"/>
+<geom name="ms_arm_link1" class="robot" type="capsule" size="0.055" fromto="-1.22 0 2.37 -1.22 0 2.71" material="ms_white"/>
+<geom class="robot" type="sphere" size="0.075" pos="-1.22 0 2.71" material="ms_amber"/>
+<geom name="ms_arm_link2" class="robot" type="capsule" size="0.045" fromto="-1.22 0 2.71 -1.27 0.42 2.89" material="ms_white"/>
+<geom class="robot" type="sphere" size="0.06" pos="-1.27 0.42 2.89" material="ms_amber"/>
+<geom name="ms_arm_link3" class="robot" type="capsule" size="0.035" fromto="-1.27 0.42 2.89 -1.42 0.64 2.77" material="ms_dark"/>
+<geom class="robot" type="box" size="0.015 0.05 0.04" pos="-1.46 0.67 2.74" material="ms_steel"/>
+<geom class="robot" type="box" size="0.015 0.05 0.04" pos="-1.38 0.67 2.74" material="ms_steel"/>
+<geom class="robot" type="box" size="0.15 0.08 0.08" pos="1.2 0.6 1.02" material="ms_dark"/>
+<body name="ms_knuckle_fl" pos="1.2 0.85 0.45">
+<joint name="ms_steer_fl" type="hinge" axis="0 0 1" range="-0.6 0.6" limited="true" armature="1"/>
+<inertial pos="0 0 0.2" mass="40" diaginertia="1.5 1.5 1"/>
+<geom name="ms_leg_fl" class="robot" type="box" size="0.15 0.065 0.29" pos="0 -0.25 0.27" material="ms_amber_dark"/>
+<geom class="robot" type="cylinder" size="0.17 0.05" pos="0 -0.21 0" zaxis="0 1 0" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.12 0.03" pos="0 -0.18 0" zaxis="0 1 0" material="ms_steel"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="-0.45439 0 0.29176" quat="0.87758 -0 -0.47943 -0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="-0.25889 0 0.47389" quat="0.96891 -0 -0.2474 -0" material="ms_amber"/>
+<geom name="ms_fl_fender2" class="robot" type="box" size="0.13 0.2 0.012" pos="0 0 0.54" quat="1 0 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="0.25889 0 0.47389" quat="0.96891 0 0.2474 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="0.45439 0 0.29176" quat="0.87758 0 0.47943 0" material="ms_amber"/>
+<body name="ms_wheel_fl" pos="0 0 0">
+<joint name="ms_wheel_fl" type="hinge" axis="0 1 0" damping="0" armature="0.1"/>
+<inertial pos="0 0 0" mass="80" diaginertia="4.65 8.1 4.65"/>
+<geom name="ms_wheel_fl_tyre" class="tyre" type="cylinder" size="0.425 0.15" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="cylinder" size="0.4 0.012" pos="0 -0.154 0" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="cylinder" size="0.4 0.012" pos="0 0.154 0" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.025904 -0.075 0.43122" quat="0.98428 -0.17403 -0.029537 -0.0052225" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.025904 0.075 0.43122" quat="0.98428 0.17403 0.029537 -0.0052225" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.16376 -0.075 0.39976" quat="0.96618 -0.17083 0.19023 0.033634" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.21044 0.075 0.37728" quat="0.95303 0.1685 0.24782 -0.043817" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.32099 -0.075 0.28912" quat="0.89962 -0.15906 0.40045 0.070803" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.35329 0.075 0.24861" quat="0.87399 0.15453 0.45368 -0.080214" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.41465 -0.075 0.12121" quat="0.78796 -0.13932 0.5906 0.10442" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.42618 0.075 0.070701" quat="0.75113 0.13281 0.63678 -0.11259" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.42618 -0.075 -0.070701" quat="0.63678 -0.11259 0.75113 0.13281" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.41465 0.075 -0.12121" quat="0.5906 0.10442 0.78796 -0.13932" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.35329 -0.075 -0.24861" quat="0.45368 -0.080214 0.87399 0.15453" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.32099 0.075 -0.28912" quat="0.40045 0.070803 0.89962 -0.15906" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.21044 -0.075 -0.37728" quat="0.24782 -0.043817 0.95303 0.1685" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.16376 0.075 -0.39976" quat="0.19023 0.033634 0.96618 -0.17083" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.025904 -0.075 -0.43122" quat="0.029537 -0.0052225 0.98428 0.17403" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.025904 0.075 -0.43122" quat="-0.029537 -0.0052225 0.98428 -0.17403" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.16376 -0.075 -0.39976" quat="-0.19023 0.033634 0.96618 0.17083" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.21044 0.075 -0.37728" quat="-0.24782 -0.043817 0.95303 -0.1685" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.32099 -0.075 -0.28912" quat="-0.40045 0.070803 0.89962 0.15906" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.35329 0.075 -0.24861" quat="-0.45368 -0.080214 0.87399 -0.15453" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.41465 -0.075 -0.12121" quat="-0.5906 0.10442 0.78796 0.13932" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.42618 0.075 -0.070701" quat="-0.63678 -0.11259 0.75113 -0.13281" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.42618 -0.075 0.070701" quat="-0.75113 0.13281 0.63678 0.11259" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.41465 0.075 0.12121" quat="-0.78796 -0.13932 0.5906 -0.10442" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.35329 -0.075 0.24861" quat="-0.87399 0.15453 0.45368 0.080214" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.32099 0.075 0.28912" quat="-0.89962 -0.15906 0.40045 -0.070803" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.21044 -0.075 0.37728" quat="-0.95303 0.1685 0.24782 0.043817" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.16376 0.075 0.39976" quat="-0.96618 -0.17083 0.19023 -0.033634" material="ms_rubber"/>
+<geom name="ms_wheel_fl_rim" class="robot" type="cylinder" size="0.27 0.158" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.2 0.01" pos="0 0.165 0" zaxis="0 1 0" material="ms_dark"/>
+<geom name="ms_wheel_fl_hub" class="robot" type="cylinder" size="0.095 0.03" pos="0 0.18 0" zaxis="0 1 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0 0.172 0.16" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0.13856 0.172 0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0.13856 0.172 -0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="1.9594e-17 0.172 -0.16" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="-0.13856 0.172 -0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="-0.13856 0.172 0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="box" size="0.05 0.006 0.03" pos="0 0.17 0.355" material="ms_amber"/>
+<geom class="robot" type="box" size="0.05 0.006 0.03" pos="4.3475e-17 0.17 -0.355" material="ms_amber"/>
+</body>
+</body>
+<geom class="robot" type="box" size="0.15 0.08 0.08" pos="1.2 -0.6 1.02" material="ms_dark"/>
+<body name="ms_knuckle_fr" pos="1.2 -0.85 0.45">
+<joint name="ms_steer_fr" type="hinge" axis="0 0 1" range="-0.6 0.6" limited="true" armature="1"/>
+<inertial pos="0 0 0.2" mass="40" diaginertia="1.5 1.5 1"/>
+<geom name="ms_leg_fr" class="robot" type="box" size="0.15 0.065 0.29" pos="0 0.25 0.27" material="ms_amber_dark"/>
+<geom class="robot" type="cylinder" size="0.17 0.05" pos="0 0.21 0" zaxis="0 1 0" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.12 0.03" pos="0 0.18 0" zaxis="0 1 0" material="ms_steel"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="-0.45439 0 0.29176" quat="0.87758 -0 -0.47943 -0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="-0.25889 0 0.47389" quat="0.96891 -0 -0.2474 -0" material="ms_amber"/>
+<geom name="ms_fr_fender2" class="robot" type="box" size="0.13 0.2 0.012" pos="0 0 0.54" quat="1 0 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="0.25889 0 0.47389" quat="0.96891 0 0.2474 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="0.45439 0 0.29176" quat="0.87758 0 0.47943 0" material="ms_amber"/>
+<body name="ms_wheel_fr" pos="0 0 0">
+<joint name="ms_wheel_fr" type="hinge" axis="0 1 0" damping="0" armature="0.1"/>
+<inertial pos="0 0 0" mass="80" diaginertia="4.65 8.1 4.65"/>
+<geom name="ms_wheel_fr_tyre" class="tyre" type="cylinder" size="0.425 0.15" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="cylinder" size="0.4 0.012" pos="0 -0.154 0" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="cylinder" size="0.4 0.012" pos="0 0.154 0" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.025904 -0.075 0.43122" quat="0.98428 -0.17403 -0.029537 -0.0052225" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.025904 0.075 0.43122" quat="0.98428 0.17403 0.029537 -0.0052225" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.16376 -0.075 0.39976" quat="0.96618 -0.17083 0.19023 0.033634" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.21044 0.075 0.37728" quat="0.95303 0.1685 0.24782 -0.043817" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.32099 -0.075 0.28912" quat="0.89962 -0.15906 0.40045 0.070803" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.35329 0.075 0.24861" quat="0.87399 0.15453 0.45368 -0.080214" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.41465 -0.075 0.12121" quat="0.78796 -0.13932 0.5906 0.10442" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.42618 0.075 0.070701" quat="0.75113 0.13281 0.63678 -0.11259" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.42618 -0.075 -0.070701" quat="0.63678 -0.11259 0.75113 0.13281" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.41465 0.075 -0.12121" quat="0.5906 0.10442 0.78796 -0.13932" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.35329 -0.075 -0.24861" quat="0.45368 -0.080214 0.87399 0.15453" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.32099 0.075 -0.28912" quat="0.40045 0.070803 0.89962 -0.15906" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.21044 -0.075 -0.37728" quat="0.24782 -0.043817 0.95303 0.1685" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.16376 0.075 -0.39976" quat="0.19023 0.033634 0.96618 -0.17083" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.025904 -0.075 -0.43122" quat="0.029537 -0.0052225 0.98428 0.17403" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.025904 0.075 -0.43122" quat="-0.029537 -0.0052225 0.98428 -0.17403" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.16376 -0.075 -0.39976" quat="-0.19023 0.033634 0.96618 0.17083" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.21044 0.075 -0.37728" quat="-0.24782 -0.043817 0.95303 -0.1685" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.32099 -0.075 -0.28912" quat="-0.40045 0.070803 0.89962 0.15906" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.35329 0.075 -0.24861" quat="-0.45368 -0.080214 0.87399 -0.15453" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.41465 -0.075 -0.12121" quat="-0.5906 0.10442 0.78796 0.13932" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.42618 0.075 -0.070701" quat="-0.63678 -0.11259 0.75113 -0.13281" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.42618 -0.075 0.070701" quat="-0.75113 0.13281 0.63678 0.11259" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.41465 0.075 0.12121" quat="-0.78796 -0.13932 0.5906 -0.10442" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.35329 -0.075 0.24861" quat="-0.87399 0.15453 0.45368 0.080214" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.32099 0.075 0.28912" quat="-0.89962 -0.15906 0.40045 -0.070803" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.21044 -0.075 0.37728" quat="-0.95303 0.1685 0.24782 0.043817" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.16376 0.075 0.39976" quat="-0.96618 -0.17083 0.19023 -0.033634" material="ms_rubber"/>
+<geom name="ms_wheel_fr_rim" class="robot" type="cylinder" size="0.27 0.158" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.2 0.01" pos="0 -0.165 0" zaxis="0 1 0" material="ms_dark"/>
+<geom name="ms_wheel_fr_hub" class="robot" type="cylinder" size="0.095 0.03" pos="0 -0.18 0" zaxis="0 1 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0 -0.172 0.16" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0.13856 -0.172 0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0.13856 -0.172 -0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="1.9594e-17 -0.172 -0.16" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="-0.13856 -0.172 -0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="-0.13856 -0.172 0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="box" size="0.05 0.006 0.03" pos="0 -0.17 0.355" material="ms_amber"/>
+<geom class="robot" type="box" size="0.05 0.006 0.03" pos="4.3475e-17 -0.17 -0.355" material="ms_amber"/>
+</body>
+</body>
+<geom class="robot" type="box" size="0.15 0.08 0.08" pos="-1.2 0.6 1.02" material="ms_dark"/>
+<body name="ms_axle_rl" pos="-1.2 0.85 0.45">
+<inertial pos="0 0 0.2" mass="40" diaginertia="1.5 1.5 1"/>
+<geom name="ms_leg_rl" class="robot" type="box" size="0.15 0.065 0.29" pos="0 -0.25 0.27" material="ms_amber_dark"/>
+<geom class="robot" type="cylinder" size="0.17 0.05" pos="0 -0.21 0" zaxis="0 1 0" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.12 0.03" pos="0 -0.18 0" zaxis="0 1 0" material="ms_steel"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="-0.45439 0 0.29176" quat="0.87758 -0 -0.47943 -0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="-0.25889 0 0.47389" quat="0.96891 -0 -0.2474 -0" material="ms_amber"/>
+<geom name="ms_rl_fender2" class="robot" type="box" size="0.13 0.2 0.012" pos="0 0 0.54" quat="1 0 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="0.25889 0 0.47389" quat="0.96891 0 0.2474 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="0.45439 0 0.29176" quat="0.87758 0 0.47943 0" material="ms_amber"/>
+<body name="ms_wheel_rl" pos="0 0 0">
+<joint name="ms_wheel_rl" type="hinge" axis="0 1 0" damping="0" armature="0.1"/>
+<inertial pos="0 0 0" mass="80" diaginertia="4.65 8.1 4.65"/>
+<geom name="ms_wheel_rl_tyre" class="tyre" type="cylinder" size="0.425 0.15" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="cylinder" size="0.4 0.012" pos="0 -0.154 0" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="cylinder" size="0.4 0.012" pos="0 0.154 0" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.025904 -0.075 0.43122" quat="0.98428 -0.17403 -0.029537 -0.0052225" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.025904 0.075 0.43122" quat="0.98428 0.17403 0.029537 -0.0052225" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.16376 -0.075 0.39976" quat="0.96618 -0.17083 0.19023 0.033634" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.21044 0.075 0.37728" quat="0.95303 0.1685 0.24782 -0.043817" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.32099 -0.075 0.28912" quat="0.89962 -0.15906 0.40045 0.070803" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.35329 0.075 0.24861" quat="0.87399 0.15453 0.45368 -0.080214" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.41465 -0.075 0.12121" quat="0.78796 -0.13932 0.5906 0.10442" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.42618 0.075 0.070701" quat="0.75113 0.13281 0.63678 -0.11259" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.42618 -0.075 -0.070701" quat="0.63678 -0.11259 0.75113 0.13281" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.41465 0.075 -0.12121" quat="0.5906 0.10442 0.78796 -0.13932" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.35329 -0.075 -0.24861" quat="0.45368 -0.080214 0.87399 0.15453" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.32099 0.075 -0.28912" quat="0.40045 0.070803 0.89962 -0.15906" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.21044 -0.075 -0.37728" quat="0.24782 -0.043817 0.95303 0.1685" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.16376 0.075 -0.39976" quat="0.19023 0.033634 0.96618 -0.17083" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.025904 -0.075 -0.43122" quat="0.029537 -0.0052225 0.98428 0.17403" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.025904 0.075 -0.43122" quat="-0.029537 -0.0052225 0.98428 -0.17403" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.16376 -0.075 -0.39976" quat="-0.19023 0.033634 0.96618 0.17083" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.21044 0.075 -0.37728" quat="-0.24782 -0.043817 0.95303 -0.1685" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.32099 -0.075 -0.28912" quat="-0.40045 0.070803 0.89962 0.15906" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.35329 0.075 -0.24861" quat="-0.45368 -0.080214 0.87399 -0.15453" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.41465 -0.075 -0.12121" quat="-0.5906 0.10442 0.78796 0.13932" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.42618 0.075 -0.070701" quat="-0.63678 -0.11259 0.75113 -0.13281" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.42618 -0.075 0.070701" quat="-0.75113 0.13281 0.63678 0.11259" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.41465 0.075 0.12121" quat="-0.78796 -0.13932 0.5906 -0.10442" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.35329 -0.075 0.24861" quat="-0.87399 0.15453 0.45368 0.080214" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.32099 0.075 0.28912" quat="-0.89962 -0.15906 0.40045 -0.070803" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.21044 -0.075 0.37728" quat="-0.95303 0.1685 0.24782 0.043817" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.16376 0.075 0.39976" quat="-0.96618 -0.17083 0.19023 -0.033634" material="ms_rubber"/>
+<geom name="ms_wheel_rl_rim" class="robot" type="cylinder" size="0.27 0.158" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.2 0.01" pos="0 0.165 0" zaxis="0 1 0" material="ms_dark"/>
+<geom name="ms_wheel_rl_hub" class="robot" type="cylinder" size="0.095 0.03" pos="0 0.18 0" zaxis="0 1 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0 0.172 0.16" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0.13856 0.172 0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0.13856 0.172 -0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="1.9594e-17 0.172 -0.16" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="-0.13856 0.172 -0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="-0.13856 0.172 0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="box" size="0.05 0.006 0.03" pos="0 0.17 0.355" material="ms_amber"/>
+<geom class="robot" type="box" size="0.05 0.006 0.03" pos="4.3475e-17 0.17 -0.355" material="ms_amber"/>
+</body>
+</body>
+<geom class="robot" type="box" size="0.15 0.08 0.08" pos="-1.2 -0.6 1.02" material="ms_dark"/>
+<body name="ms_axle_rr" pos="-1.2 -0.85 0.45">
+<inertial pos="0 0 0.2" mass="40" diaginertia="1.5 1.5 1"/>
+<geom name="ms_leg_rr" class="robot" type="box" size="0.15 0.065 0.29" pos="0 0.25 0.27" material="ms_amber_dark"/>
+<geom class="robot" type="cylinder" size="0.17 0.05" pos="0 0.21 0" zaxis="0 1 0" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.12 0.03" pos="0 0.18 0" zaxis="0 1 0" material="ms_steel"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="-0.45439 0 0.29176" quat="0.87758 -0 -0.47943 -0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="-0.25889 0 0.47389" quat="0.96891 -0 -0.2474 -0" material="ms_amber"/>
+<geom name="ms_rr_fender2" class="robot" type="box" size="0.13 0.2 0.012" pos="0 0 0.54" quat="1 0 0 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="0.25889 0 0.47389" quat="0.96891 0 0.2474 0" material="ms_amber"/>
+<geom class="robot" type="box" size="0.13 0.2 0.012" pos="0.45439 0 0.29176" quat="0.87758 0 0.47943 0" material="ms_amber"/>
+<body name="ms_wheel_rr" pos="0 0 0">
+<joint name="ms_wheel_rr" type="hinge" axis="0 1 0" damping="0" armature="0.1"/>
+<inertial pos="0 0 0" mass="80" diaginertia="4.65 8.1 4.65"/>
+<geom name="ms_wheel_rr_tyre" class="tyre" type="cylinder" size="0.425 0.15" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="cylinder" size="0.4 0.012" pos="0 -0.154 0" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="cylinder" size="0.4 0.012" pos="0 0.154 0" zaxis="0 1 0" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.025904 -0.075 0.43122" quat="0.98428 -0.17403 -0.029537 -0.0052225" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.025904 0.075 0.43122" quat="0.98428 0.17403 0.029537 -0.0052225" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.16376 -0.075 0.39976" quat="0.96618 -0.17083 0.19023 0.033634" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.21044 0.075 0.37728" quat="0.95303 0.1685 0.24782 -0.043817" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.32099 -0.075 0.28912" quat="0.89962 -0.15906 0.40045 0.070803" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.35329 0.075 0.24861" quat="0.87399 0.15453 0.45368 -0.080214" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.41465 -0.075 0.12121" quat="0.78796 -0.13932 0.5906 0.10442" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.42618 0.075 0.070701" quat="0.75113 0.13281 0.63678 -0.11259" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.42618 -0.075 -0.070701" quat="0.63678 -0.11259 0.75113 0.13281" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.41465 0.075 -0.12121" quat="0.5906 0.10442 0.78796 -0.13932" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.35329 -0.075 -0.24861" quat="0.45368 -0.080214 0.87399 0.15453" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.32099 0.075 -0.28912" quat="0.40045 0.070803 0.89962 -0.15906" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.21044 -0.075 -0.37728" quat="0.24782 -0.043817 0.95303 0.1685" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.16376 0.075 -0.39976" quat="0.19023 0.033634 0.96618 -0.17083" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="0.025904 -0.075 -0.43122" quat="0.029537 -0.0052225 0.98428 0.17403" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.025904 0.075 -0.43122" quat="-0.029537 -0.0052225 0.98428 -0.17403" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.16376 -0.075 -0.39976" quat="-0.19023 0.033634 0.96618 0.17083" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.21044 0.075 -0.37728" quat="-0.24782 -0.043817 0.95303 -0.1685" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.32099 -0.075 -0.28912" quat="-0.40045 0.070803 0.89962 0.15906" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.35329 0.075 -0.24861" quat="-0.45368 -0.080214 0.87399 -0.15453" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.41465 -0.075 -0.12121" quat="-0.5906 0.10442 0.78796 0.13932" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.42618 0.075 -0.070701" quat="-0.63678 -0.11259 0.75113 -0.13281" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.42618 -0.075 0.070701" quat="-0.75113 0.13281 0.63678 0.11259" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.41465 0.075 0.12121" quat="-0.78796 -0.13932 0.5906 -0.10442" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.35329 -0.075 0.24861" quat="-0.87399 0.15453 0.45368 0.080214" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.32099 0.075 0.28912" quat="-0.89962 -0.15906 0.40045 -0.070803" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.21044 -0.075 0.37728" quat="-0.95303 0.1685 0.24782 0.043817" material="ms_rubber"/>
+<geom class="robot" type="box" size="0.035 0.07 0.02" pos="-0.16376 0.075 0.39976" quat="-0.96618 -0.17083 0.19023 -0.033634" material="ms_rubber"/>
+<geom name="ms_wheel_rr_rim" class="robot" type="cylinder" size="0.27 0.158" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.2 0.01" pos="0 -0.165 0" zaxis="0 1 0" material="ms_dark"/>
+<geom name="ms_wheel_rr_hub" class="robot" type="cylinder" size="0.095 0.03" pos="0 -0.18 0" zaxis="0 1 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0 -0.172 0.16" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0.13856 -0.172 0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="0.13856 -0.172 -0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="1.9594e-17 -0.172 -0.16" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="-0.13856 -0.172 -0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="cylinder" size="0.022 0.018" pos="-0.13856 -0.172 0.08" zaxis="0 1 0" material="ms_rim"/>
+<geom class="robot" type="box" size="0.05 0.006 0.03" pos="0 -0.17 0.355" material="ms_amber"/>
+<geom class="robot" type="box" size="0.05 0.006 0.03" pos="4.3475e-17 -0.17 -0.355" material="ms_amber"/>
+</body>
+</body>
+<camera name="ms_front" pos="2.2 0 1.6" xyaxes="0 -1 0 0.25882 0 0.96593" fovy="70"/>
+<camera name="ms_mast" pos="-9 0 6" xyaxes="0 -1 0 0.41665 0 0.90906" fovy="55"/>
+<camera name="ms_side" pos="2.3 3.4 0.75" xyaxes="-0.67333 0.73934 0 -0.064181 -0.05845 0.99623" fovy="62"/>
+<geom name="ms_blower_housing" class="robot" type="cylinder" size="0.3 0.15" pos="0 0 2.62" material="ms_white"/>
+<geom class="robot" type="cylinder" size="0.312 0.022" pos="0 0 2.74" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.312 0.012" pos="0 0 2.54" material="ms_dark"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="0.302 0 2.615" quat="1 0 0 0" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="0.26154 0.151 2.615" quat="0.96593 0 0 0.25882" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="0.151 0.26154 2.615" quat="0.86603 0 0 0.5" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="1.8492e-17 0.302 2.615" quat="0.70711 0 0 0.70711" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="-0.151 0.26154 2.615" quat="0.5 0 0 0.86603" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="-0.26154 0.151 2.615" quat="0.25882 0 0 0.96593" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="-0.302 3.6984e-17 2.615" quat="6.1232e-17 0 0 1" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="-0.26154 -0.151 2.615" quat="-0.25882 0 0 0.96593" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="-0.151 -0.26154 2.615" quat="-0.5 0 0 0.86603" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="-5.5477e-17 -0.302 2.615" quat="-0.70711 0 0 0.70711" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="0.151 -0.26154 2.615" quat="-0.86603 0 0 0.5" material="ms_black"/>
+<geom class="robot" type="box" size="0.008 0.045 0.07" pos="0.26154 -0.151 2.615" quat="-0.96593 0 0 0.25882" material="ms_black"/>
+<body name="ms_impeller_body" pos="0 0 2.775">
+<joint name="ms_impeller" type="hinge" axis="0 0 1" limited="false"/>
+<geom class="robot" type="cylinder" size="0.27 0.006" material="ms_dark"/>
+<geom class="robot" type="box" size="0.06 0.012 0.018" pos="0.21 0 0.02" quat="0.96891 0 0 0.2474" material="ms_steel"/>
+<geom class="robot" type="box" size="0.06 0.012 0.018" pos="0.105 0.18187 0.02" quat="0.7154 0 0 0.69871" material="ms_steel"/>
+<geom class="robot" type="box" size="0.06 0.012 0.018" pos="-0.105 0.18187 0.02" quat="0.2702 0 0 0.9628" material="ms_steel"/>
+<geom class="robot" type="box" size="0.06 0.012 0.018" pos="-0.21 2.5718e-17 0.02" quat="-0.2474 0 0 0.96891" material="ms_steel"/>
+<geom class="robot" type="box" size="0.06 0.012 0.018" pos="-0.105 -0.18187 0.02" quat="-0.69871 0 0 0.7154" material="ms_steel"/>
+<geom class="robot" type="box" size="0.06 0.012 0.018" pos="0.105 -0.18187 0.02" quat="-0.9628 0 0 0.2702" material="ms_steel"/>
+</body>
+<geom name="ms_chute_neck" class="robot" type="cylinder" size="0.15 0.08" pos="0 0 2.87" material="ms_dark"/>
+<geom name="ms_chute_ring" class="robot" type="cylinder" size="0.215 0.025" pos="0 0 2.925" material="ms_steel"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="0.222 0 2.925" quat="1 0 0 0" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="0.2051 0.084956 2.925" quat="0.98079 0 0 0.19509" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="0.15698 0.15698 2.925" quat="0.92388 0 0 0.38268" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="0.084956 0.2051 2.925" quat="0.83147 0 0 0.55557" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="1.3594e-17 0.222 2.925" quat="0.70711 0 0 0.70711" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="-0.084956 0.2051 2.925" quat="0.55557 0 0 0.83147" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="-0.15698 0.15698 2.925" quat="0.38268 0 0 0.92388" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="-0.2051 0.084956 2.925" quat="0.19509 0 0 0.98079" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="-0.222 2.7187e-17 2.925" quat="6.1232e-17 0 0 1" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="-0.2051 -0.084956 2.925" quat="-0.19509 0 0 0.98079" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="-0.15698 -0.15698 2.925" quat="-0.38268 0 0 0.92388" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="-0.084956 -0.2051 2.925" quat="-0.55557 0 0 0.83147" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="-4.0781e-17 -0.222 2.925" quat="-0.70711 0 0 0.70711" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="0.084956 -0.2051 2.925" quat="-0.83147 0 0 0.55557" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="0.15698 -0.15698 2.925" quat="-0.92388 0 0 0.38268" material="ms_dark"/>
+<geom class="robot" type="box" size="0.014 0.012 0.022" pos="0.2051 -0.084956 2.925" quat="-0.98079 0 0 0.19509" material="ms_dark"/>
+<body name="ms_chute" pos="0 0 2.95">
+<joint name="ms_chute_yaw" type="hinge" axis="0 0 1" limited="false"/>
+<geom class="robot" type="cylinder" size="0.18 0.02" pos="0 0 0.02" material="ms_dark"/>
+<geom name="ms_chute_tube" class="robot" type="cylinder" size="0.165 0.13" pos="0 0 0.17" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.165 0.044143" pos="0.0015183 0 0.3321" zaxis="0.094398 0 0.99553" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.165 0.044143" pos="0.013583 0 0.39514" zaxis="0.27983 0 0.96005" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.165 0.044143" pos="0.037283 0 0.4548" zaxis="0.45529 0 0.89035" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.165 0.044143" pos="0.071772 0 0.50894" zaxis="0.61451 0 0.78891" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.165 0.044143" pos="0.11582 0 0.55563" zaxis="0.75184 0 0.65935" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.165 0.044143" pos="0.16786 0 0.5932" zaxis="0.86237 0 0.50628" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.172 0.018" pos="0.19631 0 0.60814" zaxis="0.90631 0 0.42262" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.145 0.004" pos="0.21444 0 0.6166" zaxis="0.90631 0 0.42262" material="ms_black"/>
+<geom class="robot" type="box" size="0.1 0.004 0.025" pos="0 0.168 0.22" material="ms_black"/>
+<geom class="robot" type="box" size="0.1 0.004 0.025" pos="0 -0.168 0.22" material="ms_black"/>
+<geom class="robot" type="capsule" size="0.022" fromto="-0.00071419 0 0.50876 0.11179 0 0.78941" material="ms_steel"/>
+<body name="ms_chute_deflector" pos="0.12869 0 0.75315">
+<joint name="ms_chute_pitch" type="hinge" axis="0 -1 0" range="-0.4 0.7"/>
+<geom class="robot" type="box" size="0.042 0.175 0.007" pos="0.036252 0 0.016905" zaxis="-0.42262 0 0.90631" material="ms_amber"/>
+<geom class="robot" type="box" size="0.042 0.175 0.007" pos="0.09072 0 0.037338" zaxis="-0.32557 0 0.94552" material="ms_amber"/>
+<geom class="robot" type="box" size="0.042 0.175 0.007" pos="0.14899 0 0.049615" zaxis="-0.22495 0 0.97437" material="ms_amber"/>
+<geom class="robot" type="box" size="0.042 0.175 0.007" pos="0.21107 0 0.053735" zaxis="-0.12187 0 0.99255" material="ms_amber"/>
+<geom class="robot" type="box" size="0.042 0.175 0.007" pos="0.27694 0 0.049698" zaxis="-0.017452 0 0.99985" material="ms_amber"/>
+<geom class="robot" type="box" size="0.042 0.175 0.007" pos="0.34663 0 0.037504" zaxis="0.087156 -0 0.99619" material="ms_amber"/>
+<site name="ms_chute_tip" pos="0.37576 0 -0.001319" size="0.03" rgba="1 0.8 0.2 0"/>
+</body>
+</body>
+<geom class="robot" type="box" size="0.17 0.15 0.025" pos="0 1.03 1.87" material="ms_dark"/>
+<geom class="robot" type="capsule" size="0.018" fromto="-0.12 0.91 1.55 -0.12 1.16 1.85" material="ms_dark"/>
+<geom class="robot" type="capsule" size="0.018" fromto="0.12 0.91 1.55 0.12 1.16 1.85" material="ms_dark"/>
+<geom name="ms_air_tank0" class="robot" type="capsule" size="0.12" fromto="-0.55 1.06 1.17 0.55 1.06 1.17" material="ms_white"/>
+<geom class="robot" type="cylinder" size="0.124 0.02" pos="-0.35 1.06 1.17" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.124 0.02" pos="0.35 1.06 1.17" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.04 0.012" pos="0 1.185 1.2" zaxis="0 1 0" material="ms_white"/>
+<geom class="robot" type="cylinder" size="0.032 0.004" pos="0 1.198 1.2" zaxis="0 1 0" material="ms_black"/>
+<geom class="robot" type="capsule" size="0.022" fromto="0.2 1.1 1.28 0.05 1.14 1.88" material="ms_black"/>
+<body name="ms_cannon0" pos="0 1.16 1.93">
+<joint name="ms_cannon0_yaw" type="hinge" axis="0 0 1" limited="false"/>
+<geom class="robot" type="cylinder" size="0.15 0.03" pos="0 0 -0.01" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.153 0.005" pos="0 0 0.022" material="ms_coil"/>
+<geom name="ms_cannon0_housing" class="robot" type="box" size="0.13 0.125 0.055" pos="-0.01 0 0.07" material="ms_amber"/>
+<geom class="robot" type="box" size="0.07 0.012 0.06" pos="0 0.12 0.12" material="ms_dark"/>
+<geom class="robot" type="box" size="0.07 0.012 0.06" pos="0 -0.12 0.12" material="ms_dark"/>
+<body name="ms_cannon0_elev" pos="0 0 0.12">
+<joint name="ms_cannon0_pitch" type="hinge" axis="0 -1 0" range="-0.2 0.9"/>
+<geom class="robot" type="cylinder" size="0.03 0.125" zaxis="0 1 0" material="ms_steel"/>
+<geom name="ms_cannon0_breech" class="robot" type="box" size="0.11 0.11 0.06" pos="-0.03 0 0" material="ms_dark"/>
+<geom class="robot" type="capsule" size="0.05" fromto="-0.16 0 -0.075 0.3 0 -0.075" material="ms_white"/>
+<geom class="robot" type="cylinder" size="0.052 0.012" pos="0.12 0 -0.075" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.05 0.15" pos="-0.07 0 0.21" rgba="0.78 0.88 0.92 0.33"/>
+<geom class="robot" type="cylinder" size="0.053 0.012" pos="-0.07 0 0.365" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.09" material="puck_green"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.14" material="puck_brown"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.19" material="puck_green"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.24" material="puck_brown"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.29" material="puck_green"/>
+<body name="ms_cannon0_barrel0" pos="0 0.07 0.02">
+<joint name="ms_cannon0_recoil0" type="slide" axis="1 0 0" range="-0.15 0"/>
+<geom name="ms_cannon0_tube0" class="robot" type="cylinder" size="0.05 0.495" pos="0.555 0 0" zaxis="1 0 0" material="ms_steel"/>
+<geom class="robot" type="cylinder" size="0.066 0.04" pos="1.01 0 0" zaxis="1 0 0" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.056 0.022" pos="0.36 0 0" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.042 0.003" pos="1.051 0 0" zaxis="1 0 0" material="ms_black"/>
+<site name="ms_cannon0_muzzle0" pos="1.05 0 0" size="0.02" rgba="1 0.5 0 0"/>
+</body>
+<body name="ms_cannon0_barrel1" pos="0 -0.07 0.02">
+<joint name="ms_cannon0_recoil1" type="slide" axis="1 0 0" range="-0.15 0"/>
+<geom name="ms_cannon0_tube1" class="robot" type="cylinder" size="0.05 0.495" pos="0.555 0 0" zaxis="1 0 0" material="ms_steel"/>
+<geom class="robot" type="cylinder" size="0.066 0.04" pos="1.01 0 0" zaxis="1 0 0" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.056 0.022" pos="0.36 0 0" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.042 0.003" pos="1.051 0 0" zaxis="1 0 0" material="ms_black"/>
+<site name="ms_cannon0_muzzle1" pos="1.05 0 0" size="0.02" rgba="1 0.5 0 0"/>
+</body>
+</body>
+</body>
+<geom class="robot" type="box" size="0.17 0.15 0.025" pos="0 -1.03 1.87" material="ms_dark"/>
+<geom class="robot" type="capsule" size="0.018" fromto="-0.12 -0.91 1.55 -0.12 -1.16 1.85" material="ms_dark"/>
+<geom class="robot" type="capsule" size="0.018" fromto="0.12 -0.91 1.55 0.12 -1.16 1.85" material="ms_dark"/>
+<geom name="ms_air_tank1" class="robot" type="capsule" size="0.12" fromto="-0.55 -1.06 1.17 0.55 -1.06 1.17" material="ms_white"/>
+<geom class="robot" type="cylinder" size="0.124 0.02" pos="-0.35 -1.06 1.17" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.124 0.02" pos="0.35 -1.06 1.17" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.04 0.012" pos="0 -1.185 1.2" zaxis="0 -1 0" material="ms_white"/>
+<geom class="robot" type="cylinder" size="0.032 0.004" pos="0 -1.198 1.2" zaxis="0 -1 0" material="ms_black"/>
+<geom class="robot" type="capsule" size="0.022" fromto="0.2 -1.1 1.28 0.05 -1.14 1.88" material="ms_black"/>
+<body name="ms_cannon1" pos="0 -1.16 1.93">
+<joint name="ms_cannon1_yaw" type="hinge" axis="0 0 1" limited="false"/>
+<geom class="robot" type="cylinder" size="0.15 0.03" pos="0 0 -0.01" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.153 0.005" pos="0 0 0.022" material="ms_coil"/>
+<geom name="ms_cannon1_housing" class="robot" type="box" size="0.13 0.125 0.055" pos="-0.01 0 0.07" material="ms_amber"/>
+<geom class="robot" type="box" size="0.07 0.012 0.06" pos="0 0.12 0.12" material="ms_dark"/>
+<geom class="robot" type="box" size="0.07 0.012 0.06" pos="0 -0.12 0.12" material="ms_dark"/>
+<body name="ms_cannon1_elev" pos="0 0 0.12">
+<joint name="ms_cannon1_pitch" type="hinge" axis="0 -1 0" range="-0.2 0.9"/>
+<geom class="robot" type="cylinder" size="0.03 0.125" zaxis="0 1 0" material="ms_steel"/>
+<geom name="ms_cannon1_breech" class="robot" type="box" size="0.11 0.11 0.06" pos="-0.03 0 0" material="ms_dark"/>
+<geom class="robot" type="capsule" size="0.05" fromto="-0.16 0 -0.075 0.3 0 -0.075" material="ms_white"/>
+<geom class="robot" type="cylinder" size="0.052 0.012" pos="0.12 0 -0.075" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.05 0.15" pos="-0.07 0 0.21" rgba="0.78 0.88 0.92 0.33"/>
+<geom class="robot" type="cylinder" size="0.053 0.012" pos="-0.07 0 0.365" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.09" material="puck_green"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.14" material="puck_brown"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.19" material="puck_green"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.24" material="puck_brown"/>
+<geom class="robot" type="cylinder" size="0.036 0.011" pos="-0.07 0 0.29" material="puck_green"/>
+<body name="ms_cannon1_barrel0" pos="0 0.07 0.02">
+<joint name="ms_cannon1_recoil0" type="slide" axis="1 0 0" range="-0.15 0"/>
+<geom name="ms_cannon1_tube0" class="robot" type="cylinder" size="0.05 0.495" pos="0.555 0 0" zaxis="1 0 0" material="ms_steel"/>
+<geom class="robot" type="cylinder" size="0.066 0.04" pos="1.01 0 0" zaxis="1 0 0" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.056 0.022" pos="0.36 0 0" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.042 0.003" pos="1.051 0 0" zaxis="1 0 0" material="ms_black"/>
+<site name="ms_cannon1_muzzle0" pos="1.05 0 0" size="0.02" rgba="1 0.5 0 0"/>
+</body>
+<body name="ms_cannon1_barrel1" pos="0 -0.07 0.02">
+<joint name="ms_cannon1_recoil1" type="slide" axis="1 0 0" range="-0.15 0"/>
+<geom name="ms_cannon1_tube1" class="robot" type="cylinder" size="0.05 0.495" pos="0.555 0 0" zaxis="1 0 0" material="ms_steel"/>
+<geom class="robot" type="cylinder" size="0.066 0.04" pos="1.01 0 0" zaxis="1 0 0" material="ms_dark"/>
+<geom class="robot" type="cylinder" size="0.056 0.022" pos="0.36 0 0" zaxis="1 0 0" material="ms_amber"/>
+<geom class="robot" type="cylinder" size="0.042 0.003" pos="1.051 0 0" zaxis="1 0 0" material="ms_black"/>
+<site name="ms_cannon1_muzzle1" pos="1.05 0 0" size="0.02" rgba="1 0.5 0 0"/>
+</body>
+</body>
+</body>
+</body><body name="drone0" pos="1.45 1.05 2.8">
+<freejoint name="drone0_free"/>
+<inertial pos="0 0 0" mass="45" diaginertia="6.3 6.3 10.8"/>
+<geom name="drone0_body" class="robot" type="box" size="0.34 0.24 0.1" pos="0 0 0" material="drone_body"/>
+<geom name="drone0_canopy" class="robot" type="ellipsoid" size="0.42 0.29 0.13" pos="0.02 0 0.08" material="drone_accent0"/>
+<geom class="robot" type="ellipsoid" size="0.2 0.15 0.05" pos="0.12 0 0.19" material="drone_body"/>
+<geom name="drone0_battery" class="robot" type="box" size="0.17 0.13 0.055" pos="-0.16 0 0.2" material="drone_carbon"/>
+<geom class="robot" type="box" size="0.172 0.04 0.057" pos="-0.16 0 0.2" material="drone_glow0"/>
+<geom class="robot" type="box" size="0.06 0.1 0.06" pos="0.36 0 -0.04" material="drone_carbon"/>
+<geom class="robot" type="sphere" size="0.045" pos="0.4 0 -0.1" material="ms_glass"/>
+<geom name="drone0_arm0" class="robot" type="capsule" size="0.032" fromto="0.22 0 0.02 0.705 0 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.75 0 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.75 0 0.07" material="drone_accent0"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.75 0 -0.01 0.75 0 -0.08" material="drone_carbon"/>
+<body name="drone0_rotor0_body" pos="0.75 0 0.13">
+<joint name="drone0_rotor0" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone0_rotor0_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor0_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor0_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone0_arm1" class="robot" type="capsule" size="0.032" fromto="0.11 0.19053 0.02 0.3525 0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.375 0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.375 0.64952 0.07" material="drone_accent0"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.375 0.64952 -0.01 0.375 0.64952 -0.08" material="drone_carbon"/>
+<body name="drone0_rotor1_body" pos="0.375 0.64952 0.13">
+<joint name="drone0_rotor1" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone0_rotor1_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor1_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor1_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone0_arm2" class="robot" type="capsule" size="0.032" fromto="-0.11 0.19053 0.02 -0.3525 0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.375 0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.375 0.64952 0.07" material="drone_accent0"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.375 0.64952 -0.01 -0.375 0.64952 -0.08" material="drone_carbon"/>
+<body name="drone0_rotor2_body" pos="-0.375 0.64952 0.13">
+<joint name="drone0_rotor2" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone0_rotor2_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor2_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor2_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone0_arm3" class="robot" type="capsule" size="0.032" fromto="-0.22 2.6942e-17 0.02 -0.705 8.6338e-17 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.75 9.1849e-17 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.75 9.1849e-17 0.07" material="drone_accent0"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.75 9.1849e-17 -0.01 -0.75 9.1849e-17 -0.08" material="drone_carbon"/>
+<body name="drone0_rotor3_body" pos="-0.75 9.1849e-17 0.13">
+<joint name="drone0_rotor3" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone0_rotor3_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor3_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor3_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone0_arm4" class="robot" type="capsule" size="0.032" fromto="-0.11 -0.19053 0.02 -0.3525 -0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.375 -0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.375 -0.64952 0.07" material="drone_accent0"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.375 -0.64952 -0.01 -0.375 -0.64952 -0.08" material="drone_carbon"/>
+<body name="drone0_rotor4_body" pos="-0.375 -0.64952 0.13">
+<joint name="drone0_rotor4" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone0_rotor4_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor4_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor4_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone0_arm5" class="robot" type="capsule" size="0.032" fromto="0.11 -0.19053 0.02 0.3525 -0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.375 -0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.375 -0.64952 0.07" material="drone_accent0"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.375 -0.64952 -0.01 0.375 -0.64952 -0.08" material="drone_carbon"/>
+<body name="drone0_rotor5_body" pos="0.375 -0.64952 0.13">
+<joint name="drone0_rotor5" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone0_rotor5_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor5_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent0"/>
+<geom name="drone0_rotor5_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone0_skidR" class="robot" type="capsule" size="0.022" fromto="-0.48 -0.34 -0.42 0.48 -0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.22 -0.18 -0.08 -0.3 -0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.22 -0.18 -0.08 0.3 -0.34 -0.42" material="drone_carbon"/>
+<geom name="drone0_skidL" class="robot" type="capsule" size="0.022" fromto="-0.48 0.34 -0.42 0.48 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.22 0.18 -0.08 -0.3 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.22 0.18 -0.08 0.3 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="box" size="0.012 0.012 0.012" pos="0.45 0 0" material="led_white"/>
+<geom class="robot" type="sphere" size="0.018" pos="0.75 0 -0.03" material="led_green"/>
+<geom class="robot" type="sphere" size="0.018" pos="-0.75 0 -0.03" material="led_red"/>
+<site name="drone0_winch0" pos="0.13 0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone0_winch1" pos="0.13 -0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone0_winch2" pos="-0.13 0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone0_winch3" pos="-0.13 -0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<geom class="robot" type="box" size="0.16 0.13 0.02" pos="0 0 -0.11" material="drone_carbon"/>
+<body name="drone0_cradle" pos="0 0 -0.2">
+<joint name="drone0_lift" type="slide" axis="0 0 1" range="-1.5 0.0" limited="true" armature="1"/>
+<inertial pos="0 0 -0.12" mass="8" diaginertia="0.15 0.15 0.15"/>
+<site name="drone0_hook0" pos="0.13 0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone0_hook1" pos="0.13 -0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone0_hook2" pos="-0.13 0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone0_hook3" pos="-0.13 -0.1 0" size="0.01" rgba="0 0 0 0"/>
+<geom name="drone0_cradle_frame" class="robot" type="box" size="0.2 0.16 0.015" pos="0 0 -0.01" material="drone_accent0"/>
+<geom name="drone0_dust_bin" class="robot" type="box" size="0.18 0.14 0.08" pos="0 0 -0.1" material="ms_amber"/>
+<geom name="drone0_dust_hopper" class="robot" type="box" size="0.12 0.09 0.04" pos="0 0 -0.2" material="ms_dark"/>
+<geom name="drone0_dust_fill" class="robot" type="ellipsoid" size="0.16 0.12 0.04" pos="0 0 -0.025" material="mulch_dust"/>
+<geom name="drone0_dust_spinner" class="robot" type="cylinder" size="0.14 0.01" pos="0 0 -0.26" material="ms_steel"/>
+<geom name="drone0_dust_vane0" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="1 0 0 0" material="ms_dark"/>
+<geom name="drone0_dust_vane1" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.92388 0 0 0.38268" material="ms_dark"/>
+<geom name="drone0_dust_vane2" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.70711 0 0 0.70711" material="ms_dark"/>
+<geom name="drone0_dust_vane3" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.38268 0 0 0.92388" material="ms_dark"/>
+<geom name="drone0_cart_tube0" class="robot" type="cylinder" size="0.045 0.12" pos="0 -0.09 -0.14" material="ms_glass"/>
+<geom name="drone0_cart_puck0_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.05" material="puck_green"/>
+<geom name="drone0_cart_puck0_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.1" material="puck_brown"/>
+<geom name="drone0_cart_puck0_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.15" material="puck_green"/>
+<geom name="drone0_cart_puck0_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.2" material="puck_brown"/>
+<geom name="drone0_cart_tube1" class="robot" type="cylinder" size="0.045 0.12" pos="0 0 -0.14" material="ms_glass"/>
+<geom name="drone0_cart_puck1_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.05" material="puck_brown"/>
+<geom name="drone0_cart_puck1_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.1" material="puck_green"/>
+<geom name="drone0_cart_puck1_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.15" material="puck_brown"/>
+<geom name="drone0_cart_puck1_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.2" material="puck_green"/>
+<geom name="drone0_cart_tube2" class="robot" type="cylinder" size="0.045 0.12" pos="0 0.09 -0.14" material="ms_glass"/>
+<geom name="drone0_cart_puck2_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.05" material="puck_green"/>
+<geom name="drone0_cart_puck2_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.1" material="puck_brown"/>
+<geom name="drone0_cart_puck2_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.15" material="puck_green"/>
+<geom name="drone0_cart_puck2_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.2" material="puck_brown"/>
+<geom name="drone0_cart_rack" class="robot" type="box" size="0.07 0.15 0.015" pos="0 0 -0.27" material="ms_dark"/>
+<geom name="drone0_cart_gate" class="robot" type="box" size="0.05 0.14 0.01" pos="0.05 0 -0.29" material="drone_accent0"/>
+</body>
+<camera name="drone0_cam" pos="0.42 0 -0.12" xyaxes="0 -1 0 0.92718 0 0.37461" fovy="75"/>
+</body><body name="drone1" pos="1.45 -1.05 2.8">
+<freejoint name="drone1_free"/>
+<inertial pos="0 0 0" mass="45" diaginertia="6.3 6.3 10.8"/>
+<geom name="drone1_body" class="robot" type="box" size="0.34 0.24 0.1" pos="0 0 0" material="drone_body"/>
+<geom name="drone1_canopy" class="robot" type="ellipsoid" size="0.42 0.29 0.13" pos="0.02 0 0.08" material="drone_accent1"/>
+<geom class="robot" type="ellipsoid" size="0.2 0.15 0.05" pos="0.12 0 0.19" material="drone_body"/>
+<geom name="drone1_battery" class="robot" type="box" size="0.17 0.13 0.055" pos="-0.16 0 0.2" material="drone_carbon"/>
+<geom class="robot" type="box" size="0.172 0.04 0.057" pos="-0.16 0 0.2" material="drone_glow1"/>
+<geom class="robot" type="box" size="0.06 0.1 0.06" pos="0.36 0 -0.04" material="drone_carbon"/>
+<geom class="robot" type="sphere" size="0.045" pos="0.4 0 -0.1" material="ms_glass"/>
+<geom name="drone1_arm0" class="robot" type="capsule" size="0.032" fromto="0.22 0 0.02 0.705 0 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.75 0 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.75 0 0.07" material="drone_accent1"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.75 0 -0.01 0.75 0 -0.08" material="drone_carbon"/>
+<body name="drone1_rotor0_body" pos="0.75 0 0.13">
+<joint name="drone1_rotor0" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone1_rotor0_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor0_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor0_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone1_arm1" class="robot" type="capsule" size="0.032" fromto="0.11 0.19053 0.02 0.3525 0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.375 0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.375 0.64952 0.07" material="drone_accent1"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.375 0.64952 -0.01 0.375 0.64952 -0.08" material="drone_carbon"/>
+<body name="drone1_rotor1_body" pos="0.375 0.64952 0.13">
+<joint name="drone1_rotor1" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone1_rotor1_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor1_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor1_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone1_arm2" class="robot" type="capsule" size="0.032" fromto="-0.11 0.19053 0.02 -0.3525 0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.375 0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.375 0.64952 0.07" material="drone_accent1"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.375 0.64952 -0.01 -0.375 0.64952 -0.08" material="drone_carbon"/>
+<body name="drone1_rotor2_body" pos="-0.375 0.64952 0.13">
+<joint name="drone1_rotor2" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone1_rotor2_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor2_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor2_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone1_arm3" class="robot" type="capsule" size="0.032" fromto="-0.22 2.6942e-17 0.02 -0.705 8.6338e-17 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.75 9.1849e-17 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.75 9.1849e-17 0.07" material="drone_accent1"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.75 9.1849e-17 -0.01 -0.75 9.1849e-17 -0.08" material="drone_carbon"/>
+<body name="drone1_rotor3_body" pos="-0.75 9.1849e-17 0.13">
+<joint name="drone1_rotor3" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone1_rotor3_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor3_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor3_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone1_arm4" class="robot" type="capsule" size="0.032" fromto="-0.11 -0.19053 0.02 -0.3525 -0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.375 -0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.375 -0.64952 0.07" material="drone_accent1"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.375 -0.64952 -0.01 -0.375 -0.64952 -0.08" material="drone_carbon"/>
+<body name="drone1_rotor4_body" pos="-0.375 -0.64952 0.13">
+<joint name="drone1_rotor4" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone1_rotor4_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor4_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor4_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone1_arm5" class="robot" type="capsule" size="0.032" fromto="0.11 -0.19053 0.02 0.3525 -0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.375 -0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.375 -0.64952 0.07" material="drone_accent1"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.375 -0.64952 -0.01 0.375 -0.64952 -0.08" material="drone_carbon"/>
+<body name="drone1_rotor5_body" pos="0.375 -0.64952 0.13">
+<joint name="drone1_rotor5" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone1_rotor5_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor5_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent1"/>
+<geom name="drone1_rotor5_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone1_skidR" class="robot" type="capsule" size="0.022" fromto="-0.48 -0.34 -0.42 0.48 -0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.22 -0.18 -0.08 -0.3 -0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.22 -0.18 -0.08 0.3 -0.34 -0.42" material="drone_carbon"/>
+<geom name="drone1_skidL" class="robot" type="capsule" size="0.022" fromto="-0.48 0.34 -0.42 0.48 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.22 0.18 -0.08 -0.3 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.22 0.18 -0.08 0.3 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="box" size="0.012 0.012 0.012" pos="0.45 0 0" material="led_white"/>
+<geom class="robot" type="sphere" size="0.018" pos="0.75 0 -0.03" material="led_green"/>
+<geom class="robot" type="sphere" size="0.018" pos="-0.75 0 -0.03" material="led_red"/>
+<site name="drone1_winch0" pos="0.13 0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone1_winch1" pos="0.13 -0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone1_winch2" pos="-0.13 0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone1_winch3" pos="-0.13 -0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<geom class="robot" type="box" size="0.16 0.13 0.02" pos="0 0 -0.11" material="drone_carbon"/>
+<body name="drone1_cradle" pos="0 0 -0.2">
+<joint name="drone1_lift" type="slide" axis="0 0 1" range="-1.5 0.0" limited="true" armature="1"/>
+<inertial pos="0 0 -0.12" mass="8" diaginertia="0.15 0.15 0.15"/>
+<site name="drone1_hook0" pos="0.13 0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone1_hook1" pos="0.13 -0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone1_hook2" pos="-0.13 0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone1_hook3" pos="-0.13 -0.1 0" size="0.01" rgba="0 0 0 0"/>
+<geom name="drone1_cradle_frame" class="robot" type="box" size="0.2 0.16 0.015" pos="0 0 -0.01" material="drone_accent1"/>
+<geom name="drone1_dust_bin" class="robot" type="box" size="0.18 0.14 0.08" pos="0 0 -0.1" material="ms_amber"/>
+<geom name="drone1_dust_hopper" class="robot" type="box" size="0.12 0.09 0.04" pos="0 0 -0.2" material="ms_dark"/>
+<geom name="drone1_dust_fill" class="robot" type="ellipsoid" size="0.16 0.12 0.04" pos="0 0 -0.025" material="mulch_dust"/>
+<geom name="drone1_dust_spinner" class="robot" type="cylinder" size="0.14 0.01" pos="0 0 -0.26" material="ms_steel"/>
+<geom name="drone1_dust_vane0" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="1 0 0 0" material="ms_dark"/>
+<geom name="drone1_dust_vane1" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.92388 0 0 0.38268" material="ms_dark"/>
+<geom name="drone1_dust_vane2" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.70711 0 0 0.70711" material="ms_dark"/>
+<geom name="drone1_dust_vane3" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.38268 0 0 0.92388" material="ms_dark"/>
+<geom name="drone1_cart_tube0" class="robot" type="cylinder" size="0.045 0.12" pos="0 -0.09 -0.14" material="ms_glass"/>
+<geom name="drone1_cart_puck0_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.05" material="puck_green"/>
+<geom name="drone1_cart_puck0_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.1" material="puck_brown"/>
+<geom name="drone1_cart_puck0_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.15" material="puck_green"/>
+<geom name="drone1_cart_puck0_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.2" material="puck_brown"/>
+<geom name="drone1_cart_tube1" class="robot" type="cylinder" size="0.045 0.12" pos="0 0 -0.14" material="ms_glass"/>
+<geom name="drone1_cart_puck1_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.05" material="puck_brown"/>
+<geom name="drone1_cart_puck1_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.1" material="puck_green"/>
+<geom name="drone1_cart_puck1_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.15" material="puck_brown"/>
+<geom name="drone1_cart_puck1_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.2" material="puck_green"/>
+<geom name="drone1_cart_tube2" class="robot" type="cylinder" size="0.045 0.12" pos="0 0.09 -0.14" material="ms_glass"/>
+<geom name="drone1_cart_puck2_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.05" material="puck_green"/>
+<geom name="drone1_cart_puck2_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.1" material="puck_brown"/>
+<geom name="drone1_cart_puck2_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.15" material="puck_green"/>
+<geom name="drone1_cart_puck2_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.2" material="puck_brown"/>
+<geom name="drone1_cart_rack" class="robot" type="box" size="0.07 0.15 0.015" pos="0 0 -0.27" material="ms_dark"/>
+<geom name="drone1_cart_gate" class="robot" type="box" size="0.05 0.14 0.01" pos="0.05 0 -0.29" material="drone_accent1"/>
+</body>
+<camera name="drone1_cam" pos="0.42 0 -0.12" xyaxes="0 -1 0 0.92718 0 0.37461" fovy="75"/>
+</body><body name="drone2" pos="-1.45 1.05 2.8">
+<freejoint name="drone2_free"/>
+<inertial pos="0 0 0" mass="45" diaginertia="6.3 6.3 10.8"/>
+<geom name="drone2_body" class="robot" type="box" size="0.34 0.24 0.1" pos="0 0 0" material="drone_body"/>
+<geom name="drone2_canopy" class="robot" type="ellipsoid" size="0.42 0.29 0.13" pos="0.02 0 0.08" material="drone_accent2"/>
+<geom class="robot" type="ellipsoid" size="0.2 0.15 0.05" pos="0.12 0 0.19" material="drone_body"/>
+<geom name="drone2_battery" class="robot" type="box" size="0.17 0.13 0.055" pos="-0.16 0 0.2" material="drone_carbon"/>
+<geom class="robot" type="box" size="0.172 0.04 0.057" pos="-0.16 0 0.2" material="drone_glow2"/>
+<geom class="robot" type="box" size="0.06 0.1 0.06" pos="0.36 0 -0.04" material="drone_carbon"/>
+<geom class="robot" type="sphere" size="0.045" pos="0.4 0 -0.1" material="ms_glass"/>
+<geom name="drone2_arm0" class="robot" type="capsule" size="0.032" fromto="0.22 0 0.02 0.705 0 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.75 0 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.75 0 0.07" material="drone_accent2"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.75 0 -0.01 0.75 0 -0.08" material="drone_carbon"/>
+<body name="drone2_rotor0_body" pos="0.75 0 0.13">
+<joint name="drone2_rotor0" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone2_rotor0_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor0_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor0_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone2_arm1" class="robot" type="capsule" size="0.032" fromto="0.11 0.19053 0.02 0.3525 0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.375 0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.375 0.64952 0.07" material="drone_accent2"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.375 0.64952 -0.01 0.375 0.64952 -0.08" material="drone_carbon"/>
+<body name="drone2_rotor1_body" pos="0.375 0.64952 0.13">
+<joint name="drone2_rotor1" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone2_rotor1_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor1_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor1_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone2_arm2" class="robot" type="capsule" size="0.032" fromto="-0.11 0.19053 0.02 -0.3525 0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.375 0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.375 0.64952 0.07" material="drone_accent2"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.375 0.64952 -0.01 -0.375 0.64952 -0.08" material="drone_carbon"/>
+<body name="drone2_rotor2_body" pos="-0.375 0.64952 0.13">
+<joint name="drone2_rotor2" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone2_rotor2_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor2_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor2_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone2_arm3" class="robot" type="capsule" size="0.032" fromto="-0.22 2.6942e-17 0.02 -0.705 8.6338e-17 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.75 9.1849e-17 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.75 9.1849e-17 0.07" material="drone_accent2"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.75 9.1849e-17 -0.01 -0.75 9.1849e-17 -0.08" material="drone_carbon"/>
+<body name="drone2_rotor3_body" pos="-0.75 9.1849e-17 0.13">
+<joint name="drone2_rotor3" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone2_rotor3_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor3_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor3_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone2_arm4" class="robot" type="capsule" size="0.032" fromto="-0.11 -0.19053 0.02 -0.3525 -0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.375 -0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.375 -0.64952 0.07" material="drone_accent2"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.375 -0.64952 -0.01 -0.375 -0.64952 -0.08" material="drone_carbon"/>
+<body name="drone2_rotor4_body" pos="-0.375 -0.64952 0.13">
+<joint name="drone2_rotor4" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone2_rotor4_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor4_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor4_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone2_arm5" class="robot" type="capsule" size="0.032" fromto="0.11 -0.19053 0.02 0.3525 -0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.375 -0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.375 -0.64952 0.07" material="drone_accent2"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.375 -0.64952 -0.01 0.375 -0.64952 -0.08" material="drone_carbon"/>
+<body name="drone2_rotor5_body" pos="0.375 -0.64952 0.13">
+<joint name="drone2_rotor5" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone2_rotor5_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor5_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent2"/>
+<geom name="drone2_rotor5_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone2_skidR" class="robot" type="capsule" size="0.022" fromto="-0.48 -0.34 -0.42 0.48 -0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.22 -0.18 -0.08 -0.3 -0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.22 -0.18 -0.08 0.3 -0.34 -0.42" material="drone_carbon"/>
+<geom name="drone2_skidL" class="robot" type="capsule" size="0.022" fromto="-0.48 0.34 -0.42 0.48 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.22 0.18 -0.08 -0.3 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.22 0.18 -0.08 0.3 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="box" size="0.012 0.012 0.012" pos="0.45 0 0" material="led_white"/>
+<geom class="robot" type="sphere" size="0.018" pos="0.75 0 -0.03" material="led_green"/>
+<geom class="robot" type="sphere" size="0.018" pos="-0.75 0 -0.03" material="led_red"/>
+<site name="drone2_winch0" pos="0.13 0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone2_winch1" pos="0.13 -0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone2_winch2" pos="-0.13 0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone2_winch3" pos="-0.13 -0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<geom class="robot" type="box" size="0.16 0.13 0.02" pos="0 0 -0.11" material="drone_carbon"/>
+<body name="drone2_cradle" pos="0 0 -0.2">
+<joint name="drone2_lift" type="slide" axis="0 0 1" range="-1.5 0.0" limited="true" armature="1"/>
+<inertial pos="0 0 -0.12" mass="8" diaginertia="0.15 0.15 0.15"/>
+<site name="drone2_hook0" pos="0.13 0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone2_hook1" pos="0.13 -0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone2_hook2" pos="-0.13 0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone2_hook3" pos="-0.13 -0.1 0" size="0.01" rgba="0 0 0 0"/>
+<geom name="drone2_cradle_frame" class="robot" type="box" size="0.2 0.16 0.015" pos="0 0 -0.01" material="drone_accent2"/>
+<geom name="drone2_dust_bin" class="robot" type="box" size="0.18 0.14 0.08" pos="0 0 -0.1" material="ms_amber"/>
+<geom name="drone2_dust_hopper" class="robot" type="box" size="0.12 0.09 0.04" pos="0 0 -0.2" material="ms_dark"/>
+<geom name="drone2_dust_fill" class="robot" type="ellipsoid" size="0.16 0.12 0.04" pos="0 0 -0.025" material="mulch_dust"/>
+<geom name="drone2_dust_spinner" class="robot" type="cylinder" size="0.14 0.01" pos="0 0 -0.26" material="ms_steel"/>
+<geom name="drone2_dust_vane0" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="1 0 0 0" material="ms_dark"/>
+<geom name="drone2_dust_vane1" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.92388 0 0 0.38268" material="ms_dark"/>
+<geom name="drone2_dust_vane2" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.70711 0 0 0.70711" material="ms_dark"/>
+<geom name="drone2_dust_vane3" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.38268 0 0 0.92388" material="ms_dark"/>
+<geom name="drone2_cart_tube0" class="robot" type="cylinder" size="0.045 0.12" pos="0 -0.09 -0.14" material="ms_glass"/>
+<geom name="drone2_cart_puck0_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.05" material="puck_green"/>
+<geom name="drone2_cart_puck0_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.1" material="puck_brown"/>
+<geom name="drone2_cart_puck0_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.15" material="puck_green"/>
+<geom name="drone2_cart_puck0_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.2" material="puck_brown"/>
+<geom name="drone2_cart_tube1" class="robot" type="cylinder" size="0.045 0.12" pos="0 0 -0.14" material="ms_glass"/>
+<geom name="drone2_cart_puck1_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.05" material="puck_brown"/>
+<geom name="drone2_cart_puck1_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.1" material="puck_green"/>
+<geom name="drone2_cart_puck1_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.15" material="puck_brown"/>
+<geom name="drone2_cart_puck1_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.2" material="puck_green"/>
+<geom name="drone2_cart_tube2" class="robot" type="cylinder" size="0.045 0.12" pos="0 0.09 -0.14" material="ms_glass"/>
+<geom name="drone2_cart_puck2_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.05" material="puck_green"/>
+<geom name="drone2_cart_puck2_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.1" material="puck_brown"/>
+<geom name="drone2_cart_puck2_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.15" material="puck_green"/>
+<geom name="drone2_cart_puck2_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.2" material="puck_brown"/>
+<geom name="drone2_cart_rack" class="robot" type="box" size="0.07 0.15 0.015" pos="0 0 -0.27" material="ms_dark"/>
+<geom name="drone2_cart_gate" class="robot" type="box" size="0.05 0.14 0.01" pos="0.05 0 -0.29" material="drone_accent2"/>
+</body>
+<camera name="drone2_cam" pos="0.42 0 -0.12" xyaxes="0 -1 0 0.92718 0 0.37461" fovy="75"/>
+</body><body name="drone3" pos="-1.45 -1.05 2.8">
+<freejoint name="drone3_free"/>
+<inertial pos="0 0 0" mass="45" diaginertia="6.3 6.3 10.8"/>
+<geom name="drone3_body" class="robot" type="box" size="0.34 0.24 0.1" pos="0 0 0" material="drone_body"/>
+<geom name="drone3_canopy" class="robot" type="ellipsoid" size="0.42 0.29 0.13" pos="0.02 0 0.08" material="drone_accent3"/>
+<geom class="robot" type="ellipsoid" size="0.2 0.15 0.05" pos="0.12 0 0.19" material="drone_body"/>
+<geom name="drone3_battery" class="robot" type="box" size="0.17 0.13 0.055" pos="-0.16 0 0.2" material="drone_carbon"/>
+<geom class="robot" type="box" size="0.172 0.04 0.057" pos="-0.16 0 0.2" material="drone_glow3"/>
+<geom class="robot" type="box" size="0.06 0.1 0.06" pos="0.36 0 -0.04" material="drone_carbon"/>
+<geom class="robot" type="sphere" size="0.045" pos="0.4 0 -0.1" material="ms_glass"/>
+<geom name="drone3_arm0" class="robot" type="capsule" size="0.032" fromto="0.22 0 0.02 0.705 0 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.75 0 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.75 0 0.07" material="drone_accent3"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.75 0 -0.01 0.75 0 -0.08" material="drone_carbon"/>
+<body name="drone3_rotor0_body" pos="0.75 0 0.13">
+<joint name="drone3_rotor0" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone3_rotor0_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor0_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor0_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone3_arm1" class="robot" type="capsule" size="0.032" fromto="0.11 0.19053 0.02 0.3525 0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.375 0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.375 0.64952 0.07" material="drone_accent3"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.375 0.64952 -0.01 0.375 0.64952 -0.08" material="drone_carbon"/>
+<body name="drone3_rotor1_body" pos="0.375 0.64952 0.13">
+<joint name="drone3_rotor1" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone3_rotor1_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor1_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor1_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone3_arm2" class="robot" type="capsule" size="0.032" fromto="-0.11 0.19053 0.02 -0.3525 0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.375 0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.375 0.64952 0.07" material="drone_accent3"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.375 0.64952 -0.01 -0.375 0.64952 -0.08" material="drone_carbon"/>
+<body name="drone3_rotor2_body" pos="-0.375 0.64952 0.13">
+<joint name="drone3_rotor2" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone3_rotor2_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor2_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor2_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone3_arm3" class="robot" type="capsule" size="0.032" fromto="-0.22 2.6942e-17 0.02 -0.705 8.6338e-17 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.75 9.1849e-17 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.75 9.1849e-17 0.07" material="drone_accent3"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.75 9.1849e-17 -0.01 -0.75 9.1849e-17 -0.08" material="drone_carbon"/>
+<body name="drone3_rotor3_body" pos="-0.75 9.1849e-17 0.13">
+<joint name="drone3_rotor3" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone3_rotor3_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor3_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor3_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone3_arm4" class="robot" type="capsule" size="0.032" fromto="-0.11 -0.19053 0.02 -0.3525 -0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="-0.375 -0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="-0.375 -0.64952 0.07" material="drone_accent3"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.375 -0.64952 -0.01 -0.375 -0.64952 -0.08" material="drone_carbon"/>
+<body name="drone3_rotor4_body" pos="-0.375 -0.64952 0.13">
+<joint name="drone3_rotor4" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone3_rotor4_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor4_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor4_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone3_arm5" class="robot" type="capsule" size="0.032" fromto="0.11 -0.19053 0.02 0.3525 -0.61055 0.04" material="drone_carbon"/>
+<geom class="robot" type="cylinder" size="0.065 0.055" pos="0.375 -0.64952 0.04" material="drone_body"/>
+<geom class="robot" type="cylinder" size="0.067 0.012" pos="0.375 -0.64952 0.07" material="drone_accent3"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.375 -0.64952 -0.01 0.375 -0.64952 -0.08" material="drone_carbon"/>
+<body name="drone3_rotor5_body" pos="0.375 -0.64952 0.13">
+<joint name="drone3_rotor5" type="hinge" axis="0 0 1" armature="0.001"/>
+<inertial pos="0 0 0" mass="0.3" diaginertia="0.008 0.008 0.015"/>
+<geom class="robot" type="cylinder" size="0.035 0.02" material="drone_body"/>
+<geom name="drone3_rotor5_bladeb" class="robot" type="box" size="0.16 0.028 0.004" pos="-0.18 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="-0.325 0 0.005" quat="0.9982 -0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor5_bladea" class="robot" type="box" size="0.16 0.028 0.004" pos="0.18 0 0.005" quat="0.9982 0.059964 0 0" material="drone_blade"/>
+<geom class="robot" type="box" size="0.025 0.029 0.0045" pos="0.325 0 0.005" quat="0.9982 0.059964 0 0" material="drone_accent3"/>
+<geom name="drone3_rotor5_disc" class="fxvis" type="cylinder" size="0.35 0.0015" pos="0 0 0.004" rgba="0.6 0.6 0.62 0.1"/>
+</body>
+<geom name="drone3_skidR" class="robot" type="capsule" size="0.022" fromto="-0.48 -0.34 -0.42 0.48 -0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.22 -0.18 -0.08 -0.3 -0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.22 -0.18 -0.08 0.3 -0.34 -0.42" material="drone_carbon"/>
+<geom name="drone3_skidL" class="robot" type="capsule" size="0.022" fromto="-0.48 0.34 -0.42 0.48 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="-0.22 0.18 -0.08 -0.3 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="capsule" size="0.02" fromto="0.22 0.18 -0.08 0.3 0.34 -0.42" material="drone_carbon"/>
+<geom class="robot" type="box" size="0.012 0.012 0.012" pos="0.45 0 0" material="led_white"/>
+<geom class="robot" type="sphere" size="0.018" pos="0.75 0 -0.03" material="led_green"/>
+<geom class="robot" type="sphere" size="0.018" pos="-0.75 0 -0.03" material="led_red"/>
+<site name="drone3_winch0" pos="0.13 0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone3_winch1" pos="0.13 -0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone3_winch2" pos="-0.13 0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<site name="drone3_winch3" pos="-0.13 -0.1 -0.1" size="0.01" rgba="0 0 0 0"/>
+<geom class="robot" type="box" size="0.16 0.13 0.02" pos="0 0 -0.11" material="drone_carbon"/>
+<body name="drone3_cradle" pos="0 0 -0.2">
+<joint name="drone3_lift" type="slide" axis="0 0 1" range="-1.5 0.0" limited="true" armature="1"/>
+<inertial pos="0 0 -0.12" mass="8" diaginertia="0.15 0.15 0.15"/>
+<site name="drone3_hook0" pos="0.13 0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone3_hook1" pos="0.13 -0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone3_hook2" pos="-0.13 0.1 0" size="0.01" rgba="0 0 0 0"/>
+<site name="drone3_hook3" pos="-0.13 -0.1 0" size="0.01" rgba="0 0 0 0"/>
+<geom name="drone3_cradle_frame" class="robot" type="box" size="0.2 0.16 0.015" pos="0 0 -0.01" material="drone_accent3"/>
+<geom name="drone3_dust_bin" class="robot" type="box" size="0.18 0.14 0.08" pos="0 0 -0.1" material="ms_amber"/>
+<geom name="drone3_dust_hopper" class="robot" type="box" size="0.12 0.09 0.04" pos="0 0 -0.2" material="ms_dark"/>
+<geom name="drone3_dust_fill" class="robot" type="ellipsoid" size="0.16 0.12 0.04" pos="0 0 -0.025" material="mulch_dust"/>
+<geom name="drone3_dust_spinner" class="robot" type="cylinder" size="0.14 0.01" pos="0 0 -0.26" material="ms_steel"/>
+<geom name="drone3_dust_vane0" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="1 0 0 0" material="ms_dark"/>
+<geom name="drone3_dust_vane1" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.92388 0 0 0.38268" material="ms_dark"/>
+<geom name="drone3_dust_vane2" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.70711 0 0 0.70711" material="ms_dark"/>
+<geom name="drone3_dust_vane3" class="robot" type="box" size="0.13 0.006 0.018" pos="0 0 -0.278" quat="0.38268 0 0 0.92388" material="ms_dark"/>
+<geom name="drone3_cart_tube0" class="robot" type="cylinder" size="0.045 0.12" pos="0 -0.09 -0.14" material="ms_glass"/>
+<geom name="drone3_cart_puck0_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.05" material="puck_green"/>
+<geom name="drone3_cart_puck0_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.1" material="puck_brown"/>
+<geom name="drone3_cart_puck0_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.15" material="puck_green"/>
+<geom name="drone3_cart_puck0_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 -0.09 -0.2" material="puck_brown"/>
+<geom name="drone3_cart_tube1" class="robot" type="cylinder" size="0.045 0.12" pos="0 0 -0.14" material="ms_glass"/>
+<geom name="drone3_cart_puck1_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.05" material="puck_brown"/>
+<geom name="drone3_cart_puck1_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.1" material="puck_green"/>
+<geom name="drone3_cart_puck1_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.15" material="puck_brown"/>
+<geom name="drone3_cart_puck1_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 0 -0.2" material="puck_green"/>
+<geom name="drone3_cart_tube2" class="robot" type="cylinder" size="0.045 0.12" pos="0 0.09 -0.14" material="ms_glass"/>
+<geom name="drone3_cart_puck2_0" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.05" material="puck_green"/>
+<geom name="drone3_cart_puck2_1" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.1" material="puck_brown"/>
+<geom name="drone3_cart_puck2_2" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.15" material="puck_green"/>
+<geom name="drone3_cart_puck2_3" class="robot" type="cylinder" size="0.04 0.022" pos="0 0.09 -0.2" material="puck_brown"/>
+<geom name="drone3_cart_rack" class="robot" type="box" size="0.07 0.15 0.015" pos="0 0 -0.27" material="ms_dark"/>
+<geom name="drone3_cart_gate" class="robot" type="box" size="0.05 0.14 0.01" pos="0.05 0 -0.29" material="drone_accent3"/>
+</body>
+<camera name="drone3_cam" pos="0.42 0 -0.12" xyaxes="0 -1 0 0.92718 0 0.37461" fovy="75"/>
+</body><body name="fx_blow_0" mocap="true" pos="0 0 -50" quat="0.6577 -0.63427 0.40443 -0.039519"><geom name="fx_blow_0" class="fxvis" type="box" size="0.027096 0.019081 0.0037627" rgba="0.44324 0.31324 0.2 1"/></body>
+<body name="fx_blow_1" mocap="true" pos="0 0 -50" quat="0.34962 0.53043 -0.75993 0.1375"><geom name="fx_blow_1" class="fxvis" type="box" size="0.026258 0.012421 0.0031487" rgba="0.66425 0.48425 0.27855 1"/></body>
+<body name="fx_blow_2" mocap="true" pos="0 0 -50" quat="0.89329 -0.14515 0.16427 -0.39239"><geom name="fx_blow_2" class="fxvis" type="box" size="0.01833 0.015262 0.0042959" rgba="0.73644 0.55644 0.32186 1"/></body>
+<body name="fx_blow_3" mocap="true" pos="0 0 -50" quat="0.29647 0.71498 -0.55731 0.30051"><geom name="fx_blow_3" class="fxvis" type="box" size="0.024457 0.012096 0.0037534" rgba="0.75187 0.57187 0.33112 1"/></body>
+<body name="fx_blow_4" mocap="true" pos="0 0 -50" quat="0.69087 0.63975 -0.32728 -0.07946"><geom name="fx_blow_4" class="fxvis" type="box" size="0.022732 0.015377 0.0051355" rgba="0.67196 0.49196 0.28317 1"/></body>
+<body name="fx_blow_5" mocap="true" pos="0 0 -50" quat="0.44271 -0.48055 -0.077986 0.75299"><geom name="fx_blow_5" class="fxvis" type="box" size="0.030229 0.011926 0.005934" rgba="0.47312 0.34312 0.2 1"/></body>
+<body name="fx_blow_6" mocap="true" pos="0 0 -50" quat="0.80608 0.50505 -0.25113 -0.17914"><geom name="fx_blow_6" class="fxvis" type="box" size="0.01922 0.012994 0.0033977" rgba="0.65048 0.47048 0.27029 1"/></body>
+<body name="fx_blow_7" mocap="true" pos="0 0 -50" quat="0.0018948 -0.54099 -0.48727 0.68549"><geom name="fx_blow_7" class="fxvis" type="box" size="0.029969 0.014007 0.0055566" rgba="0.66363 0.48363 0.27818 1"/></body>
+<body name="fx_blow_8" mocap="true" pos="0 0 -50" quat="0.76686 -0.030486 -0.59006 -0.25064"><geom name="fx_blow_8" class="fxvis" type="box" size="0.024801 0.01395 0.0055547" rgba="0.72641 0.54641 0.31584 1"/></body>
+<body name="fx_blow_9" mocap="true" pos="0 0 -50" quat="0.79264 -0.09778 -0.52946 0.28607"><geom name="fx_blow_9" class="fxvis" type="box" size="0.026576 0.0102 0.0049517" rgba="0.64204 0.46204 0.26522 1"/></body>
+<body name="fx_blow_10" mocap="true" pos="0 0 -50" quat="0.71267 -0.64578 0.055766 0.26824"><geom name="fx_blow_10" class="fxvis" type="box" size="0.022019 0.016236 0.0048213" rgba="0.4487 0.3187 0.2 1"/></body>
+<body name="fx_blow_11" mocap="true" pos="0 0 -50" quat="0.64909 -0.55542 0.32664 -0.40435"><geom name="fx_blow_11" class="fxvis" type="box" size="0.028927 0.016522 0.0056504" rgba="0.73776 0.55776 0.32266 1"/></body>
+<body name="fx_blow_12" mocap="true" pos="0 0 -50" quat="0.25669 -0.75851 -0.2355 -0.55074"><geom name="fx_blow_12" class="fxvis" type="box" size="0.033031 0.017401 0.0041384" rgba="0.64193 0.46193 0.26516 1"/></body>
+<body name="fx_blow_13" mocap="true" pos="0 0 -50" quat="0.5306 0.6039 0.50038 -0.32153"><geom name="fx_blow_13" class="fxvis" type="box" size="0.02058 0.017094 0.0034195" rgba="0.65523 0.47523 0.27314 1"/></body>
+<body name="fx_blow_14" mocap="true" pos="0 0 -50" quat="0.52121 -0.21487 -0.41235 0.71564"><geom name="fx_blow_14" class="fxvis" type="box" size="0.022808 0.01188 0.0058769" rgba="0.67604 0.49604 0.28562 1"/></body>
+<body name="fx_blow_15" mocap="true" pos="0 0 -50" quat="0.99984 -0.0044858 -0.013534 -0.010949"><geom name="fx_blow_15" class="fxvis" type="box" size="0.023202 0.017867 0.0050094" rgba="0.49692 0.36692 0.2 1"/></body>
+<body name="fx_blow_16" mocap="true" pos="0 0 -50" quat="0.77235 0.58848 -0.19749 -0.1348"><geom name="fx_blow_16" class="fxvis" type="box" size="0.027538 0.013944 0.0056747" rgba="0.70617 0.52617 0.3037 1"/></body>
+<body name="fx_blow_17" mocap="true" pos="0 0 -50" quat="0.94875 0.29862 -0.070082 0.076057"><geom name="fx_blow_17" class="fxvis" type="box" size="0.027225 0.016521 0.0058478" rgba="0.64504 0.46504 0.26702 1"/></body>
+<body name="fx_blow_18" mocap="true" pos="0 0 -50" quat="0.14908 -0.080583 0.62537 -0.7617"><geom name="fx_blow_18" class="fxvis" type="box" size="0.030538 0.015258 0.0040155" rgba="0.71863 0.53863 0.31118 1"/></body>
+<body name="fx_blow_19" mocap="true" pos="0 0 -50" quat="0.95709 -0.058267 -0.26569 0.099916"><geom name="fx_blow_19" class="fxvis" type="box" size="0.018317 0.012998 0.0043785" rgba="0.66365 0.48365 0.27819 1"/></body>
+<body name="fx_blow_20" mocap="true" pos="0 0 -50" quat="0.49589 0.0081435 -0.27812 -0.8226"><geom name="fx_blow_20" class="fxvis" type="box" size="0.031032 0.011205 0.0048667" rgba="0.41321 0.28321 0.2 1"/></body>
+<body name="fx_blow_21" mocap="true" pos="0 0 -50" quat="0.58434 0.3998 -0.077133 0.70197"><geom name="fx_blow_21" class="fxvis" type="box" size="0.023052 0.017456 0.0045552" rgba="0.73965 0.55965 0.32379 1"/></body>
+<body name="fx_blow_22" mocap="true" pos="0 0 -50" quat="0.64471 0.014572 -0.53107 0.54963"><geom name="fx_blow_22" class="fxvis" type="box" size="0.01959 0.01913 0.0038446" rgba="0.74233 0.56233 0.3254 1"/></body>
+<body name="fx_blow_23" mocap="true" pos="0 0 -50" quat="0.95789 -0.11402 -0.25027 0.082491"><geom name="fx_blow_23" class="fxvis" type="box" size="0.024383 0.016363 0.0050629" rgba="0.64598 0.46598 0.26759 1"/></body>
+<body name="fx_blow_24" mocap="true" pos="0 0 -50" quat="0.90147 0.34257 0.25529 -0.069457"><geom name="fx_blow_24" class="fxvis" type="box" size="0.032962 0.017209 0.0036967" rgba="0.7368 0.5568 0.32208 1"/></body>
+<body name="fx_blow_25" mocap="true" pos="0 0 -50" quat="0.33615 0.82855 -0.19658 -0.40232"><geom name="fx_blow_25" class="fxvis" type="box" size="0.020561 0.018579 0.0054452" rgba="0.44964 0.31964 0.2 1"/></body>
+<body name="fx_blow_26" mocap="true" pos="0 0 -50" quat="0.35009 -0.69483 0.62149 0.091643"><geom name="fx_blow_26" class="fxvis" type="box" size="0.021211 0.010634 0.0047264" rgba="0.69986 0.51986 0.29991 1"/></body>
+<body name="fx_blow_27" mocap="true" pos="0 0 -50" quat="0.43579 -0.48344 -0.35921 0.66884"><geom name="fx_blow_27" class="fxvis" type="box" size="0.031553 0.018488 0.0050363" rgba="0.74535 0.56535 0.32721 1"/></body>
+<body name="fx_blow_28" mocap="true" pos="0 0 -50" quat="0.68897 -0.1847 -0.69924 0.047557"><geom name="fx_blow_28" class="fxvis" type="box" size="0.025506 0.017036 0.0030214" rgba="0.70546 0.52546 0.30328 1"/></body>
+<body name="fx_blow_29" mocap="true" pos="0 0 -50" quat="0.19059 -0.77856 -0.16691 0.57416"><geom name="fx_blow_29" class="fxvis" type="box" size="0.02342 0.013554 0.005794" rgba="0.68317 0.50317 0.2899 1"/></body>
+<body name="fx_blow_30" mocap="true" pos="0 0 -50" quat="0.99936 -0.019071 0.0086437 -0.028842"><geom name="fx_blow_30" class="fxvis" type="box" size="0.023211 0.010425 0.0039506" rgba="0.39476 0.26476 0.2 1"/></body>
+<body name="fx_blow_31" mocap="true" pos="0 0 -50" quat="0.99256 0.039869 -0.11477 0.0082752"><geom name="fx_blow_31" class="fxvis" type="box" size="0.028455 0.015014 0.0047848" rgba="0.66785 0.48785 0.28071 1"/></body>
+<body name="fx_blow_32" mocap="true" pos="0 0 -50" quat="0.94304 0.069195 -0.1754 -0.27408"><geom name="fx_blow_32" class="fxvis" type="box" size="0.026474 0.01457 0.00461" rgba="0.67817 0.49817 0.2869 1"/></body>
+<body name="fx_blow_33" mocap="true" pos="0 0 -50" quat="0.97713 -0.086135 -0.031353 0.19185"><geom name="fx_blow_33" class="fxvis" type="box" size="0.022962 0.011981 0.0058317" rgba="0.69704 0.51704 0.29823 1"/></body>
+<body name="fx_blow_34" mocap="true" pos="0 0 -50" quat="0.90306 0.30758 0.058917 0.29396"><geom name="fx_blow_34" class="fxvis" type="box" size="0.024887 0.013836 0.0048992" rgba="0.6604 0.4804 0.27624 1"/></body>
+<body name="fx_blow_35" mocap="true" pos="0 0 -50" quat="0.61987 -0.69389 -0.35568 0.088174"><geom name="fx_blow_35" class="fxvis" type="box" size="0.022172 0.012731 0.005791" rgba="0.43425 0.30425 0.2 1"/></body>
+<body name="fx_blow_36" mocap="true" pos="0 0 -50" quat="0.95023 0.074504 -0.21779 0.20996"><geom name="fx_blow_36" class="fxvis" type="box" size="0.025211 0.018553 0.0038165" rgba="0.73744 0.55744 0.32246 1"/></body>
+<body name="fx_blow_37" mocap="true" pos="0 0 -50" quat="0.23084 -0.19041 0.55441 -0.77658"><geom name="fx_blow_37" class="fxvis" type="box" size="0.031024 0.018642 0.0045796" rgba="0.73347 0.55347 0.32008 1"/></body>
+<body name="fx_blow_38" mocap="true" pos="0 0 -50" quat="0.3519 0.44577 0.75632 -0.3247"><geom name="fx_blow_38" class="fxvis" type="box" size="0.033583 0.014782 0.0047832" rgba="0.6777 0.4977 0.28662 1"/></body>
+<body name="fx_blow_39" mocap="true" pos="0 0 -50" quat="0.98561 -0.010544 -0.14789 -0.081177"><geom name="fx_blow_39" class="fxvis" type="box" size="0.027048 0.011864 0.0032963" rgba="0.67697 0.49697 0.28618 1"/></body>
+<body name="fx_blow_40" mocap="true" pos="0 0 -50" quat="0.45531 -0.75721 0.24121 0.40142"><geom name="fx_blow_40" class="fxvis" type="box" size="0.027739 0.01909 0.0035609" rgba="0.43898 0.30898 0.2 1"/></body>
+<body name="fx_blow_41" mocap="true" pos="0 0 -50" quat="0.87874 0.32212 0.166 0.31064"><geom name="fx_blow_41" class="fxvis" type="box" size="0.027258 0.014366 0.0050612" rgba="0.75075 0.57075 0.33045 1"/></body>
+<body name="fx_blow_42" mocap="true" pos="0 0 -50" quat="0.18922 -0.27556 0.57455 0.7471"><geom name="fx_blow_42" class="fxvis" type="box" size="0.023558 0.011826 0.0055608" rgba="0.66614 0.48614 0.27969 1"/></body>
+<body name="fx_blow_43" mocap="true" pos="0 0 -50" quat="0.70982 0.23925 -0.068756 0.65893"><geom name="fx_blow_43" class="fxvis" type="box" size="0.029542 0.01323 0.003685" rgba="0.73254 0.55254 0.31953 1"/></body>
+<body name="fx_blow_44" mocap="true" pos="0 0 -50" quat="0.95905 0.13369 0.057957 -0.24286"><geom name="fx_blow_44" class="fxvis" type="box" size="0.0249 0.019026 0.0030762" rgba="0.71158 0.53158 0.30695 1"/></body>
+<body name="fx_blow_45" mocap="true" pos="0 0 -50" quat="0.99029 0.060156 -0.10885 0.062158"><geom name="fx_blow_45" class="fxvis" type="box" size="0.027224 0.017841 0.0032265" rgba="0.42249 0.29249 0.2 1"/></body>
+<body name="fx_blow_46" mocap="true" pos="0 0 -50" quat="0.072327 0.095057 0.69597 -0.70806"><geom name="fx_blow_46" class="fxvis" type="box" size="0.025556 0.011371 0.0046623" rgba="0.70819 0.52819 0.30492 1"/></body>
+<body name="fx_blow_47" mocap="true" pos="0 0 -50" quat="0.61983 -0.2254 -0.033484 0.75092"><geom name="fx_blow_47" class="fxvis" type="box" size="0.030621 0.019488 0.0057151" rgba="0.64329 0.46329 0.26597 1"/></body>
+<body name="fx_blow_48" mocap="true" pos="0 0 -50" quat="0.96778 0.17523 -0.12903 -0.12667"><geom name="fx_blow_48" class="fxvis" type="box" size="0.025336 0.015231 0.0048406" rgba="0.72086 0.54086 0.31251 1"/></body>
+<body name="fx_blow_49" mocap="true" pos="0 0 -50" quat="0.87594 0.027784 0.12325 -0.46557"><geom name="fx_blow_49" class="fxvis" type="box" size="0.020485 0.018323 0.0033694" rgba="0.75766 0.57766 0.33459 1"/></body>
+<body name="fx_blow_50" mocap="true" pos="0 0 -50" quat="0.66171 -0.71896 -0.15586 0.1447"><geom name="fx_blow_50" class="fxvis" type="box" size="0.020894 0.014928 0.0051141" rgba="0.4385 0.3085 0.2 1"/></body>
+<body name="fx_blow_51" mocap="true" pos="0 0 -50" quat="0.93899 0.10764 0.049969 -0.32281"><geom name="fx_blow_51" class="fxvis" type="box" size="0.024551 0.01509 0.0037187" rgba="0.66915 0.48915 0.28149 1"/></body>
+<body name="fx_blow_52" mocap="true" pos="0 0 -50" quat="0.71339 -0.23311 -0.27912 -0.59902"><geom name="fx_blow_52" class="fxvis" type="box" size="0.022236 0.016866 0.0054837" rgba="0.67129 0.49129 0.28277 1"/></body>
+<body name="fx_blow_53" mocap="true" pos="0 0 -50" quat="0.83608 -0.11916 0.53259 -0.055807"><geom name="fx_blow_53" class="fxvis" type="box" size="0.023406 0.019314 0.0043359" rgba="0.75374 0.57374 0.33224 1"/></body>
+<body name="fx_blow_54" mocap="true" pos="0 0 -50" quat="0.5239 0.14006 0.77142 -0.33289"><geom name="fx_blow_54" class="fxvis" type="box" size="0.028866 0.016913 0.0043965" rgba="0.67975 0.49975 0.28785 1"/></body>
+<body name="fx_blow_55" mocap="true" pos="0 0 -50" quat="0.15357 0.90542 0.066968 0.39007"><geom name="fx_blow_55" class="fxvis" type="box" size="0.023793 0.010277 0.0039927" rgba="0.47529 0.34529 0.2 1"/></body>
+<body name="fx_blow_56" mocap="true" pos="0 0 -50" quat="0.97964 0.029761 -0.13835 0.14242"><geom name="fx_blow_56" class="fxvis" type="box" size="0.019247 0.010661 0.0032429" rgba="0.73867 0.55867 0.3232 1"/></body>
+<body name="fx_blow_57" mocap="true" pos="0 0 -50" quat="0.79635 -0.13729 0.34325 -0.47871"><geom name="fx_blow_57" class="fxvis" type="box" size="0.018138 0.01816 0.0053679" rgba="0.66867 0.48867 0.2812 1"/></body>
+<body name="fx_blow_58" mocap="true" pos="0 0 -50" quat="0.027402 0.71201 0.69933 -0.056777"><geom name="fx_blow_58" class="fxvis" type="box" size="0.025573 0.011805 0.0036468" rgba="0.65733 0.47733 0.2744 1"/></body>
+<body name="fx_blow_59" mocap="true" pos="0 0 -50" quat="0.33621 0.61078 -0.7088 -0.10729"><geom name="fx_blow_59" class="fxvis" type="box" size="0.020159 0.014058 0.0045204" rgba="0.71814 0.53814 0.31088 1"/></body>
+<body name="fx_blow_60" mocap="true" pos="0 0 -50" quat="0.7749 0.60435 0.18088 0.039673"><geom name="fx_blow_60" class="fxvis" type="box" size="0.020832 0.017992 0.0051694" rgba="0.42305 0.29305 0.2 1"/></body>
+<body name="fx_blow_61" mocap="true" pos="0 0 -50" quat="0.012174 0.70515 0.57523 -0.41441"><geom name="fx_blow_61" class="fxvis" type="box" size="0.032664 0.013532 0.0030245" rgba="0.70138 0.52138 0.30083 1"/></body>
+<body name="fx_blow_62" mocap="true" pos="0 0 -50" quat="0.85871 -0.39819 0.31751 -0.05697"><geom name="fx_blow_62" class="fxvis" type="box" size="0.021065 0.017559 0.0051616" rgba="0.65263 0.47263 0.27158 1"/></body>
+<body name="fx_blow_63" mocap="true" pos="0 0 -50" quat="0.91057 0.36293 -0.060223 -0.18848"><geom name="fx_blow_63" class="fxvis" type="box" size="0.029447 0.019014 0.0054093" rgba="0.72779 0.54779 0.31667 1"/></body>
+<body name="fx_blow_64" mocap="true" pos="0 0 -50" quat="0.21695 -0.085644 -0.40705 -0.88312"><geom name="fx_blow_64" class="fxvis" type="box" size="0.030744 0.014941 0.00323" rgba="0.72667 0.54667 0.316 1"/></body>
+<body name="fx_blow_65" mocap="true" pos="0 0 -50" quat="0.0041074 -0.24743 0.85466 -0.45641"><geom name="fx_blow_65" class="fxvis" type="box" size="0.027111 0.019427 0.0035229" rgba="0.46004 0.33004 0.2 1"/></body>
+<body name="fx_blow_66" mocap="true" pos="0 0 -50" quat="1 5.7849e-06 7.6995e-06 -2.4062e-06"><geom name="fx_blow_66" class="fxvis" type="box" size="0.031526 0.015447 0.004979" rgba="0.72164 0.54164 0.31298 1"/></body>
+<body name="fx_blow_67" mocap="true" pos="0 0 -50" quat="0.0078271 0.76382 0.64213 -0.064778"><geom name="fx_blow_67" class="fxvis" type="box" size="0.025033 0.012736 0.0036364" rgba="0.7238 0.5438 0.31428 1"/></body>
+<body name="fx_blow_68" mocap="true" pos="0 0 -50" quat="0.27421 -0.3383 0.72137 -0.53851"><geom name="fx_blow_68" class="fxvis" type="box" size="0.02159 0.01236 0.0047549" rgba="0.64244 0.46244 0.26546 1"/></body>
+<body name="fx_blow_69" mocap="true" pos="0 0 -50" quat="0.11286 -0.96072 -0.25198 0.027923"><geom name="fx_blow_69" class="fxvis" type="box" size="0.021437 0.016174 0.0036501" rgba="0.64673 0.46673 0.26804 1"/></body>
+<body name="fx_blow_70" mocap="true" pos="0 0 -50" quat="0.73875 0.0039648 -0.38681 0.55192"><geom name="fx_blow_70" class="fxvis" type="box" size="0.032705 0.013335 0.0039118" rgba="0.41136 0.28136 0.2 1"/></body>
+<body name="fx_blow_71" mocap="true" pos="0 0 -50" quat="0.95002 -0.064413 -0.12733 -0.27768"><geom name="fx_blow_71" class="fxvis" type="box" size="0.023482 0.011795 0.0042071" rgba="0.72169 0.54169 0.31301 1"/></body>
+<body name="fx_blow_72" mocap="true" pos="0 0 -50" quat="0.92712 0.17098 0.31354 -0.11361"><geom name="fx_blow_72" class="fxvis" type="box" size="0.022687 0.012408 0.0059064" rgba="0.70788 0.52788 0.30473 1"/></body>
+<body name="fx_blow_73" mocap="true" pos="0 0 -50" quat="0.93796 -0.11451 0.24352 0.21868"><geom name="fx_blow_73" class="fxvis" type="box" size="0.029235 0.013277 0.0050723" rgba="0.71174 0.53174 0.30704 1"/></body>
+<body name="fx_blow_74" mocap="true" pos="0 0 -50" quat="0.60911 0.1682 -0.5815 -0.5124"><geom name="fx_blow_74" class="fxvis" type="box" size="0.025497 0.010206 0.0047334" rgba="0.69019 0.51019 0.29412 1"/></body>
+<body name="fx_blow_75" mocap="true" pos="0 0 -50" quat="0.34249 -0.47344 0.60528 -0.54054"><geom name="fx_blow_75" class="fxvis" type="box" size="0.022412 0.01537 0.0053586" rgba="0.40124 0.27124 0.2 1"/></body>
+<body name="fx_blow_76" mocap="true" pos="0 0 -50" quat="0.41661 -0.26502 0.79447 -0.35358"><geom name="fx_blow_76" class="fxvis" type="box" size="0.018878 0.012094 0.0048119" rgba="0.75802 0.57802 0.33481 1"/></body>
+<body name="fx_blow_77" mocap="true" pos="0 0 -50" quat="0.76196 0.54123 0.065204 0.34963"><geom name="fx_blow_77" class="fxvis" type="box" size="0.031614 0.014547 0.0038114" rgba="0.69157 0.51157 0.29494 1"/></body>
+<body name="fx_blow_78" mocap="true" pos="0 0 -50" quat="0.78105 0.061371 0.16605 0.59885"><geom name="fx_blow_78" class="fxvis" type="box" size="0.023261 0.015869 0.0051526" rgba="0.74425 0.56425 0.32655 1"/></body>
+<body name="fx_blow_79" mocap="true" pos="0 0 -50" quat="0.99134 0.040972 0.11228 0.054346"><geom name="fx_blow_79" class="fxvis" type="box" size="0.029807 0.013312 0.005819" rgba="0.67771 0.49771 0.28663 1"/></body>
+<body name="fx_blow_80" mocap="true" pos="0 0 -50" quat="0.50277 -0.33498 -0.77612 -0.18068"><geom name="fx_blow_80" class="fxvis" type="box" size="0.029974 0.019363 0.0043481" rgba="0.39557 0.26557 0.2 1"/></body>
+<body name="fx_blow_81" mocap="true" pos="0 0 -50" quat="0.99295 -0.0028154 0.11398 -0.032347"><geom name="fx_blow_81" class="fxvis" type="box" size="0.02275 0.016657 0.0059908" rgba="0.67502 0.49502 0.28501 1"/></body>
+<body name="fx_blow_82" mocap="true" pos="0 0 -50" quat="0.39547 -0.77776 0.45581 -0.17586"><geom name="fx_blow_82" class="fxvis" type="box" size="0.022636 0.010889 0.0041744" rgba="0.72378 0.54378 0.31427 1"/></body>
+<body name="fx_blow_83" mocap="true" pos="0 0 -50" quat="0.9626 -0.23995 -0.040927 0.11898"><geom name="fx_blow_83" class="fxvis" type="box" size="0.025941 0.019332 0.0056298" rgba="0.72293 0.54293 0.31376 1"/></body>
+<body name="fx_blow_84" mocap="true" pos="0 0 -50" quat="0.88355 0.42518 0.11762 0.15722"><geom name="fx_blow_84" class="fxvis" type="box" size="0.01862 0.011402 0.0040591" rgba="0.73167 0.55167 0.319 1"/></body>
+<body name="fx_blow_85" mocap="true" pos="0 0 -50" quat="0.95966 0.051798 -0.030729 -0.27463"><geom name="fx_blow_85" class="fxvis" type="box" size="0.031415 0.011834 0.0030462" rgba="0.48313 0.35313 0.2 1"/></body>
+<body name="fx_blow_86" mocap="true" pos="0 0 -50" quat="0.99722 -0.040664 -0.015645 -0.06053"><geom name="fx_blow_86" class="fxvis" type="box" size="0.019268 0.015896 0.0041129" rgba="0.65891 0.47891 0.27534 1"/></body>
+<body name="fx_blow_87" mocap="true" pos="0 0 -50" quat="0.41252 -0.0088873 -0.87792 -0.2429"><geom name="fx_blow_87" class="fxvis" type="box" size="0.02977 0.012244 0.0040609" rgba="0.64249 0.46249 0.2655 1"/></body>
+<body name="fx_blow_88" mocap="true" pos="0 0 -50" quat="0.30766 0.60155 -0.10666 -0.72946"><geom name="fx_blow_88" class="fxvis" type="box" size="0.03209 0.019686 0.0046858" rgba="0.7567 0.5767 0.33402 1"/></body>
+<body name="fx_blow_89" mocap="true" pos="0 0 -50" quat="0.99965 0.0004606 0.0141 0.022334"><geom name="fx_blow_89" class="fxvis" type="box" size="0.018482 0.012634 0.0041174" rgba="0.64894 0.46894 0.26937 1"/></body>
+<body name="fx_blow_90" mocap="true" pos="0 0 -50" quat="0.99657 -0.067985 0.030566 0.035903"><geom name="fx_blow_90" class="fxvis" type="box" size="0.025837 0.014123 0.0039884" rgba="0.50857 0.37857 0.2 1"/></body>
+<body name="fx_blow_91" mocap="true" pos="0 0 -50" quat="0.15005 -0.508 -0.1315 -0.83793"><geom name="fx_blow_91" class="fxvis" type="box" size="0.019163 0.01156 0.0042582" rgba="0.66171 0.48171 0.27703 1"/></body>
+<body name="fx_blow_92" mocap="true" pos="0 0 -50" quat="0.97645 0.04775 -0.18732 -0.095848"><geom name="fx_blow_92" class="fxvis" type="box" size="0.023654 0.017573 0.0055924" rgba="0.68358 0.50358 0.29015 1"/></body>
+<body name="fx_blow_93" mocap="true" pos="0 0 -50" quat="0.271 -0.40888 0.86787 0.078655"><geom name="fx_blow_93" class="fxvis" type="box" size="0.023013 0.013733 0.0032205" rgba="0.68608 0.50608 0.29165 1"/></body>
+<body name="fx_blow_94" mocap="true" pos="0 0 -50" quat="0.81123 0.48787 -0.28654 0.14758"><geom name="fx_blow_94" class="fxvis" type="box" size="0.028543 0.018064 0.0058166" rgba="0.74633 0.56633 0.3278 1"/></body>
+<body name="fx_blow_95" mocap="true" pos="0 0 -50" quat="0.89629 -0.2184 0.38503 -0.026753"><geom name="fx_blow_95" class="fxvis" type="box" size="0.028225 0.019567 0.0049089" rgba="0.44406 0.31406 0.2 1"/></body>
+<body name="fx_blow_96" mocap="true" pos="0 0 -50" quat="0.20616 0.60478 -0.73864 0.21481"><geom name="fx_blow_96" class="fxvis" type="box" size="0.032742 0.011135 0.0050225" rgba="0.72918 0.54918 0.31751 1"/></body>
+<body name="fx_blow_97" mocap="true" pos="0 0 -50" quat="0.99968 -0.00071216 0.021731 -0.012682"><geom name="fx_blow_97" class="fxvis" type="box" size="0.03036 0.018721 0.0056866" rgba="0.64391 0.46391 0.26635 1"/></body>
+<body name="fx_blow_98" mocap="true" pos="0 0 -50" quat="0.73126 -0.052461 -0.30375 -0.60847"><geom name="fx_blow_98" class="fxvis" type="box" size="0.018894 0.010951 0.0044181" rgba="0.74669 0.56669 0.32801 1"/></body>
+<body name="fx_blow_99" mocap="true" pos="0 0 -50" quat="0.77895 0.45205 0.33467 0.27726"><geom name="fx_blow_99" class="fxvis" type="box" size="0.024464 0.018587 0.0031281" rgba="0.70482 0.52482 0.30289 1"/></body>
+<body name="fx_blow_100" mocap="true" pos="0 0 -50" quat="0.85991 -0.13738 0.11282 -0.47849"><geom name="fx_blow_100" class="fxvis" type="box" size="0.03247 0.013143 0.0043327" rgba="0.42919 0.29919 0.2 1"/></body>
+<body name="fx_blow_101" mocap="true" pos="0 0 -50" quat="0.27392 0.95983 -0.020028 0.057403"><geom name="fx_blow_101" class="fxvis" type="box" size="0.020437 0.012576 0.0049003" rgba="0.67973 0.49973 0.28784 1"/></body>
+<body name="fx_blow_102" mocap="true" pos="0 0 -50" quat="0.99097 -0.04847 0.11574 -0.047171"><geom name="fx_blow_102" class="fxvis" type="box" size="0.022615 0.014577 0.0032229" rgba="0.65597 0.47597 0.27358 1"/></body>
+<body name="fx_blow_103" mocap="true" pos="0 0 -50" quat="0.95138 -0.04219 0.28856 -0.099176"><geom name="fx_blow_103" class="fxvis" type="box" size="0.018668 0.010956 0.003701" rgba="0.64904 0.46904 0.26942 1"/></body>
+<body name="fx_blow_104" mocap="true" pos="0 0 -50" quat="0.6656 0.5698 0.27751 0.39408"><geom name="fx_blow_104" class="fxvis" type="box" size="0.026395 0.016644 0.0031346" rgba="0.65982 0.47982 0.27589 1"/></body>
+<body name="fx_blow_105" mocap="true" pos="0 0 -50" quat="0.36911 -0.86576 0.20163 0.27122"><geom name="fx_blow_105" class="fxvis" type="box" size="0.01879 0.010247 0.0040849" rgba="0.47643 0.34643 0.2 1"/></body>
+<body name="fx_blow_106" mocap="true" pos="0 0 -50" quat="0.92422 -0.26803 0.26263 -0.07068"><geom name="fx_blow_106" class="fxvis" type="box" size="0.028734 0.013173 0.0054936" rgba="0.70606 0.52606 0.30364 1"/></body>
+<body name="fx_blow_107" mocap="true" pos="0 0 -50" quat="0.88264 -0.14652 0.44644 -0.012627"><geom name="fx_blow_107" class="fxvis" type="box" size="0.023476 0.010158 0.003775" rgba="0.64566 0.46566 0.26739 1"/></body>
+<body name="fx_blow_108" mocap="true" pos="0 0 -50" quat="0.033019 0.49736 -0.86046 0.10555"><geom name="fx_blow_108" class="fxvis" type="box" size="0.033254 0.010817 0.0055142" rgba="0.74082 0.56082 0.32449 1"/></body>
+<body name="fx_blow_109" mocap="true" pos="0 0 -50" quat="0.44389 -0.8348 -0.26341 -0.19155"><geom name="fx_blow_109" class="fxvis" type="box" size="0.027565 0.013572 0.0030768" rgba="0.68636 0.50636 0.29182 1"/></body>
+<body name="fx_blow_110" mocap="true" pos="0 0 -50" quat="0.79684 0.033247 -0.60201 -0.038949"><geom name="fx_blow_110" class="fxvis" type="box" size="0.018628 0.019621 0.0046845" rgba="0.47075 0.34075 0.2 1"/></body>
+<body name="fx_blow_111" mocap="true" pos="0 0 -50" quat="0.42334 -0.47895 0.75165 0.16252"><geom name="fx_blow_111" class="fxvis" type="box" size="0.026251 0.01035 0.003888" rgba="0.74774 0.56774 0.32864 1"/></body>
+<body name="fx_blow_112" mocap="true" pos="0 0 -50" quat="0.23791 -0.15485 0.40527 0.86901"><geom name="fx_blow_112" class="fxvis" type="box" size="0.026148 0.015633 0.0041313" rgba="0.75012 0.57012 0.33007 1"/></body>
+<body name="fx_blow_113" mocap="true" pos="0 0 -50" quat="0.21238 0.63065 0.73426 -0.1343"><geom name="fx_blow_113" class="fxvis" type="box" size="0.019506 0.017761 0.0059589" rgba="0.72746 0.54746 0.31647 1"/></body>
+<body name="fx_blow_114" mocap="true" pos="0 0 -50" quat="0.79606 -0.057957 -0.13299 -0.58757"><geom name="fx_blow_114" class="fxvis" type="box" size="0.025172 0.012949 0.0036713" rgba="0.65573 0.47573 0.27344 1"/></body>
+<body name="fx_blow_115" mocap="true" pos="0 0 -50" quat="0.82757 -0.31261 -0.44804 0.12908"><geom name="fx_blow_115" class="fxvis" type="box" size="0.022061 0.018898 0.0038914" rgba="0.45551 0.32551 0.2 1"/></body>
+<body name="fx_blow_116" mocap="true" pos="0 0 -50" quat="0.56831 0.75943 -0.19839 0.24685"><geom name="fx_blow_116" class="fxvis" type="box" size="0.019492 0.014352 0.0035986" rgba="0.74262 0.56262 0.32557 1"/></body>
+<body name="fx_blow_117" mocap="true" pos="0 0 -50" quat="0.36623 0.92968 0.017888 0.035235"><geom name="fx_blow_117" class="fxvis" type="box" size="0.020992 0.013237 0.0053748" rgba="0.65129 0.47129 0.27078 1"/></body>
+<body name="fx_blow_118" mocap="true" pos="0 0 -50" quat="0.75728 -0.12815 -0.54228 -0.34064"><geom name="fx_blow_118" class="fxvis" type="box" size="0.02545 0.019484 0.0045359" rgba="0.66114 0.48114 0.27668 1"/></body>
+<body name="fx_blow_119" mocap="true" pos="0 0 -50" quat="0.36817 0.41738 0.51969 -0.64821"><geom name="fx_blow_119" class="fxvis" type="box" size="0.023484 0.010692 0.0042977" rgba="0.66493 0.48493 0.27896 1"/></body>
+<body name="fx_blow_120" mocap="true" pos="0 0 -50" quat="0.8378 -0.24949 0.41936 0.24494"><geom name="fx_blow_120" class="fxvis" type="box" size="0.031557 0.018215 0.0039315" rgba="0.39247 0.26247 0.2 1"/></body>
+<body name="fx_blow_121" mocap="true" pos="0 0 -50" quat="0.14718 0.95708 -0.20721 -0.13924"><geom name="fx_blow_121" class="fxvis" type="box" size="0.02933 0.011484 0.0051359" rgba="0.66642 0.48642 0.27985 1"/></body>
+<body name="fx_blow_122" mocap="true" pos="0 0 -50" quat="0.9999 -0.0061136 -0.010572 -0.0077695"><geom name="fx_blow_122" class="fxvis" type="box" size="0.018084 0.01464 0.0054019" rgba="0.64543 0.46543 0.26726 1"/></body>
+<body name="fx_blow_123" mocap="true" pos="0 0 -50" quat="0.39712 -0.68756 0.064328 -0.6045"><geom name="fx_blow_123" class="fxvis" type="box" size="0.031837 0.011023 0.0051936" rgba="0.70387 0.52387 0.30232 1"/></body>
+<body name="fx_blow_124" mocap="true" pos="0 0 -50" quat="0.51769 0.20764 -0.68568 -0.46769"><geom name="fx_blow_124" class="fxvis" type="box" size="0.021266 0.013196 0.00586" rgba="0.70733 0.52733 0.3044 1"/></body>
+<body name="fx_blow_125" mocap="true" pos="0 0 -50" quat="0.1143 0.72007 0.33013 -0.59955"><geom name="fx_blow_125" class="fxvis" type="box" size="0.031286 0.018924 0.0059612" rgba="0.4053 0.2753 0.2 1"/></body>
+<body name="fx_blow_126" mocap="true" pos="0 0 -50" quat="0.51753 -0.26581 -0.78254 0.22168"><geom name="fx_blow_126" class="fxvis" type="box" size="0.019826 0.01423 0.0030563" rgba="0.67728 0.49728 0.28637 1"/></body>
+<body name="fx_blow_127" mocap="true" pos="0 0 -50" quat="0.92113 -0.22319 0.19068 0.25564"><geom name="fx_blow_127" class="fxvis" type="box" size="0.030867 0.015637 0.0055199" rgba="0.6644 0.4844 0.27864 1"/></body>
+<body name="fx_blow_128" mocap="true" pos="0 0 -50" quat="0.48932 -0.20698 -0.83233 -0.15796"><geom name="fx_blow_128" class="fxvis" type="box" size="0.032709 0.01103 0.0041965" rgba="0.65001 0.47001 0.27001 1"/></body>
+<body name="fx_blow_129" mocap="true" pos="0 0 -50" quat="0.11768 -0.32418 -0.66257 0.66487"><geom name="fx_blow_129" class="fxvis" type="box" size="0.018791 0.017883 0.0034863" rgba="0.72619 0.54619 0.31571 1"/></body>
+<body name="fx_blow_130" mocap="true" pos="0 0 -50" quat="0.81422 -0.16337 0.39062 -0.39721"><geom name="fx_blow_130" class="fxvis" type="box" size="0.023281 0.016454 0.0052805" rgba="0.44344 0.31344 0.2 1"/></body>
+<body name="fx_blow_131" mocap="true" pos="0 0 -50" quat="0.47127 0.82127 -0.10559 -0.30375"><geom name="fx_blow_131" class="fxvis" type="box" size="0.031812 0.01217 0.004214" rgba="0.71716 0.53716 0.3103 1"/></body>
+<body name="fx_blow_132" mocap="true" pos="0 0 -50" quat="0.30592 -0.57467 0.65089 0.39054"><geom name="fx_blow_132" class="fxvis" type="box" size="0.02498 0.019374 0.0045624" rgba="0.74638 0.56638 0.32783 1"/></body>
+<body name="fx_blow_133" mocap="true" pos="0 0 -50" quat="0.095918 0.81144 -0.12298 0.56324"><geom name="fx_blow_133" class="fxvis" type="box" size="0.022632 0.0129 0.0050248" rgba="0.7383 0.5583 0.32298 1"/></body>
+<body name="fx_blow_134" mocap="true" pos="0 0 -50" quat="0.86288 -0.061207 -0.4223 0.27085"><geom name="fx_blow_134" class="fxvis" type="box" size="0.023958 0.010844 0.0046128" rgba="0.69233 0.51233 0.2954 1"/></body>
+<body name="fx_blow_135" mocap="true" pos="0 0 -50" quat="0.62264 0.023323 0.18695 0.75949"><geom name="fx_blow_135" class="fxvis" type="box" size="0.024542 0.010829 0.00506" rgba="0.45765 0.32765 0.2 1"/></body>
+<body name="fx_blow_136" mocap="true" pos="0 0 -50" quat="0.71026 0.071475 0.46512 -0.52353"><geom name="fx_blow_136" class="fxvis" type="box" size="0.026489 0.017029 0.0041417" rgba="0.68024 0.50024 0.28814 1"/></body>
+<body name="fx_blow_137" mocap="true" pos="0 0 -50" quat="0.058484 0.75118 0.36775 0.54504"><geom name="fx_blow_137" class="fxvis" type="box" size="0.023336 0.013637 0.003823" rgba="0.67254 0.49254 0.28353 1"/></body>
+<body name="fx_blow_138" mocap="true" pos="0 0 -50" quat="0.80947 0.42653 0.037071 -0.40182"><geom name="fx_blow_138" class="fxvis" type="box" size="0.021328 0.011078 0.004617" rgba="0.64587 0.46587 0.26752 1"/></body>
+<body name="fx_blow_139" mocap="true" pos="0 0 -50" quat="0.88856 0.31618 0.16227 0.29011"><geom name="fx_blow_139" class="fxvis" type="box" size="0.021137 0.016871 0.0035352" rgba="0.75303 0.57303 0.33182 1"/></body>
+<body name="fx_blow_140" mocap="true" pos="0 0 -50" quat="0.74079 0.22243 0.42668 -0.46872"><geom name="fx_blow_140" class="fxvis" type="box" size="0.032281 0.012219 0.0044097" rgba="0.50569 0.37569 0.2 1"/></body>
+<body name="fx_blow_141" mocap="true" pos="0 0 -50" quat="0.93325 -0.06218 0.06902 -0.347"><geom name="fx_blow_141" class="fxvis" type="box" size="0.018019 0.012833 0.0059881" rgba="0.74297 0.56297 0.32578 1"/></body>
+<body name="fx_blow_142" mocap="true" pos="0 0 -50" quat="0.68403 0.56376 0.11935 0.44725"><geom name="fx_blow_142" class="fxvis" type="box" size="0.019619 0.013795 0.0036592" rgba="0.71606 0.53606 0.30963 1"/></body>
+<body name="fx_blow_143" mocap="true" pos="0 0 -50" quat="0.97946 -0.062274 -0.16462 -0.09837"><geom name="fx_blow_143" class="fxvis" type="box" size="0.01837 0.011661 0.0046355" rgba="0.68536 0.50536 0.29122 1"/></body>
+<body name="fx_blow_144" mocap="true" pos="0 0 -50" quat="0.69026 0.67982 -0.17662 0.17377"><geom name="fx_blow_144" class="fxvis" type="box" size="0.027411 0.014639 0.0042975" rgba="0.73862 0.55862 0.32317 1"/></body>
+<body name="fx_blow_145" mocap="true" pos="0 0 -50" quat="0.73647 -0.12039 0.66567 -0.00076454"><geom name="fx_blow_145" class="fxvis" type="box" size="0.028161 0.018262 0.0057043" rgba="0.39745 0.26745 0.2 1"/></body>
+<body name="fx_blow_146" mocap="true" pos="0 0 -50" quat="0.38618 0.54023 0.61917 -0.41911"><geom name="fx_blow_146" class="fxvis" type="box" size="0.018399 0.016619 0.0038544" rgba="0.68829 0.50829 0.29297 1"/></body>
+<body name="fx_blow_147" mocap="true" pos="0 0 -50" quat="0.047654 -0.91814 0.050262 -0.39015"><geom name="fx_blow_147" class="fxvis" type="box" size="0.018664 0.013271 0.0056533" rgba="0.67237 0.49237 0.28342 1"/></body>
+<body name="fx_blow_148" mocap="true" pos="0 0 -50" quat="0.88672 -0.0064452 -0.23125 0.40026"><geom name="fx_blow_148" class="fxvis" type="box" size="0.027649 0.015695 0.0046304" rgba="0.74534 0.56534 0.32721 1"/></body>
+<body name="fx_blow_149" mocap="true" pos="0 0 -50" quat="0.94969 0.16969 0.26323 0.0021369"><geom name="fx_blow_149" class="fxvis" type="box" size="0.023879 0.015147 0.004176" rgba="0.68797 0.50797 0.29278 1"/></body>
+<body name="fx_blow_150" mocap="true" pos="0 0 -50" quat="0.79135 0.55277 0.19807 0.17024"><geom name="fx_blow_150" class="fxvis" type="box" size="0.025584 0.014084 0.0056366" rgba="0.43201 0.30201 0.2 1"/></body>
+<body name="fx_blow_151" mocap="true" pos="0 0 -50" quat="0.24577 0.91749 -0.28012 0.13906"><geom name="fx_blow_151" class="fxvis" type="box" size="0.021952 0.018577 0.0049714" rgba="0.66587 0.48587 0.27952 1"/></body>
+<body name="fx_blow_152" mocap="true" pos="0 0 -50" quat="0.31957 0.56129 -0.52878 -0.55065"><geom name="fx_blow_152" class="fxvis" type="box" size="0.018043 0.019975 0.0055026" rgba="0.66336 0.48336 0.27802 1"/></body>
+<body name="fx_blow_153" mocap="true" pos="0 0 -50" quat="0.99725 -0.02336 0.030098 0.063533"><geom name="fx_blow_153" class="fxvis" type="box" size="0.025416 0.012585 0.0033768" rgba="0.66027 0.48027 0.27616 1"/></body>
+<body name="fx_blow_154" mocap="true" pos="0 0 -50" quat="0.9378 0.23541 -0.15213 0.20489"><geom name="fx_blow_154" class="fxvis" type="box" size="0.032952 0.012799 0.0059776" rgba="0.73348 0.55348 0.32009 1"/></body>
+<body name="fx_blow_155" mocap="true" pos="0 0 -50" quat="0.95343 -0.098757 0.25267 -0.13182"><geom name="fx_blow_155" class="fxvis" type="box" size="0.028568 0.017732 0.0053147" rgba="0.49458 0.36458 0.2 1"/></body>
+<body name="fx_blow_156" mocap="true" pos="0 0 -50" quat="0.27614 0.52505 -0.69966 -0.39816"><geom name="fx_blow_156" class="fxvis" type="box" size="0.029174 0.010819 0.0033499" rgba="0.64317 0.46317 0.2659 1"/></body>
+<body name="fx_blow_157" mocap="true" pos="0 0 -50" quat="0.22809 -0.72817 0.10299 -0.63807"><geom name="fx_blow_157" class="fxvis" type="box" size="0.033209 0.014174 0.0047203" rgba="0.73481 0.55481 0.32089 1"/></body>
+<body name="fx_blow_158" mocap="true" pos="0 0 -50" quat="0.99704 -0.019901 0.067223 -0.03145"><geom name="fx_blow_158" class="fxvis" type="box" size="0.023762 0.019489 0.003053" rgba="0.72339 0.54339 0.31404 1"/></body>
+<body name="fx_blow_159" mocap="true" pos="0 0 -50" quat="0.18615 -0.37729 0.19159 0.88673"><geom name="fx_blow_159" class="fxvis" type="box" size="0.019143 0.012144 0.0055435" rgba="0.74729 0.56729 0.32837 1"/></body>
+<body name="fx_pellet_0" mocap="true" pos="0 0 -50"><geom name="fx_pellet_0" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_0_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_1" mocap="true" pos="0 0 -50"><geom name="fx_pellet_1" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_1_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_2" mocap="true" pos="0 0 -50"><geom name="fx_pellet_2" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_2_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_3" mocap="true" pos="0 0 -50"><geom name="fx_pellet_3" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_3_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_4" mocap="true" pos="0 0 -50"><geom name="fx_pellet_4" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_4_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_5" mocap="true" pos="0 0 -50"><geom name="fx_pellet_5" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_5_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_6" mocap="true" pos="0 0 -50"><geom name="fx_pellet_6" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_6_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_7" mocap="true" pos="0 0 -50"><geom name="fx_pellet_7" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_7_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_8" mocap="true" pos="0 0 -50"><geom name="fx_pellet_8" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_8_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_9" mocap="true" pos="0 0 -50"><geom name="fx_pellet_9" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_9_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_10" mocap="true" pos="0 0 -50"><geom name="fx_pellet_10" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_10_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_11" mocap="true" pos="0 0 -50"><geom name="fx_pellet_11" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_11_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_12" mocap="true" pos="0 0 -50"><geom name="fx_pellet_12" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_12_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_13" mocap="true" pos="0 0 -50"><geom name="fx_pellet_13" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_13_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_14" mocap="true" pos="0 0 -50"><geom name="fx_pellet_14" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_14_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_15" mocap="true" pos="0 0 -50"><geom name="fx_pellet_15" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_15_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_16" mocap="true" pos="0 0 -50"><geom name="fx_pellet_16" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_16_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_17" mocap="true" pos="0 0 -50"><geom name="fx_pellet_17" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_17_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_18" mocap="true" pos="0 0 -50"><geom name="fx_pellet_18" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_18_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_19" mocap="true" pos="0 0 -50"><geom name="fx_pellet_19" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_19_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_20" mocap="true" pos="0 0 -50"><geom name="fx_pellet_20" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_20_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_21" mocap="true" pos="0 0 -50"><geom name="fx_pellet_21" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_21_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_22" mocap="true" pos="0 0 -50"><geom name="fx_pellet_22" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_22_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_23" mocap="true" pos="0 0 -50"><geom name="fx_pellet_23" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_23_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_24" mocap="true" pos="0 0 -50"><geom name="fx_pellet_24" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_24_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_25" mocap="true" pos="0 0 -50"><geom name="fx_pellet_25" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_25_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_26" mocap="true" pos="0 0 -50"><geom name="fx_pellet_26" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_26_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_27" mocap="true" pos="0 0 -50"><geom name="fx_pellet_27" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_27_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_28" mocap="true" pos="0 0 -50"><geom name="fx_pellet_28" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_28_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_29" mocap="true" pos="0 0 -50"><geom name="fx_pellet_29" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_29_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_30" mocap="true" pos="0 0 -50"><geom name="fx_pellet_30" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_30_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_pellet_31" mocap="true" pos="0 0 -50"><geom name="fx_pellet_31" class="fx" type="cylinder" size="0.036 0.016" material="puck_brown"/><geom name="fx_pellet_31_seed" class="fx" type="cylinder" size="0.026 0.004" pos="0 0 0.017" material="puck_green"/></body>
+<body name="fx_puff_0" mocap="true" pos="0 0 -50"><geom name="fx_puff_0" class="fxvis" type="sphere" size="0.1457" rgba="0.96 0.96 0.93 0.3"/></body>
+<body name="fx_puff_1" mocap="true" pos="0 0 -50"><geom name="fx_puff_1" class="fxvis" type="sphere" size="0.15021" rgba="0.96 0.96 0.93 0.3"/></body>
+<body name="fx_puff_2" mocap="true" pos="0 0 -50"><geom name="fx_puff_2" class="fxvis" type="sphere" size="0.19487" rgba="0.96 0.96 0.93 0.3"/></body>
+<body name="fx_puff_3" mocap="true" pos="0 0 -50"><geom name="fx_puff_3" class="fxvis" type="sphere" size="0.1692" rgba="0.96 0.96 0.93 0.3"/></body>
+<body name="fx_puff_4" mocap="true" pos="0 0 -50"><geom name="fx_puff_4" class="fxvis" type="sphere" size="0.19625" rgba="0.96 0.96 0.93 0.3"/></body>
+<body name="fx_puff_5" mocap="true" pos="0 0 -50"><geom name="fx_puff_5" class="fxvis" type="sphere" size="0.17434" rgba="0.96 0.96 0.93 0.3"/></body>
+<body name="fx_puff_6" mocap="true" pos="0 0 -50"><geom name="fx_puff_6" class="fxvis" type="sphere" size="0.1799" rgba="0.96 0.96 0.93 0.3"/></body>
+<body name="fx_puff_7" mocap="true" pos="0 0 -50"><geom name="fx_puff_7" class="fxvis" type="sphere" size="0.17847" rgba="0.96 0.96 0.93 0.3"/></body></worldbody></mujoco>

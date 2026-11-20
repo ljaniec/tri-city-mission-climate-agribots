@@ -1,0 +1,41 @@
+{
+  "kpis": {
+    "biomass_applied_t": 1359.1381439262095,
+    "coverage_uniformity": 0.551997435651285,
+    "co2e_sequestered_t": 398.6805222183548,
+    "n_retained_kg": 6342.644671655644,
+    "area_regenerated_m2": 90609.20959508064,
+    "area_regenerated_ha": 9.060920959508064,
+    "mean_completion": 0.7823704427841779,
+    "weed_excluded_cells": 25,
+    "mothership_path_km": 6.118610593143521,
+    "swarm_steps": 709,
+    "drone_flight_km": 2236.291902801234,
+    "drone_deposits": 54771,
+    "tether_utilization": 1.0,
+    "hopper_refills": 545,
+    "road_stockpile_t": 1360.5823268360598,
+    "offroad_compaction_m2": 0.0,
+    "cost_eur_per_1000m2_est": 2094.2369279610098,
+    "cost_eur_per_tonne_est": 178.45228751300695,
+    "vs_regensol_delta_eur_per_1000m2": -314.5330720389902,
+    "vs_conventional_delta_eur_per_1000m2": 198.67692796100982
+  },
+  "weed_cells": 25,
+  "payload_mode": "dust",
+  "n_frames": 709,
+  "planned_points": 697,
+  "tracked_points": 709,
+  "outputs": {
+    "dashboard_video": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/prunemaxxing_dashboard.mp4",
+    "dashboard_still": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/dashboard_still.png",
+    "cam_hero_orbit": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/cam_hero_orbit.mp4",
+    "cam_top_tactical": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/cam_top_tactical.mp4",
+    "cam_ms_front": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/cam_ms_front.mp4",
+    "cam_ms_overview": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/cam_ms_overview.mp4",
+    "cam_d0_cam": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/cam_d0_cam.mp4",
+    "cam_low_tracking": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/cam_low_tracking.mp4",
+    "map_poster": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/map_poster.png",
+    "cross_track": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase/cross_track_chart.png"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "kpis": {
+    "biomass_applied_t": 1319.58,
+    "coverage_uniformity": 0.5237032423194158,
+    "co2e_sequestered_t": 387.0768,
+    "n_retained_kg": 6158.04,
+    "area_regenerated_m2": 87972.00000000001,
+    "area_regenerated_ha": 8.7972,
+    "mean_completion": 0.7595993045319143,
+    "weed_excluded_cells": 25,
+    "mothership_path_km": 6.118610593143521,
+    "swarm_steps": 709,
+    "drone_flight_km": 6832.631005129396,
+    "drone_deposits": 165207,
+    "tether_utilization": 1.0,
+    "hopper_refills": 530,
+    "road_stockpile_t": 1321.088,
+    "offroad_compaction_m2": 0.0,
+    "cost_eur_per_1000m2_est": 2100.3044622108337,
+    "cost_eur_per_tonne_est": 184.33442032573555,
+    "vs_regensol_delta_eur_per_1000m2": -308.4655377891663,
+    "vs_conventional_delta_eur_per_1000m2": 204.74446221083372
+  },
+  "weed_cells": 25,
+  "payload_mode": "cartridge",
+  "n_frames": 709,
+  "planned_points": 697,
+  "tracked_points": 709,
+  "outputs": {
+    "dashboard_video": "outputs/showcase_cartridge/prunemaxxing_dashboard.mp4",
+    "dashboard_still": "outputs/showcase_cartridge/dashboard_still.png",
+    "cam_hero_orbit": "outputs/showcase_cartridge/cam_hero_orbit.mp4",
+    "cam_top_tactical": "outputs/showcase_cartridge/cam_top_tactical.mp4",
+    "cam_ms_front": "outputs/showcase_cartridge/cam_ms_front.mp4",
+    "cam_ms_overview": "outputs/showcase_cartridge/cam_ms_overview.mp4",
+    "cam_d0_cam": "outputs/showcase_cartridge/cam_d0_cam.mp4",
+    "cam_low_tracking": "outputs/showcase_cartridge/cam_low_tracking.mp4",
+    "map_poster": "outputs/showcase_cartridge/map_poster.png",
+    "cross_track": "outputs/showcase_cartridge/cross_track_chart.png"
+  }
+}
