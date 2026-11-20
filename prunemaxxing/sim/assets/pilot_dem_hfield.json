@@ -1,0 +1,16 @@
+{
+  "png_path": "assets/pilot_dem_hfield.png",
+  "nrow": 192,
+  "ncol": 200,
+  "half_x": 28.0,
+  "half_y": 26.879530816358592,
+  "elevation_z": 2.4,
+  "base_z": 0.2,
+  "z_offset": -0.713882303237915,
+  "elev_min_m": 0.5556738972663879,
+  "elev_max_m": 3.559978485107422,
+  "dem_width_m": 249.26470588235296,
+  "dem_height_m": 239.2899408284024,
+  "upsample": 8.0,
+  "bake_beds": true
+}

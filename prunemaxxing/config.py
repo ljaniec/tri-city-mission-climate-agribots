@@ -60,9 +60,20 @@ CELL_SIZE_M = 10.0
 MOTHERSHIP_TURN_RADIUS_M = 6.0
 MOTHERSHIP_HOPPER_CAPACITY_KG = 2500.0
 DRONE_PAYLOAD_KG = 25.0
+# Ops bubble around mothership (wireless power / battery-swap — no physical tether)
 DRONE_TETHER_REACH_M = 40.0
+DRONE_OPS_RADIUS_M = 40.0
 DRONE_BATTERY_SORTIE_CELLS = 8
 DEFAULT_SWARM_SIZE = 4
+DEFAULT_BED_SPACING_M = 0.85
+DEFAULT_GEOJSON_PATH = "data/parcels_weeds.geojson"
+
+# --- Showcase mission (time-based simulation) ---
+SHOWCASE_AREA_HA = 12.0  # DEM window holding the 4-parcel pilot block (~9.5 ha cropped)
+DRONE_OPS_RADIUS_SHOWCASE_M = 50.0
+LANE_SPACING_M = 59.5  # 70 beds x 0.85 m — drones cover +-30 m either side of a lane
+STATION_SPACING_M = 30.0
+HEADLAND_BED_MARGIN_M = 12.0  # beds stop 12 m from parcel edge (headland strip)
 
 
 @dataclass(frozen=True)

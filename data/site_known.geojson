@@ -1,0 +1,572 @@
+{
+ "type": "FeatureCollection",
+ "name": "prunemaxxing_site_known",
+ "crs": {
+  "type": "name",
+  "properties": {
+   "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+  }
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "A_sweet_potato",
+    "kind": "parcel",
+    "crop": "sweet_potato_beauregard",
+    "bed_spacing_m": 0.85,
+    "bed_azimuth_deg": 0.0
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.025652757096806,
+       41.28259652181792
+      ],
+      [
+       2.0275273079028473,
+       41.28261237313965
+      ],
+      [
+       2.027507650719458,
+       41.28393632782215
+      ],
+      [
+       2.025633062036577,
+       41.28392047576651
+      ],
+      [
+       2.025652757096806,
+       41.28259652181792
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "B_carboniato",
+    "kind": "parcel",
+    "crop": "carboniato_ohenry",
+    "bed_spacing_m": 0.85,
+    "bed_azimuth_deg": 0.0
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.027624163499761,
+       41.28252311507485
+      ],
+      [
+       2.029510653114299,
+       41.28253903493516
+      ],
+      [
+       2.029489701527731,
+       41.283953055400566
+      ],
+      [
+       2.0276031712019944,
+       41.283937134753025
+      ],
+      [
+       2.027624163499761,
+       41.28252311507485
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "C_transition",
+    "kind": "parcel",
+    "crop": "cover_then_sweet_potato",
+    "bed_spacing_m": 0.85,
+    "bed_azimuth_deg": 0.0
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.027602101490703,
+       41.284009186701596
+      ],
+      [
+       2.0294886338909737,
+       41.28402510738925
+      ],
+      [
+       2.0294686149837524,
+       41.28537608200511
+      ],
+      [
+       2.0275820436845806,
+       41.28536016056528
+      ],
+      [
+       2.027602101490703,
+       41.284009186701596
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "D_horticulture",
+    "kind": "parcel",
+    "crop": "horticulture_mix",
+    "bed_spacing_m": 0.85,
+    "bed_azimuth_deg": 0.0
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.025631990158849,
+       41.28399252767311
+      ],
+      [
+       2.0275065809031276,
+       41.284008379768686
+      ],
+      [
+       2.0274865211274435,
+       41.28535935359426
+      ],
+      [
+       2.0256118917305823,
+       41.285343500749754
+      ],
+      [
+       2.025631990158849,
+       41.28399252767311
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "road_south",
+    "kind": "track",
+    "width_m": 6.5,
+    "surface": "asphalt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      2.0240552387078496,
+      41.28242085177041
+     ],
+     [
+      2.0313262197004947,
+      41.28248226607278
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "track_west",
+    "kind": "track",
+    "width_m": 4.0,
+    "surface": "dirt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      2.025607409528034,
+      41.282434000734646
+     ],
+     [
+      2.025563594488555,
+      41.28537912240065
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "track_east",
+    "kind": "track",
+    "width_m": 4.0,
+    "surface": "dirt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      2.029559479868953,
+      41.282467385559634
+     ],
+     [
+      2.029515842472184,
+      41.285412510664145
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "track_north",
+    "kind": "track",
+    "width_m": 4.0,
+    "surface": "dirt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      2.025563594488555,
+      41.28537912240065
+     ],
+     [
+      2.029515842472184,
+      41.285412510664145
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "track_center_ns",
+    "kind": "track",
+    "width_m": 5.0,
+    "surface": "dirt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      2.0275774739723427,
+      41.2824506596726
+     ],
+     [
+      2.027533747485735,
+      41.2853957830544
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "track_center_ew",
+    "kind": "track",
+    "width_m": 5.0,
+    "surface": "dirt"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      2.0255847658702955,
+      41.2839560974467
+     ],
+     [
+      2.029536928017152,
+      41.28398948404873
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "depot_access",
+    "kind": "track",
+    "width_m": 6.0,
+    "surface": "gravel"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      2.0259297835965926,
+      41.28243672904924
+     ],
+     [
+      2.02592844422665,
+      41.28252679396358
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "ditch_west",
+    "kind": "ditch",
+    "width_m": 2.4
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      2.02553925459361,
+      41.28219922556324
+     ],
+     [
+      2.0254884690857073,
+      41.285612631254345
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "ditch_north",
+    "kind": "ditch",
+    "width_m": 2.0
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      2.0254912825381077,
+      41.285423548351886
+     ],
+     [
+      2.0303267675615975,
+      41.28546438262112
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "weed_sorghum_A",
+    "kind": "weed_exclusion",
+    "species": "Sorghum_halepense",
+    "severity": "high"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.026433020240911,
+       41.28312556569598
+      ],
+      [
+       2.026743457881904,
+       41.28312819078749
+      ],
+      [
+       2.0267402459906996,
+       41.28334434660566
+      ],
+      [
+       2.02642980732561,
+       41.28334172149431
+      ],
+      [
+       2.026433020240911,
+       41.28312556569598
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "weed_cyperus_B",
+    "kind": "weed_exclusion",
+    "species": "Cyperus_rotundus",
+    "severity": "high"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.0284073811340235,
+       41.28285400282052
+      ],
+      [
+       2.0287058778024827,
+       41.28285652182979
+      ],
+      [
+       2.028702405300553,
+       41.283090690779936
+      ],
+      [
+       2.0284039075653393,
+       41.28308817175003
+      ],
+      [
+       2.0284073811340235,
+       41.28285400282052
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "weed_cynodon_C",
+    "kind": "weed_exclusion",
+    "species": "Cynodon_dactylon",
+    "severity": "medium"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.0277611072535975,
+       41.28455999474788
+      ],
+      [
+       2.028071551815195,
+       41.28456261633223
+      ],
+      [
+       2.0280691460656595,
+       41.28472473322006
+      ],
+      [
+       2.027758700735934,
+       41.28472211162084
+      ],
+      [
+       2.0277611072535975,
+       41.28455999474788
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "weed_sorghum_D",
+    "kind": "weed_exclusion",
+    "species": "Sorghum_halepense",
+    "severity": "medium"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.0257899075345494,
+       41.284615390161676
+      ],
+      [
+       2.026088411997595,
+       41.28461791604522
+      ],
+      [
+       2.0260846620696613,
+       41.284870097717715
+      ],
+      [
+       2.0257861564577038,
+       41.284867571811894
+      ],
+      [
+       2.0257899075345494,
+       41.284615390161676
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "depot_pad",
+    "kind": "depot",
+    "capacity_t": 120
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.025654632748274,
+       41.28247043094933
+      ],
+      [
+       2.026203862982585,
+       41.28247507842601
+      ],
+      [
+       2.0262022561879554,
+       41.28258315633111
+      ],
+      [
+       2.025653025047746,
+       41.28257850883686
+      ],
+      [
+       2.025654632748274,
+       41.28247043094933
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "stockpile_0",
+    "kind": "stockpile",
+    "capacity_t": 60
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.025797106457288,
+     41.28252568253345
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "id": "stockpile_1",
+    "kind": "stockpile",
+    "capacity_t": 60
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.0260359024070556,
+     41.28252770320406
+    ]
+   }
+  }
+ ],
+ "prunemaxxing": {
+  "origin_e": 418392.3823529412,
+  "origin_n": 4570562.485207101,
+  "width_m": 348.97058823529414,
+  "height_m": 338.99408284023673,
+  "epsg": 32631
+ }
+}

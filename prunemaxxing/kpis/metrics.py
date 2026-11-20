@@ -102,7 +102,9 @@ def compute_kpis(
         swarm_steps=steps,
         drone_flight_km=swarm["total_flight_m"] / 1000.0,
         drone_deposits=swarm["total_deposits"],
-        tether_utilization=swarm["tether_fraction"],
+        tether_utilization=swarm.get(
+            "wireless_fraction", swarm.get("tether_fraction", 0.0)
+        ),
         hopper_refills=hopper_refills,
         road_stockpile_t=stockpile_kg / 1000.0,
         offroad_compaction_m2=offroad_compaction_m2,

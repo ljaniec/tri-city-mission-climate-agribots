@@ -1,0 +1,163 @@
+{
+  "type": "FeatureCollection",
+  "name": "prunemaxxing_parcels_weeds_parc_agrari",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "parcel_A_horticulture",
+        "kind": "parcel",
+        "crop": "sweet_potato_rotation",
+        "bed_spacing_m": 0.85,
+        "status": "active_pilot"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [2.02546, 41.28453],
+          [2.02700, 41.28454],
+          [2.02702, 41.28320],
+          [2.02548, 41.28319],
+          [2.02546, 41.28453]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "parcel_B_carboniato",
+        "kind": "parcel",
+        "crop": "carboniato_beds",
+        "bed_spacing_m": 0.90,
+        "status": "active_pilot"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [2.02700, 41.28454],
+          [2.02843, 41.28456],
+          [2.02846, 41.28322],
+          [2.02702, 41.28320],
+          [2.02700, 41.28454]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "parcel_C_transition",
+        "kind": "parcel",
+        "crop": "cover_then_sweet_potato",
+        "bed_spacing_m": 0.80,
+        "status": "active_pilot"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [2.02548, 41.28319],
+          [2.02846, 41.28322],
+          [2.02846, 41.28240],
+          [2.02549, 41.28238],
+          [2.02548, 41.28319]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "road_track_south",
+        "kind": "road",
+        "notes": "Heavy haulage only — perimeter stockpile nodes"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [2.02549, 41.28238],
+          [2.02846, 41.28240]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "weed_sorghum_halepense_01",
+        "kind": "weed_exclusion",
+        "species": "Sorghum_halepense",
+        "severity": "high"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [2.02610, 41.28390],
+          [2.02645, 41.28392],
+          [2.02648, 41.28365],
+          [2.02612, 41.28363],
+          [2.02610, 41.28390]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "weed_cyperus_rotundus_01",
+        "kind": "weed_exclusion",
+        "species": "Cyperus_rotundus",
+        "severity": "high"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [2.02755, 41.28300],
+          [2.02785, 41.28302],
+          [2.02788, 41.28278],
+          [2.02757, 41.28276],
+          [2.02755, 41.28300]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "weed_cynodon_dactylon_01",
+        "kind": "weed_exclusion",
+        "species": "Cynodon_dactylon",
+        "severity": "medium"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [2.02680, 41.28270],
+          [2.02715, 41.28272],
+          [2.02718, 41.28248],
+          [2.02682, 41.28246],
+          [2.02680, 41.28270]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "stockpile_node_SW",
+        "kind": "stockpile",
+        "capacity_t": 40
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.02555, 41.28242]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "stockpile_node_SE",
+        "kind": "stockpile",
+        "capacity_t": 40
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.02840, 41.28245]
+      }
+    }
+  ]
+}
