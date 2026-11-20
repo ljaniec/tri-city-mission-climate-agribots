@@ -1,0 +1,26 @@
+[12:26:55] site + digital twin
+[12:26:55] mission simulation (cartridge, 4 drones)
+[12:26:57]   30.6 h mission, 12,508 sorties, 109 t, lane x-track RMS 1.1 cm, 4 hidden obstacles found (1.8 s wall)
+[12:26:57] basemap + poster + tracking report
+[12:27:01] MuJoCo world + replay scene
+[world] assets cached (key 323bc3cb39593492)
+[world] world ready in 0.0s -> /home/ljaniec/Repositories/tri-city-mission-climate-agribots/prunemaxxing/sim/assets/world/world_cartridge_n4.xml
+[12:27:07] cinematic MuJoCo video
+[12:29:31] dashboard video
+[12:41:14] done -> /home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge
+  control_log        outputs/showcase_cartridge/control_log.csv
+  sorties            outputs/showcase_cartridge/sorties.csv
+  events             outputs/showcase_cartridge/events.json
+  kpis               outputs/showcase_cartridge/kpis.json
+  detours            outputs/showcase_cartridge/detours.json
+  map_poster         outputs/showcase_cartridge/map_poster.png
+  tracking_report    outputs/showcase_cartridge/tracking_report.png
+  still_hero_swarm   outputs/showcase_cartridge/hero_swarm.png
+  still_hero_low     outputs/showcase_cartridge/hero_low.png
+  still_hero_drone   outputs/showcase_cartridge/hero_drone.png
+  still_hero_aerial  outputs/showcase_cartridge/hero_aerial.png
+  still_hero_ms_effector outputs/showcase_cartridge/hero_ms_effector.png
+  still_hero_overview outputs/showcase_cartridge/hero_overview_mid_mission.png
+  still_hero_obstacle outputs/showcase_cartridge/hero_obstacle_bypass.png
+  cinematic          outputs/showcase_cartridge/cinematic_showcase_cartridge.mp4
+  dashboard          outputs/showcase_cartridge/dashboard.mp4

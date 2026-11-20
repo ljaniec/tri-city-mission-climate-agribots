@@ -896,6 +896,7 @@ def compute_mission_kpis(res: MissionResult, drones: list[dict], tender: dict) -
     cv = float(np.std(dose_actual) / np.mean(dose_actual)) if len(dose_actual) and np.mean(dose_actual) > 0 else 0.0
     area_ha = area_m2 / 1e4
     total_t = float(deposited.sum() / 1000.0)
+    dosed_ha = area_ha * min(1.0, float(deposited.sum()) / max(float(tgt[valid].sum()), 1e-9))
 
     # compaction: wheel ribbons leaving furrows inside bedded areas
     bedded = unary_union(list(res.plan.bedded_areas.values()))
@@ -932,8 +933,8 @@ def compute_mission_kpis(res: MissionResult, drones: list[dict], tender: dict) -
         "mean_completion": round(float(comp.mean()) if len(comp) else 0.0, 4),
         "cells_complete_pct": round(100.0 * float(np.mean(comp >= 0.999)) if len(comp) else 0.0, 2),
         "dose_cv": round(cv, 4),
-        "co2e_t": round(area_ha * CO2E_T_PER_HA * (res.spec.dose_kg_per_m2 / 15.0), 1),
-        "n_retained_kg": round(area_ha * N_RETAINED_KG_PER_HA * (res.spec.dose_kg_per_m2 / 15.0), 1),
+        "co2e_t": round(dosed_ha * CO2E_T_PER_HA * (res.spec.dose_kg_per_m2 / 15.0), 1),
+        "n_retained_kg": round(dosed_ha * N_RETAINED_KG_PER_HA * (res.spec.dose_kg_per_m2 / 15.0), 1),
         "sorties": n_sorties,
         "drone_flight_h": round(flight_h, 2),
         "drone_flight_km": round(float(S["dist_m"].sum() / 1000.0) if n_sorties else 0.0, 2),

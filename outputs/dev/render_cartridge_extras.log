@@ -1,0 +1,18 @@
+[12:58:59] site + digital twin
+[12:58:59] mission simulation (cartridge, 4 drones)
+[12:59:01]   30.6 h mission, 12,508 sorties, 109 t, lane x-track RMS 1.1 cm, 4 hidden obstacles found (1.8 s wall)
+[12:59:01] basemap + poster + tracking report
+[12:59:05] climate impact one-pager
+[12:59:07] interactive HTML replay
+[12:59:07] infographic video
+[13:00:16] done -> /home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge
+  control_log        outputs/showcase_cartridge/control_log.csv
+  sorties            outputs/showcase_cartridge/sorties.csv
+  events             outputs/showcase_cartridge/events.json
+  kpis               outputs/showcase_cartridge/kpis.json
+  detours            outputs/showcase_cartridge/detours.json
+  map_poster         outputs/showcase_cartridge/map_poster.png
+  tracking_report    outputs/showcase_cartridge/tracking_report.png
+  impact_poster      outputs/showcase_cartridge/impact_poster.png
+  replay_html        outputs/showcase_cartridge/replay.html
+  infographic        outputs/showcase_cartridge/infographic.mp4

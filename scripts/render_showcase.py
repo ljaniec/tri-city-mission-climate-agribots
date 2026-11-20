@@ -4,7 +4,8 @@
 mission sim (mothership control + lidar re-planning + drone swarm) ->
 data exports (control log CSV, sorties, events, KPIs) -> map poster ->
 tracking report -> MuJoCo 1:1 world replay (stills, cinematic video) ->
-live dashboard video with MuJoCo camera panes.
+live dashboard video with MuJoCo camera panes -> infographic video,
+interactive HTML replay and climate impact one-pager.
 """
 
 from __future__ import annotations
@@ -38,6 +39,7 @@ def main() -> int:
     ap.add_argument("--skip-mujoco", action="store_true")
     ap.add_argument("--skip-dashboard", action="store_true")
     ap.add_argument("--skip-cinematic", action="store_true")
+    ap.add_argument("--skip-extras", action="store_true", help="no infographic / HTML replay / impact one-pager")
     ap.add_argument("--poster-dpi", type=int, default=200)
     args = ap.parse_args()
 
@@ -48,6 +50,7 @@ def main() -> int:
     from prunemaxxing.planning.mission import MissionConfig, run_mission
     from prunemaxxing.viz.basemap import build_basemap
     from prunemaxxing.viz.mission_viz import (
+        Dashboard,
         export_mission_data,
         render_dashboard,
         render_map_poster,
@@ -97,9 +100,10 @@ def main() -> int:
             paths[f"still_{name}"] = str(p)
         if not args.skip_cinematic:
             log("cinematic MuJoCo video")
-            paths["cinematic"] = str(render_cinematic(scene, out / "cinematic.mp4", fps=args.fps,
-                                                      preview=args.preview))
-        cam_provider = scene.dashboard_cams(main_size=(1280, 720), second_size=(640, 360))
+            paths["cinematic"] = str(render_cinematic(scene, out / f"cinematic_showcase_{args.payload}.mp4",
+                                                      fps=args.fps, preview=args.preview))
+        cam_provider = scene.dashboard_cams(main_size=Dashboard.CAM_SIZES["main"],
+                                            second_size=Dashboard.CAM_SIZES["second"])
 
     if not args.skip_dashboard:
         log("dashboard video")
@@ -107,8 +111,25 @@ def main() -> int:
             res, out / "dashboard.mp4", fps=args.fps, target_s=args.video_seconds, cam_provider=cam_provider,
             basemap=bm, max_frames=120 if args.preview else None, still_every=0 if args.preview else 400))
 
-    meta = {"payload": args.payload, "swarm": args.swarm, "kpis": res.kpis, "outputs": paths}
-    (out / "showcase_meta.json").write_text(json.dumps(meta, indent=1, default=float))
+    if not args.skip_extras:
+        from prunemaxxing.viz.html_replay import export_html_replay
+        from prunemaxxing.viz.impact_poster import render_impact_poster
+        from prunemaxxing.viz.infographic import render_infographic
+
+        log("climate impact one-pager")
+        paths["impact_poster"] = str(render_impact_poster(res, out / "impact_poster.png", dpi=args.poster_dpi,
+                                                          basemap=bm))
+        log("interactive HTML replay")
+        paths["replay_html"] = str(export_html_replay(res, out / "replay.html", basemap=bm))
+        log("infographic video")
+        paths["infographic"] = str(render_infographic(res, out / "infographic.mp4", fps=args.fps,
+                                                      preview=args.preview))
+
+    meta_path = out / "showcase_meta.json"
+    prev = json.loads(meta_path.read_text()).get("outputs", {}) if meta_path.exists() else {}
+    prev = {k2: v for k2, v in prev.items() if Path(v).exists()}
+    meta = {"payload": args.payload, "swarm": args.swarm, "kpis": res.kpis, "outputs": {**prev, **paths}}
+    meta_path.write_text(json.dumps(meta, indent=1, default=float))
     log(f"done -> {out}")
     for k2, v in paths.items():
         print(f"  {k2:18s} {Path(v).relative_to(ROOT) if Path(v).is_absolute() else v}")

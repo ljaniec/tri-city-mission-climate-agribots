@@ -573,14 +573,20 @@ def mission_timeline(res: MissionResult, target_s: float = 72.0, fps: int = 24) 
 
 class Dashboard:
     W, H = 1920, 1080
+    CARD_STRIP = (0.008, 0.092)  # figure-y band reserved for the KPI cards
+    CAM_SIZES = {"main": (1280, 608), "second": (640, 320)}  # match the camera axes aspect
 
     def __init__(self, res: MissionResult, basemap: Basemap | None = None,
                  cam_provider: Callable[[float], dict[str, np.ndarray]] | None = None,
-                 cam_titles: tuple[str, str] = ("MuJoCo · mothership chase cam", "MuJoCo · drone D0 belly cam")):
+                 cam_titles: tuple[str, str] = ("MuJoCo · mothership chase cam", "MuJoCo · drone D0 belly cam"),
+                 kpi_cards: bool = True):
+        from prunemaxxing.viz.kpi_overlay import KpiOverlay
+
         self.res = res
         self.bm = basemap or build_basemap(res.site)
         self.painter = CoveragePainter(self.bm, res)
         self.cams = cam_provider
+        self.kpi = KpiOverlay(res) if kpi_cards else None
         self.fig = plt.figure(figsize=(self.W / 100, self.H / 100), dpi=100, facecolor=BG)
         self._build(cam_titles)
         self._last_t = -1.0
@@ -600,17 +606,26 @@ class Dashboard:
         self._det = sorted([e for e in res.events if e["kind"] == "obstacle_detected"], key=lambda e: e["t"])
 
     # ------------------------------------------------------------- layout
+    def _rect(self, x: float, y: float, w: float, h: float) -> list[float]:
+        """Squeeze the original 0.015..0.92 layout band above the KPI card strip."""
+        if self.kpi is None:
+            return [x, y, w, h]
+        y0 = self.CARD_STRIP[1] + 0.008
+        k = (0.92 - y0) / (0.92 - 0.015)
+        return [x, y0 + (y - 0.015) * k, w, h * k]
+
     def _build(self, cam_titles) -> None:
         f = self.fig
         res = self.res
         bm = self.bm
+        R = self._rect
         f.text(0.010, 0.962, "PRUNEMAXXING", color=COLORS["amber"], fontsize=21, fontweight="bold")
         f.text(0.150, 0.963, f"autonomous prunings-to-mulch logistics · mothership UGV + {res.n_drones} wireless "
                f"heavy-lift drones · {res.spec.mode.value.upper()} mode", color=INK, fontsize=13)
         self.txt_clock = f.text(0.990, 0.962, "", color=INK, fontsize=15, ha="right", family=MONO, fontweight="bold")
         self.txt_speed = f.text(0.990, 0.938, "", color=COLORS["amber"], fontsize=10, ha="right", family=MONO)
 
-        ax = f.add_axes([0.008, 0.015, 0.525, 0.905])
+        ax = f.add_axes(R(0.008, 0.015, 0.525, 0.905))
         self.ax_map = ax
         _style_axes(ax)
         ax.imshow(bm.rgb, extent=bm.extent, origin="upper", zorder=0, interpolation="antialiased")
@@ -677,12 +692,12 @@ class Dashboard:
         # right column
         x0 = 0.545
         wcol = 0.447
-        self.ax_cam = f.add_axes([x0, 0.505, wcol, 0.415])
+        self.ax_cam = f.add_axes(R(x0, 0.505, wcol, 0.415))
         _style_axes(self.ax_cam, cam_titles[0])
         self.im_cam = self.ax_cam.imshow(np.zeros((9, 16, 3), dtype=np.uint8), aspect="auto")
         self.ax_cam.set_xticks([])
         self.ax_cam.set_yticks([])
-        self.ax_cam2 = f.add_axes([x0, 0.255, wcol * 0.49, 0.215])
+        self.ax_cam2 = f.add_axes(R(x0, 0.255, wcol * 0.49, 0.215))
         _style_axes(self.ax_cam2, cam_titles[1])
         self.im_cam2 = self.ax_cam2.imshow(np.zeros((9, 16, 3), dtype=np.uint8), aspect="auto")
         self.ax_cam2.set_xticks([])
@@ -693,7 +708,7 @@ class Dashboard:
                        color=MUTED)
 
         # minimap zoom
-        self.ax_mini = f.add_axes([x0 + wcol * 0.51, 0.255, wcol * 0.49, 0.215])
+        self.ax_mini = f.add_axes(R(x0 + wcol * 0.51, 0.255, wcol * 0.49, 0.215))
         _style_axes(self.ax_mini, "Live minimap · 70 m around the mothership")
         a = self.ax_mini
         a.imshow(bm.rgb, extent=bm.extent, origin="upper", zorder=0, interpolation="antialiased")
@@ -720,7 +735,8 @@ class Dashboard:
         a.set_yticks([])
 
         # chart
-        self.ax_ch = f.add_axes([x0 + 0.03, 0.04, wcol * 0.42, 0.17])
+        self.ax_ch = f.add_axes(R(x0 + 0.03, 0.06, wcol * 0.42, 0.15) if self.kpi is not None
+                                else [x0 + 0.03, 0.04, wcol * 0.42, 0.17])
         _style_axes(self.ax_ch, "Biomass applied & coverage")
         self.ax_ch.set_xlim(0, res.t_end / 3600.0)
         tgt = float(res.cell_target_kg.sum() / 1000.0)
@@ -740,7 +756,7 @@ class Dashboard:
         self.vl = self.ax_ch.axvline(0, color="white", lw=0.6, alpha=0.6)
 
         # telemetry
-        self.ax_tel = f.add_axes([x0 + wcol * 0.51, 0.015, wcol * 0.49, 0.215])
+        self.ax_tel = f.add_axes(R(x0 + wcol * 0.51, 0.015, wcol * 0.49, 0.215))
         self.ax_tel.set_facecolor(PANEL)
         self.ax_tel.set_xticks([])
         self.ax_tel.set_yticks([])
@@ -924,11 +940,12 @@ class Dashboard:
             ph = PHASE_NAMES[stt["phase"]] if stt["phase"] else ("loading" if stt["sortie"] >= 0 else "docked")
             cell = f"{stt['cell']:4d}" if stt["cell"] >= 0 else "   -"
             lines.append(f" D{d}    {ph:<9s} {cell}  {100 * res.battery_at(d, t):3.0f}%")
-        lines += [
-            f"applied {applied:7.1f} / {self._target_t:,.0f} t  (MS {float(self._ms_cum[km - 1]) if km else 0.0:5.1f})",
-            f"sorties {n_sort:7,d}   swaps {n_swap:5d}",
-            f"unknown obstacles found: {n_det}",
-        ]
+        if self.kpi is None:
+            lines += [
+                f"applied {applied:7.1f} / {self._target_t:,.0f} t  (MS {float(self._ms_cum[km - 1]) if km else 0.0:5.1f})",
+                f"sorties {n_sort:7,d}   swaps {n_swap:5d}",
+                f"unknown obstacles found: {n_det}",
+            ]
         self.txt_tel.set_text("\n".join(lines))
 
         if self.cams is not None:
@@ -940,8 +957,11 @@ class Dashboard:
                 self.im_cam2.set_data(imgs["second"])
                 self.im_cam2.set_extent((0, imgs["second"].shape[1], imgs["second"].shape[0], 0))
         self.fig.canvas.draw()
-        buf = np.asarray(self.fig.canvas.buffer_rgba())[..., :3]
-        return buf.copy()
+        buf = np.asarray(self.fig.canvas.buffer_rgba())[..., :3].copy()
+        if self.kpi is not None:
+            y0, y1 = (int(round(self.H * (1 - v))) for v in self.CARD_STRIP[::-1])
+            buf = self.kpi.draw(buf, t, box=(int(0.008 * self.W), y0, int(0.992 * self.W), y1), bg_alpha=0.92)
+        return buf
 
     def close(self) -> None:
         plt.close(self.fig)
@@ -954,18 +974,17 @@ def render_dashboard(res: MissionResult, out_path: Path, fps: int = 24, target_s
     if max_frames is not None and len(times) > max_frames:
         sel = np.linspace(0, len(times) - 1, max_frames).astype(int)
         times, speed = times[sel], speed[sel]
+    from prunemaxxing.viz.video_io import video_writer
+
     dash = Dashboard(res, basemap=basemap, cam_provider=cam_provider)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    writer = imageio.get_writer(out_path, fps=fps, codec="libx264", quality=None, macro_block_size=8,
-                                pixelformat="yuv420p", ffmpeg_params=["-crf", "20", "-preset", "medium"])
     try:
-        for i, (t, sp) in enumerate(zip(times, speed)):
-            img = dash.frame(float(t), float(sp))
-            writer.append_data(img)
-            if still_every and i % still_every == 0:
-                imageio.imwrite(out_path.with_name(f"dashboard_still_{i:05d}.png"), img)
+        with video_writer(out_path, fps) as writer:
+            for i, (t, sp) in enumerate(zip(times, speed)):
+                img = dash.frame(float(t), float(sp))
+                writer.append_data(img)
+                if still_every and i % still_every == 0:
+                    imageio.imwrite(out_path.with_name(f"dashboard_still_{i:05d}.png"), img)
     finally:
-        writer.close()
         dash.close()
     return out_path
 

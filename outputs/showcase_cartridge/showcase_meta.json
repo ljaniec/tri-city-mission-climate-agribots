@@ -110,7 +110,10 @@
   "still_hero_ms_effector": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/hero_ms_effector.png",
   "still_hero_overview": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/hero_overview_mid_mission.png",
   "still_hero_obstacle": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/hero_obstacle_bypass.png",
-  "cinematic": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/cinematic.mp4",
-  "dashboard": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/dashboard.mp4"
+  "dashboard": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/dashboard.mp4",
+  "cinematic": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/cinematic_showcase_cartridge.mp4",
+  "impact_poster": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/impact_poster.png",
+  "replay_html": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/replay.html",
+  "infographic": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_cartridge/infographic.mp4"
  }
 }

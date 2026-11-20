@@ -14,12 +14,16 @@ python scripts/demo_coverage.py                       # headless mission + KPIs 
 python scripts/build_world.py                         # MuJoCo world assets (~30 s once, then cached)
 python scripts/render_showcase.py --payload dust      # full showcase -> outputs/showcase_dust/
 python scripts/render_showcase.py --payload cartridge # -> outputs/showcase_cartridge/
+python scripts/render_impact_poster.py                # two-mode climate impact one-pager -> outputs/impact/
 python scripts/validate_rover_mujoco.py               # MuJoCo multibody closed-loop tracking check
 pytest
 ```
 
 Headless MuJoCo needs EGL (`MUJOCO_GL=egl`; the scripts also set the NVIDIA vendor file).
 `--skip-mujoco` renders everything except the 3D views; `--preview` makes a short, cheap run.
+`--skip-mujoco --skip-dashboard` refreshes only the posters, infographic, HTML replay and
+impact one-pager (about 70 s). Videos are encoded to a hidden temp file and swapped in only
+when complete, so the previous video stays playable during a re-render.
 
 ## What the simulation does
 
@@ -60,8 +64,11 @@ Headless MuJoCo needs EGL (`MUJOCO_GL=egl`; the scripts also set the NVIDIA vend
 
 | File | Content |
 |------|---------|
-| `dashboard.mp4` | live map (planned vs actual route, re-plans, drone sorties, mulch), MuJoCo chase + drone cams, minimap, charts, telemetry |
-| `cinematic.mp4` | MuJoCo shots: depot departure, swarm launch, drone follow, drone effector close-up, 40 ft chip blower / air-cannon shot, furrow tracking, obstacle bypass, time-lapse |
+| `dashboard.mp4` | live map (planned vs actual route, re-plans, drone sorties, mulch), MuJoCo chase + drone cams, minimap, charts, telemetry, and a strip of live KPI cards along the bottom |
+| `cinematic_showcase_<payload>.mp4` | MuJoCo shots: depot departure, swarm launch, drone follow, drone effector close-up, 40 ft chip blower / air-cannon shot, furrow tracking, obstacle bypass, time-lapse. A lower-third KPI bar counts up in sync with the mission clock |
+| `infographic.mp4` | 60 s motion-graphics infographic synced to the mission: progress ring, live counters, material-flow Sankey, drone activity lanes, drones vs mothership split, parcel bars, event log, and an impact outro with sources |
+| `replay.html` | interactive offline replay in one file (no network): play/scrub/speed, follow the mothership, layer toggles, live KPI panel, charts and event list. Shareable state in the URL (`#t=0.42&play=0&follow=1`); press `?` for keyboard shortcuts |
+| `impact_poster.png` | climate impact one-pager for this mode (3840×2160) |
 | `map_poster.png` | whole-mission map + detour insets + station close-up + KPI card |
 | `tracking_report.png` | cross-track error, steer/speed command vs actual, MuJoCo physics check |
 | `hero_*.png` | MuJoCo stills (`hero_ms_effector.png`: chip blower or air cannons firing) |
@@ -81,6 +88,30 @@ Headless MuJoCo needs EGL (`MUJOCO_GL=egl`; the scripts also set the NVIDIA vend
 | Hidden obstacles | 4/4 detected, bypassed online (+202 m) | 4/4 |
 | Cost (€/1000 m²) | 1,942 vs REGENSOL 2,408.77 (−467 €, 91 % of the overhead recovered) | 570 (528 of it cartridge material) |
 
+## Climate impact (`outputs/impact/`)
+
+The counterfactual is open pile burning of the same prunings (`prunemaxxing/kpis/impact.py`).
+Every factor carries its source, and the posters print them as footnotes.
+
+| | Dust | Cartridge |
+|---|---|---|
+| Climate benefit (soil carbon + avoided CH₄/N₂O) | 463 t CO₂e (399.6 + 63.8), 51 t/ha | 37.1 t CO₂e (32.0 + 5.1), 4.1 t/ha |
+| PM2.5 smoke avoided | 2,705 kg (+ 63.8 t CO, 1,734 kg NOx) | 216 kg |
+| Nitrogen kept in the soil | 6,357 kg (+0.45 pp organic carbon, +1.0 mm plant-available water) | 509 kg |
+| Equivalent | yearly greenhouse gases of ≈ 84 people in Spain | ≈ 7 people |
+| Money | €42,435 saved vs REGENSOL on 9.08 ha | 652,890 seeds in 217,630 cartridges |
+
+Sources and assumptions:
+- **Burning emissions:** IPCC 2006 Guidelines Vol. 4 Table 2.5 (agricultural residues): CH₄ 2.7, N₂O 0.07, CO 92, NOx 2.5 and CO₂ 1515 g/kg dry matter. PM2.5 is 3.9 g/kg (Andreae & Merlet 2001).
+- **Warming potentials:** GWP100 from IPCC AR6 WG1 Table 7.15: CH₄ 27, N₂O 273.
+- **Soil:** 44 t CO₂e/ha and 700 kg N/ha at 15 kg/m², from the REGENSOL trial figures in the AGR-E2 brief, scaled linearly by dose. Plant-available water rises 1.16 mm per 100 mm of soil per point of soil organic carbon (Minasny & McBratney 2018).
+- **Equivalence:** 5.5 t CO₂e per person per year, Spain 2024 (Eurostat `sdg_13_10`).
+- **Assumed:** dry-matter fraction 0.60 and combustion fraction 0.85.
+- **Excluded:** biogenic CO₂ (1,051 t for dust) is shown for context only and never added to the totals.
+
+`impact_poster.png` tells the two-mode story; `impact_dust.png` and `impact_cartridge.png`
+are single-mode pages, and `impact_summary.json` holds the numbers and the factor table.
+
 MuJoCo multibody check (4 t Ackermann rover on the DEM heightfield, same controller):
 0.8 cm RMS on settled lanes and 4.7 cm in headlands (`outputs/validation/`).
 
@@ -91,8 +122,9 @@ MuJoCo multibody check (4 t Ackermann rover on the DEM heightfield, same control
 | `prunemaxxing.geo` | DEM, CRS, cell twin, site model (`site.py`) |
 | `prunemaxxing.planning` | `route_planner`, `path_geometry`, `vehicle`, `swarm`, `ms_effectors`, `mission`, `payload_modes` |
 | `prunemaxxing.sim` | `world_frame` (1:1 frame + terrain), `world_builder` (MuJoCo world; `world_robots`, `world_effectors`, `world_props`, `world_textures`, `world_meshes`), `replay`, `rover_physics` |
-| `prunemaxxing.viz` | `basemap`, `mission_viz` (poster, tracking report, dashboard) |
-| `prunemaxxing.logistics`, `prunemaxxing.kpis` | macro supply/deficit, legacy KPI helpers |
+| `prunemaxxing.viz` | `basemap`, `mission_viz` (poster, tracking report, dashboard), `mission_stats` (`MissionTimeline`: every KPI at any mission time), `kpi_overlay` (animated KPI cards for the videos), `infographic`, `html_replay`, `impact_poster`, `video_io` |
+| `prunemaxxing.kpis` | `impact` (climate impact vs pile burning, with sourced factors), legacy KPI helpers |
+| `prunemaxxing.logistics` | macro supply/deficit |
 
 Legacy v1 modules (`mothership_cpp`, `simulator`, `drone_allocator`, `path_tracker`,
 `sim/mujoco_runner`, `viz/showcase`) are kept for reference only. The showcase no longer

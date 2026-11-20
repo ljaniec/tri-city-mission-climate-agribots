@@ -474,7 +474,8 @@ class ReplayScene:
 # ---------------------------------------------------------------------------
 
 
-def _caption(img: np.ndarray, title: str, sub: str = "", corner: str = "", alpha: float = 1.0) -> np.ndarray:
+def _caption(img: np.ndarray, title: str, sub: str = "", corner: str = "", alpha: float = 1.0,
+             lift: float = 0.0) -> np.ndarray:
     if alpha <= 0.01 or (not title and not corner):
         return img
     im = Image.fromarray(img).convert("RGBA")
@@ -484,7 +485,7 @@ def _caption(img: np.ndarray, title: str, sub: str = "", corner: str = "", alpha
     s = H / 1080.0
     if title:
         f1, f2 = _font(int(40 * s)), _font(int(24 * s))
-        x, y = int(60 * s), int(H - 150 * s)
+        x, y = int(60 * s), int(H - (150 + lift) * s)
         tw = max(dr.textlength(title, font=f1), dr.textlength(sub, font=f2) if sub else 0)
         dr.rounded_rectangle([x - 24 * s, y - 20 * s, x + tw + 30 * s, y + (98 if sub else 60) * s],
                              radius=int(14 * s), fill=(8, 12, 8, int(170 * alpha)))
@@ -697,14 +698,16 @@ def plan_cinematic(scene: ReplayScene) -> list[Shot]:
 
 
 def render_cinematic(scene: ReplayScene, out_path: Path, fps: int = 24, size=(1920, 1080),
-                     preview: bool = False) -> Path:
+                     preview: bool = False, kpi_bar: bool = True) -> Path:
+    from prunemaxxing.viz.kpi_overlay import KpiOverlay
+    from prunemaxxing.viz.video_io import video_writer
+
     shots = plan_cinematic(scene)
     if preview:
         size = (960, 540)
-    writer = imageio.get_writer(out_path, fps=fps, codec="libx264", quality=None, macro_block_size=8,
-                                pixelformat="yuv420p", ffmpeg_params=["-crf", "20", "-preset", "medium"])
-    try:
-        for sh in shots:
+    overlay = KpiOverlay(scene.res) if kpi_bar else None
+    with video_writer(out_path, fps) as writer:
+        for k, sh in enumerate(shots):
             n = max(1, int(round(sh.seconds * fps * (0.25 if preview else 1.0))))
             for i in range(n):
                 u = i / max(1, n - 1)
@@ -714,8 +717,10 @@ def render_cinematic(scene: ReplayScene, out_path: Path, fps: int = 24, size=(19
                 fade = min(1.0, i / (0.4 * fps), (n - 1 - i) / (0.4 * fps) + 0.15)
                 speed_txt = "real time" if sh.speed <= 1.01 else (f"x{sh.speed:.0f}" if sh.speed < 200 else
                                                                   f"time-lapse x{sh.speed:,.0f}")
-                img = _caption(img, sh.title, sh.sub, f"{_clock(t)}  ·  {speed_txt}", alpha=max(0.0, fade))
+                bar_a = 0.0 if overlay is None or k == 0 else (min(1.0, i / (0.6 * fps)) if k == 1 else 1.0)
+                if bar_a > 0.0:
+                    img = overlay.draw(img, t, compact=True, alpha=bar_a)
+                img = _caption(img, sh.title, sh.sub, f"{_clock(t)}  ·  {speed_txt}", alpha=max(0.0, fade),
+                               lift=66.0 if overlay is not None and k > 0 else 0.0)
                 writer.append_data(img)
-    finally:
-        writer.close()
     return out_path

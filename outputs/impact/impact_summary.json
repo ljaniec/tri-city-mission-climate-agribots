@@ -1,0 +1,229 @@
+{
+ "summaries": {
+  "dust": {
+   "material_t": 1360.19,
+   "area_ha": 9.082,
+   "soil_co2e_t": 399.60800000000006,
+   "n_retained_kg": 6357.400000000001,
+   "burn_avoided_dm_t": 693.6969,
+   "burn_ghg_avoided_co2e_t": 63.82705176900001,
+   "burn_ch4_avoided_kg": 1872.9816300000002,
+   "burn_n2o_avoided_kg": 48.558783000000005,
+   "pm25_avoided_kg": 2705.41791,
+   "co_avoided_kg": 63820.1148,
+   "nox_avoided_kg": 1734.24225,
+   "biogenic_co2_not_released_t": 1050.9508035000001,
+   "soc_increase_pp": 0.45,
+   "awc_gain_mm": 1.044,
+   "awc_gain_m3": 94.81608000000001,
+   "total_co2e_t": 463.4350517690001,
+   "co2e_t_per_ha": 51.02786300033033,
+   "payload_mode": "dust",
+   "mission_time_h": 108.73,
+   "cost_eur_per_1000m2": 1941.53,
+   "regensol_eur_per_1000m2": 2408.77,
+   "conventional_eur_per_1000m2": 1895.56,
+   "saving_eur_per_1000m2": 467.24,
+   "saving_eur_total": 42434.7368,
+   "drone_energy_kwh": 2083.5,
+   "drone_energy_kwh_per_t": 1.5317712966570847,
+   "bed_compaction_pct": 0.638,
+   "cartridges_placed": null,
+   "seeds_placed": null,
+   "species": []
+  },
+  "cartridge": {
+   "material_t": 108.82,
+   "area_ha": 9.082,
+   "soil_co2e_t": 31.968640000000004,
+   "n_retained_kg": 508.59200000000004,
+   "burn_avoided_dm_t": 55.49819999999999,
+   "burn_ghg_avoided_co2e_t": 5.106389382,
+   "burn_ch4_avoided_kg": 149.84514,
+   "burn_n2o_avoided_kg": 3.8848739999999995,
+   "pm25_avoided_kg": 216.44297999999995,
+   "co_avoided_kg": 5105.834399999999,
+   "nox_avoided_kg": 138.74549999999996,
+   "biogenic_co2_not_released_t": 84.07977299999999,
+   "soc_increase_pp": 0.036000000000000004,
+   "awc_gain_mm": 0.08352000000000001,
+   "awc_gain_m3": 7.585286400000002,
+   "total_co2e_t": 37.075029382000004,
+   "co2e_t_per_ha": 4.082253840783968,
+   "payload_mode": "cartridge",
+   "mission_time_h": 30.63,
+   "cost_eur_per_1000m2": 569.97,
+   "regensol_eur_per_1000m2": 2408.77,
+   "conventional_eur_per_1000m2": 1895.56,
+   "saving_eur_per_1000m2": null,
+   "saving_eur_total": null,
+   "drone_energy_kwh": 434.5,
+   "drone_energy_kwh_per_t": 3.9928321999632423,
+   "bed_compaction_pct": 0.638,
+   "cartridges_placed": 217630,
+   "seeds_placed": 652890,
+   "species": [
+    "Quercus_ilex",
+    "Pinus_halepensis",
+    "Ceratonia_siliqua"
+   ]
+  }
+ },
+ "factor_table": [
+  {
+   "key": "dry_matter_frac",
+   "value": 0.6,
+   "unit": "kg DM / kg fresh",
+   "label": "dry matter of fresh chipped prunings",
+   "source": "assumption (40 % moisture)",
+   "assumed": true
+  },
+  {
+   "key": "combustion_frac",
+   "value": 0.85,
+   "unit": "-",
+   "label": "fraction of a pruning pile actually combusted",
+   "source": "IPCC 2006 V4 Table 2.6 range 0.8-0.9 for crop residues",
+   "assumed": true
+  },
+  {
+   "key": "ef_ch4",
+   "value": 2.7,
+   "unit": "g / kg DM",
+   "label": "CH4 from open burning",
+   "source": "IPCC 2006 V4 Table 2.5, agricultural residues",
+   "assumed": false
+  },
+  {
+   "key": "ef_n2o",
+   "value": 0.07,
+   "unit": "g / kg DM",
+   "label": "N2O from open burning",
+   "source": "IPCC 2006 V4 Table 2.5, agricultural residues",
+   "assumed": false
+  },
+  {
+   "key": "ef_co",
+   "value": 92.0,
+   "unit": "g / kg DM",
+   "label": "CO from open burning",
+   "source": "IPCC 2006 V4 Table 2.5, agricultural residues",
+   "assumed": false
+  },
+  {
+   "key": "ef_nox",
+   "value": 2.5,
+   "unit": "g / kg DM",
+   "label": "NOx from open burning",
+   "source": "IPCC 2006 V4 Table 2.5, agricultural residues",
+   "assumed": false
+  },
+  {
+   "key": "ef_co2",
+   "value": 1515.0,
+   "unit": "g / kg DM",
+   "label": "biogenic CO2 from open burning (context only)",
+   "source": "IPCC 2006 V4 Table 2.5, agricultural residues",
+   "assumed": false
+  },
+  {
+   "key": "ef_pm25",
+   "value": 3.9,
+   "unit": "g / kg DM",
+   "label": "PM2.5 from open burning",
+   "source": "Andreae & Merlet 2001, agricultural residues",
+   "assumed": false
+  },
+  {
+   "key": "gwp_ch4",
+   "value": 27.0,
+   "unit": "kg CO2e / kg",
+   "label": "GWP100 of non-fossil CH4",
+   "source": "IPCC AR6 WG1 Table 7.15",
+   "assumed": false
+  },
+  {
+   "key": "gwp_n2o",
+   "value": 273.0,
+   "unit": "kg CO2e / kg",
+   "label": "GWP100 of N2O",
+   "source": "IPCC AR6 WG1 Table 7.15",
+   "assumed": false
+  },
+  {
+   "key": "soil_co2e",
+   "value": 44.0,
+   "unit": "t CO2e / ha",
+   "label": "soil carbon stored at 15 kg/m2 mulch",
+   "source": "REGENSOL trials (AGR-E2 brief), scaled by dose",
+   "assumed": false
+  },
+  {
+   "key": "n_retained",
+   "value": 700.0,
+   "unit": "kg N / ha",
+   "label": "nitrogen retained at 15 kg/m2",
+   "source": "REGENSOL trials (AGR-E2 brief), scaled by dose",
+   "assumed": false
+  },
+  {
+   "key": "soc_increase",
+   "value": 0.45,
+   "unit": "pp SOC",
+   "label": "soil organic carbon increase at 15 kg/m2",
+   "source": "REGENSOL trials (AGR-E2 brief), scaled by dose",
+   "assumed": false
+  },
+  {
+   "key": "awc_per_soc",
+   "value": 1.16,
+   "unit": "mm / 100 mm soil per pp SOC",
+   "label": "plant-available water per 1 pp SOC",
+   "source": "Minasny & McBratney 2018, Eur. J. Soil Sci. 69:39",
+   "assumed": false
+  },
+  {
+   "key": "depth_cm",
+   "value": 20.0,
+   "unit": "cm",
+   "label": "incorporation depth",
+   "source": "AGR-E2 brief",
+   "assumed": false
+  }
+ ],
+ "equivalences": {
+  "spain_ghg_per_capita": {
+   "value": 5.5,
+   "unit": "t CO2e / person / yr",
+   "label": "greenhouse-gas emissions per resident of Spain, 2024",
+   "source": "Eurostat sdg_13_10, total excl. LULUCF and memo items (EEA inventory data, updated 22 Apr 2026)"
+  }
+ },
+ "footnotes": [
+  "Dry matter of fresh chipped prunings: 0.6 kg DM / kg fresh \u2020 \u2014 assumption (40 % moisture)",
+  "Fraction of a pruning pile actually combusted: 0.85 \u2020 \u2014 IPCC 2006 V4 Table 2.6 range 0.8-0.9 for crop residues",
+  "From open burning (g / kg DM): CH\u2084 2.7 \u00b7 N\u2082O 0.07 \u00b7 CO 92 \u00b7 NOx 2.5 \u00b7 biogenic CO\u2082 1,515 (context only) \u2014 IPCC 2006 V4 Table 2.5, agricultural residues",
+  "PM2.5 from open burning: 3.9 g / kg DM \u2014 Andreae & Merlet 2001, agricultural residues",
+  "GWP100 (kg CO\u2082e / kg): non-fossil CH\u2084 27 \u00b7 N\u2082O 273 \u2014 IPCC AR6 WG1 Table 7.15",
+  "soil carbon stored at 15 kg/m\u00b2 mulch 44 t CO\u2082e / ha \u00b7 nitrogen retained at 15 kg/m\u00b2 700 kg N / ha \u00b7 soil organic carbon increase at 15 kg/m\u00b2 0.45 pp SOC \u2014 REGENSOL trials (AGR-E2 brief), scaled by dose",
+  "Plant-available water per 1 pp SOC: 1.16 mm / 100 mm soil per pp SOC \u2014 Minasny & McBratney 2018, Eur. J. Soil Sci. 69:39",
+  "Incorporation depth: 20 cm \u2014 AGR-E2 brief",
+  "\u00b9 Everyday equivalence: 5.5 t CO\u2082e / person / yr (greenhouse-gas emissions per resident of Spain, 2024) \u2014 Eurostat sdg_13_10, total excl. LULUCF and memo items (EEA inventory data, updated 22 Apr 2026)"
+ ],
+ "notes": [
+  "Biogenic CO2 from pile burning is context only and never added to total_co2e_t.",
+  "The two modes are alternative missions on the same parcels; their figures are not summed."
+ ],
+ "source": "pickles",
+ "outputs": {
+  "impact_poster": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/impact/impact_poster.png",
+  "impact_dust": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/impact/impact_dust.png",
+  "impact_cartridge": "/home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/impact/impact_cartridge.png"
+ },
+ "render_s": {
+  "impact_poster": 2.72,
+  "impact_dust": 1.49,
+  "impact_cartridge": 1.23
+ },
+ "dpi": 200
+}

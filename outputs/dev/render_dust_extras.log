@@ -1,0 +1,18 @@
+[12:58:59] site + digital twin
+[12:58:59] mission simulation (dust, 4 drones)
+[12:59:02]   108.7 h mission, 45,637 sorties, 1360 t, lane x-track RMS 1.1 cm, 4 hidden obstacles found (2.3 s wall)
+[12:59:02] basemap + poster + tracking report
+[12:59:06] climate impact one-pager
+[12:59:08] interactive HTML replay
+[12:59:08] infographic video
+[13:00:17] done -> /home/ljaniec/Repositories/tri-city-mission-climate-agribots/outputs/showcase_dust
+  control_log        outputs/showcase_dust/control_log.csv
+  sorties            outputs/showcase_dust/sorties.csv
+  events             outputs/showcase_dust/events.json
+  kpis               outputs/showcase_dust/kpis.json
+  detours            outputs/showcase_dust/detours.json
+  map_poster         outputs/showcase_dust/map_poster.png
+  tracking_report    outputs/showcase_dust/tracking_report.png
+  impact_poster      outputs/showcase_dust/impact_poster.png
+  replay_html        outputs/showcase_dust/replay.html
+  infographic        outputs/showcase_dust/infographic.mp4
