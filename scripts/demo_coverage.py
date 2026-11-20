@@ -11,13 +11,19 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from prunemaxxing.config import DEFAULT_DEM_PATH, DEFAULT_SWARM_SIZE, PilotSpec
+from prunemaxxing.config import (
+    DEFAULT_DEM_PATH,
+    DEFAULT_GEOJSON_PATH,
+    DEFAULT_SWARM_SIZE,
+    PilotSpec,
+)
 from prunemaxxing.geo.dem import load_dem
 from prunemaxxing.geo.grid import (
     build_field_twin_from_dem,
     crop_target_field,
     select_pilot_window,
 )
+from prunemaxxing.geo.polygons import apply_map_layers, load_map_layers
 from prunemaxxing.logistics.macro_router import plan_macro_logistics
 from prunemaxxing.planning.simulator import run_coverage_simulation
 
@@ -29,6 +35,7 @@ def main() -> int:
     parser.add_argument("--kg-per-m2", type=float, default=15.0)
     parser.add_argument("--swarm", type=int, default=DEFAULT_SWARM_SIZE)
     parser.add_argument("--passes", type=int, default=4)
+    parser.add_argument("--geojson", default=str(ROOT / DEFAULT_GEOJSON_PATH))
     parser.add_argument("--json-out", default="")
     args = parser.parse_args()
 
@@ -40,20 +47,13 @@ def main() -> int:
     pilot_dem = select_pilot_window(target, area_ha=pilot.area_ha, anchor="sw")
     twin = build_field_twin_from_dem(pilot_dem, target_kg_per_m2=pilot.target_kg_per_m2)
 
-    # Synthetic weed exclusion patches (hard planner constraints)
-    cx = twin.get(twin.nrows // 3, twin.ncols // 3)
-    twin.apply_weed_patches(
-        [(cx.easting, cx.northing)], radius_m=15.0, species="Sorghum_halepense"
-    )
-    cy = twin.get(2 * twin.nrows // 3, 2 * twin.ncols // 3)
-    twin.apply_weed_patches(
-        [(cy.easting, cy.northing)], radius_m=12.0, species="Cyperus_rotundus"
-    )
+    layers = load_map_layers(args.geojson)
+    apply_map_layers(twin, layers)
 
     result = run_coverage_simulation(
         twin,
         swarm_size=args.swarm,
-        tethered=True,
+        wireless_power=True,
         max_passes=args.passes,
     )
 
