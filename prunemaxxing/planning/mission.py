@@ -42,11 +42,26 @@ from prunemaxxing.planning import ms_effectors as fx
 from prunemaxxing.planning.path_geometry import arclength, curvature, plan_detour, splice
 from prunemaxxing.planning.payload_modes import PayloadMode, PayloadSpec, get_payload_spec
 from prunemaxxing.planning.route_planner import GlobalPlan, PlannerConfig, plan_global_route
+from prunemaxxing.planning.separation import (
+    DRONE_BELOW_M,
+    DRONE_RADIUS_M,
+    H_SEP_M,
+    MS_ENVELOPE,
+    OWN_PAD_COLUMN_M,
+    V_SEP_M,
+    hull_clearance,
+    track_velocity,
+)
+from prunemaxxing.planning.separation import conflict as sep_conflict
 from prunemaxxing.planning.swarm import (
+    DOCK_OFFSETS,
+    GLIDE_SLOPE,
+    PHASE_APPLY,
     PHASE_DOCKED,
     DroneParams,
     SortieTrajectory,
     cell_patches,
+    cruise_agl,
     dock_xy,
     smooth_heading,
     sortie_energy_kwh,
@@ -63,6 +78,11 @@ from prunemaxxing.sim.world_frame import Terrain, frame_for_site, load_terrain
 
 LABEL_CODES = {"transit": 0, "lane": 1, "headland": 2, "weed_detour": 3, "obstacle_detour": 4, "station": 5}
 LABEL_NAMES = {v: k for k, v in LABEL_CODES.items()}
+HOLD_STEP_S = 0.5  # deconfliction hold granularity on deck
+MAX_HOLD_S = 150.0
+MS_PLAN_CLEARANCE_M = 2.0  # hull clearance the patch keep-out is sized for (covers corner rounding)
+MS_FLY_CLEARANCE_M = 1.0  # minimum accepted on the actual track
+NEAR_MS, FOR_DRONES = -2, -1  # patch classes besides the effector worker index
 
 
 @dataclass
@@ -165,8 +185,8 @@ class MissionResult:
             t_launch = self.sorties["t_launch"][k]
             state["sortie"] = k
             state["cell"] = int(self.sorties["cell"][k])
-            if t < t_launch:  # loading on deck
-                state["payload"] = float((t - t_load[j]) / max(t_launch - t_load[j], 1e-6))
+            if t < t_launch:  # loading on deck (then holding for a clear airspace slot)
+                state["payload"] = float(min(1.0, (t - t_load[j]) / max(self.spec.load_time_s, 1e-6)))
                 return state
             tr = self.trajectory(k)
             x = float(np.interp(t, tr.t, tr.actual[:, 0]))
@@ -370,7 +390,7 @@ def _cached_traj(owner_id: int, k: int, res: MissionResult) -> SortieTrajectory:
         pattern = res.patterns[cell][int(S["pattern"][k])]
         tr = synthesize_trajectory(
             k, float(S["t_launch"][k]), np.array([S["dock_x"][k], S["dock_y"][k]]), pattern, res.spec,
-            res.cfg.drone, res.ground_z, np.asarray(res.cfg.wind_mean_mps),
+            res.cfg.drone, res.ground_z, np.asarray(res.cfg.wind_mean_mps), cruise_agl(res.cfg.drone, int(S["drone"][k])),
         )
         tr.yaw = smooth_heading(tr, res.ms_state_at(float(S["t_launch"][k]))["yaw"])
         _TRAJ_CACHE[key] = tr
@@ -399,6 +419,11 @@ class _Sim:
         self.terrain = load_terrain(fr, site.width_m / 2 + 70, site.height_m / 2 + 70, res_m=2.0)
         self.vp = cfg.vehicle
         self.dp = cfg.drone
+        self.wind_mean = np.asarray(cfg.wind_mean_mps)
+        self.hold_s = 0.0  # total deconfliction hold on deck
+        # cell -> (patches booked for the next dwell, kg budget or None = whatever is left)
+        self.carry: dict[int, tuple[list[int], float | None]] = {}
+        self.last_sid = len(self.plan.stations) - 1
 
         self.path = self.plan.path.copy()
         self.labels = self.plan.labels.copy()
@@ -611,67 +636,199 @@ class _Sim:
             return self._tender_update(max(t, ready))
         return t
 
-    def _effector_split(self, cells: list[int], cx: float, cy: float, yaw: float):
+    def _effector_split(self, cells: list[int], cx: float, cy: float, yaw: float, allow_defer: bool = True):
         """Assign each cell's in-reach patches to the mothership effector workers.
 
-        Returns (workers, ms_pats, drone_pats): workers = [(kind, side)], ms_pats[c] =
-        {worker: [pattern idx]}, drone_pats[c] = [pattern idx] left for the swarm.
+        Returns (workers, ms_pats, drone_pats, deferred): workers = [(kind, side)],
+        ms_pats[c] = {worker: [pattern idx]}, drone_pats[c] = [pattern idx] left for
+        the swarm, deferred[c] = patches next to the parked mothership that no
+        effector reaches; drones would have to fly over the hull, so they are
+        carried to the next station (dropped at the last one).
         """
-        ep = self.cfg.effectors
         cart = self.spec.mode is PayloadMode.CARTRIDGE
         workers = [(fx.KIND_CANNON, 0), (fx.KIND_CANNON, 1)] if cart else [(fx.KIND_BLOWER, -1)]
-        ms_xy = np.array([cx, cy])
-        tip = fx.mount_world(cx, cy, yaw, fx.CHUTE_TIP)
-        pivots = [fx.mount_world(cx, cy, yaw, pv) for pv in fx.CANNON_PIVOTS]
         ms_pats: dict[int, dict[int, list[int]]] = {}
         drone_pats: dict[int, list[int]] = {}
+        deferred: dict[int, list[int]] = {}
         for c in cells:
-            pats = self._patterns_for(c)
+            allowed = self.carry[c][0] if c in self.carry else None
             mine: dict[int, list[int]] = {}
             rest: list[int] = []
-            for pi, pat in enumerate(pats):
-                w = -1
-                if ep.enabled:
-                    if cart:
-                        side = fx.side_of(ms_xy, yaw, pat.mean(axis=0))
-                        if fx.reachable(pat, pivots[side], ep):
-                            w = side
-                    elif fx.reachable(pat, tip, ep):
-                        w = 0
+            later: list[int] = []
+            for pi, pat in enumerate(self._patterns_for(c)):
+                if allowed is not None and pi not in allowed:
+                    continue
+                w = self._classify(pat, cx, cy, yaw)
                 if w >= 0:
                     mine.setdefault(w, []).append(pi)
+                elif w == NEAR_MS:
+                    if allow_defer:
+                        later.append(pi)
                 else:
                     rest.append(pi)
             ms_pats[c] = mine
             drone_pats[c] = rest
-        return workers, ms_pats, drone_pats
+            deferred[c] = later
+        return workers, ms_pats, drone_pats, deferred
+
+    def _classify(self, pat: np.ndarray, cx: float, cy: float, yaw: float) -> int:
+        """Effector worker index for a patch, else ``NEAR_MS`` or ``FOR_DRONES``."""
+        ep = self.cfg.effectors
+        if ep.enabled:
+            if self.spec.mode is PayloadMode.CARTRIDGE:
+                side = fx.side_of(np.array([cx, cy]), yaw, pat.mean(axis=0))
+                piv = fx.mount_world(cx, cy, yaw, fx.CANNON_PIVOTS[side])
+                if fx.reachable(pat, piv, ep) and fx.in_cannon_arc(pat, piv, yaw, side, ep):
+                    return side
+            elif fx.reachable(pat, fx.mount_world(cx, cy, yaw, fx.CHUTE_TIP), ep):
+                return 0
+        return NEAR_MS if self._near_ms(pat, cx, cy, yaw) else FOR_DRONES
+
+    def _prework_last_station(self, current: list[int]) -> None:
+        """Book the patches the last station cannot serve (beside its own hull) for now."""
+        k = self.last_sid
+        s_k = float(self.station_s[k])
+        i = int(np.clip(np.searchsorted(self.s, s_k), 1, len(self.path) - 2))
+        cx, cy = self.path[i]
+        yaw = math.atan2(*(self.path[i + 1] - self.path[i - 1])[::-1])
+        for c in self.plan.stations[k].cells:
+            rem = self.target[c] - self.deposited[c]
+            if self.blocked[c] or rem <= 0.05 or c in self.carry or c in current:
+                continue
+            pats = self._patterns_for(c)
+            near = [pi for pi, pat in enumerate(pats) if self._near_ms(pat, cx, cy, yaw, pad_m=2.0)]
+            if near:
+                self.carry[c] = (near, rem * len(near) / len(pats))
+
+    def _near_ms(self, pat: np.ndarray, cx: float, cy: float, yaw: float, pad_m: float = 0.0) -> bool:
+        """Drone work here would bring the rotor disc over / against the parked mothership hull."""
+        seg = np.concatenate([[0.0], np.cumsum(np.hypot(*np.diff(pat, axis=0).T))])
+        u = np.linspace(0.0, seg[-1], max(2, int(seg[-1] / 0.5) + 1))
+        dx, dy = np.interp(u, seg, pat[:, 0]) - cx, np.interp(u, seg, pat[:, 1]) - cy
+        c, s = math.cos(yaw), math.sin(yaw)
+        bx, by = c * dx + s * dy, -s * dx + c * dy
+        x0, x1, y0, y1, zt = MS_ENVELOPE
+        m = pad_m + DRONE_RADIUS_M + max(0.0, zt + DRONE_BELOW_M + MS_PLAN_CLEARANCE_M - self.spec.apply_alt_agl_m) / GLIDE_SLOPE
+        return bool(np.any((bx > x0 - m) & (bx < x1 + m) & (by > y0 - m) & (by < y1 + m)))
+
+    def _ms_gap(self, di: int, tr: SortieTrajectory, dock: np.ndarray, cx: float, cy: float, yaw: float,
+                gz: float) -> float:
+        """Smallest drone-envelope to hull gap (m) outside the drone's own pad column; -inf when
+        the track breaks separation from a drone parked on another pad."""
+        P = tr.actual
+        away = np.hypot(P[:, 0] - dock[0], P[:, 1] - dock[1]) >= OWN_PAD_COLUMN_M
+        if not away.any():
+            return math.inf
+        P = P[away]
+        for o in range(self.cfg.swarm_size):
+            if o == di:
+                continue
+            pad = dock_xy(cx, cy, yaw, o)
+            pz = float(self._z(pad[0], pad[1])) + self.dp.deck_height_m
+            h = np.hypot(P[:, 0] - pad[0], P[:, 1] - pad[1])
+            if np.any((h < H_SEP_M + 0.3) & (np.abs(P[:, 2] - pz) < V_SEP_M + 0.2)):
+                return -math.inf
+        return float(hull_clearance(P[:, 0], P[:, 1], P[:, 2], cx, cy, yaw, gz).min())
+
+    def _cell_score(self, c: int, di: int, body: dict[int, tuple[float, float]], drones: list[dict]) -> float:
+        """Lower is better: near cells in the drone's own quadrant, clear of cells other drones work."""
+        bx, by = body[c]
+        qx, qy = np.sign(DOCK_OFFSETS[di % len(DOCK_OFFSETS)])
+        score = math.hypot(bx, by)
+        if bx * qx < -3.0 or by * qy < -3.0:
+            score += 25.0
+        for o, od in enumerate(drones):
+            oc = od.get("cell", -1)
+            if o == di or oc not in body:
+                continue
+            gap = math.hypot(body[oc][0] - bx, body[oc][1] - by)
+            score += 200.0 if gap < 1e-6 else (40.0 if gap < 15.0 else 0.0)
+        return score
+
+    def _clear_hold(self, di: int, tr: SortieTrajectory, dock: np.ndarray, t_ready: float,
+                    booked: list[tuple]) -> float:
+        """Shortest hold on deck (s) after which the sortie keeps separation from every booked flight."""
+        rel, xyz = tr.t, tr.actual
+        vel = track_velocity(rel, xyz)
+        col_r = OWN_PAD_COLUMN_M - 0.25  # plan the relaxed pad rule on a tighter column than the audit uses
+        in_col = np.hypot(xyz[:, 0] - dock[0], xyz[:, 1] - dock[1]) < col_r
+        horizon = t_ready + MAX_HOLD_S + rel[-1]
+        others = [b[1:] for b in booked if b[0] != di and b[1][-1] >= t_ready and b[1][0] <= horizon]
+        if not others:
+            return 0.0
+        half_dt = 0.5 * self.dp.sample_dt_s
+
+        def blocked(holds: np.ndarray) -> np.ndarray:
+            T = t_ready + holds[:, None] + rel[None, :]
+            bad = np.zeros(len(holds), dtype=bool)
+            for bt, bx, bv, bdock in others:
+                inside = (T >= bt[0]) & (T <= bt[-1])
+                if not inside.any():
+                    continue
+                q = np.stack([np.interp(T, bt, bx[:, j]) for j in range(3)], axis=-1)
+                dv = vel[None, :, :] - np.stack([np.interp(T, bt, bv[:, j]) for j in range(3)], axis=-1)
+                pad = in_col[None, :] & (np.hypot(q[..., 0] - bdock[0], q[..., 1] - bdock[1]) < col_r)
+                # linear motion between samples can close the gap by at most |dv| * dt / 2
+                c = sep_conflict(xyz[None, :, :], q, both_pad=pad, slack_h=0.15 + half_dt * np.hypot(dv[..., 0], dv[..., 1]),
+                                 slack_v=0.1 + half_dt * np.abs(dv[..., 2]))
+                bad |= (c & inside).any(axis=1)
+            return bad
+
+        if not blocked(np.zeros(1))[0]:
+            return 0.0
+        holds = np.arange(HOLD_STEP_S, MAX_HOLD_S + 1e-9, HOLD_STEP_S)
+        ok = np.flatnonzero(~blocked(holds))
+        if len(ok):
+            return float(holds[ok[0]])
+        return max(b[0][-1] for b in others) - t_ready + HOLD_STEP_S  # wait until everyone is down
 
     def _dwell(self, sid: int, drones: list[dict]) -> None:
         st = self.plan.stations[sid]
         eps = 0.05  # kg
-        cells = [c for c in st.cells if not self.blocked[c] and self.target[c] - self.deposited[c] > eps]
+        if sid == self.last_sid - 1:
+            self._prework_last_station(list(st.cells))
+        todo = list(st.cells) + [c for c in self.carry if c not in st.cells]
+        cells = [c for c in todo if not self.blocked[c] and self.target[c] - self.deposited[c] > eps]
         cx, cy = self.st.centre(self.vp.wheelbase_m)
         yaw = self.st.yaw
+        gz = float(self._z(cx, cy))
         t_arr = self.t
         visit = {"sid": sid, "t_arrive": t_arr, "x": cx, "y": cy, "yaw": yaw, "cells": list(st.cells)}
         if not cells:
+            self.carry = {}
             self.t += self.cfg.min_dwell_s
             visit["t_depart"] = self.t
             visit["sorties"] = 0
             visit["ms_bursts"] = 0
             self.visits.append(visit)
             return
-        workers, ms_pats, drone_pats = self._effector_split(cells, cx, cy, yaw)
+        workers, ms_pats, drone_pats, deferred = self._effector_split(cells, cx, cy, yaw,
+                                                                      allow_defer=sid < self.last_sid)
         rem_d: dict[int, float] = {}
         rem_m: dict[int, float] = {}
+        carry: dict[int, tuple[list[int], float | None]] = {}
         for c in cells:
             rem = self.target[c] - self.deposited[c]
-            n_all = len(self._patterns_for(c))
+            if c in self.carry and self.carry[c][1] is not None:
+                rem = min(rem, self.carry[c][1])
             n_ms = sum(len(v) for v in ms_pats[c].values())
-            share = rem if not drone_pats[c] else rem * n_ms / n_all
-            rem_m[c], rem_d[c] = share, rem - share
+            n_use = n_ms + len(drone_pats[c])
+            if deferred[c]:
+                carry[c] = (deferred[c], None)
+            now = rem * n_use / max(n_use + len(deferred[c]), 1)
+            share = now if not drone_pats[c] else now * n_ms / max(n_use, 1)
+            rem_m[c], rem_d[c] = share, now - share
+        self.carry = carry
         n_dr = len(drones)
         claims: dict[int, int] = {}
+        cz, sz = math.cos(yaw), math.sin(yaw)
+        body = {}
+        for c in cells:
+            de, dn = self.plan.cells[c].e - cx, self.plan.cells[c].n - cy
+            body[c] = (cz * de + sz * dn, -sz * de + cz * dn)
+        booked: list[tuple] = []  # (drone, t, xyz, velocity, dock) of flights in the air
+        # effectors come back to park while driving between stations
+        self.fx_az = {-1: yaw + math.pi, 0: yaw + 0.5 * math.pi, 1: yaw - 0.5 * math.pi}
         heap = [(max(t_arr, d["t_free"]) + 0.5 * di, di) for di, d in enumerate(drones)]
         heap += [(t_arr + 1.0, n_dr + w) for w in range(len(workers))]
         heapq.heapify(heap)
@@ -738,9 +895,7 @@ class _Sim:
                 if not open_cells:
                     d["cell"] = -1
                     continue
-                free = [c for c in open_cells if c not in claims]
-                pool = free if free else open_cells
-                cid = min(pool, key=lambda c: math.hypot(self.plan.cells[c].e - cx, self.plan.cells[c].n - cy))
+                cid = min(open_cells, key=lambda c: self._cell_score(c, di, body, drones))
                 claims[cid] = di
                 d["cell"] = cid
             # battery swap
@@ -756,24 +911,44 @@ class _Sim:
             rem_d[cid] -= kg
             pats = self._patterns_for(cid)
             dp_idx = drone_pats[cid]
-            pi = int(dp_idx[self.cell_sorties[cid] % len(dp_idx)])
-            self.cell_sorties[cid] += 1
             dock = dock_xy(cx, cy, yaw, di)
-            tm = sortie_timing(dock, pats[pi], self.spec, self.dp)
-            t_launch = t0 + self.spec.load_time_s
-            t_land = t_launch + tm.flight_time
+            cruise = cruise_agl(self.dp, di)
+            t_ready = t0 + self.spec.load_time_s
+            booked = [b for b in booked if b[1][-1] >= t_free]
+            # hold on deck until the actual track keeps separation; try a few patches of the cell
+            best = None
+            for j in range(min(len(dp_idx), 6)):
+                pj = int(dp_idx[(self.cell_sorties[cid] + j) % len(dp_idx)])
+                tr = synthesize_trajectory(len(self.sortie_rows), 0.0, dock, pats[pj], self.spec, self.dp, self._z,
+                                           self.wind_mean, cruise)
+                gap = self._ms_gap(di, tr, dock, cx, cy, yaw, gz)
+                if gap < MS_FLY_CLEARANCE_M and best is not None:
+                    continue
+                hold = self._clear_hold(di, tr, dock, t_ready, booked)
+                key = (gap < MS_FLY_CLEARANCE_M, hold)
+                if best is None or key < best[0]:
+                    best = (key, pj, tr)
+                if key == (False, 0.0):
+                    break
+            (_, hold), pi, tr = best
+            self.cell_sorties[cid] += 1
+            self.hold_s += hold
+            tm = sortie_timing(dock, pats[pi], self.spec, self.dp, cruise)
+            t_launch = t_ready + hold
+            t_land = t_launch + float(tr.t[-1])
+            booked.append((di, t_launch + tr.t, tr.actual, track_velocity(tr.t, tr.actual), dock))
+            ap = np.flatnonzero(tr.phase == PHASE_APPLY)
+            a0, a1 = t_launch + float(tr.t[ap[0]]), t_launch + float(tr.t[ap[-1]])
             e_kwh = sortie_energy_kwh(tm, kg, self.dp)
             soc_before = d["soc"]
             d["soc"] -= e_kwh / self.dp.battery_kwh
             d["flight_s"] += tm.flight_time
             d["energy_kwh"] += e_kwh
-            t_apply_mid = t_launch + tm.t_climb + tm.t_out + 0.5 * tm.t_apply
             self.deposited[cid] += kg
-            self.dep_rows.append((t_apply_mid, cid, kg))
+            self.dep_rows.append((0.5 * (a0 + a1), cid, kg))
             self.sortie_rows.append((di, cid, sid, t0, t_launch, t_land, kg, pi, dock[0], dock[1],
                                      tm.flight_time, e_kwh, tm.out_dist + tm.back_dist + tm.apply_dist,
-                                     t_launch + tm.t_climb + tm.t_out, t_launch + tm.t_climb + tm.t_out + tm.t_apply,
-                                     soc_before, d["soc"]))
+                                     a0, a1, soc_before, d["soc"]))
             n_sorties += 1
             last_land = max(last_land, t_land)
             d["t_free"] = t_land + self.dp.turnaround_s
@@ -793,6 +968,7 @@ class _Sim:
         n_st = len(self.plan.stations)
         if self.cfg.max_stations is not None:
             n_st = min(n_st, self.cfg.max_stations)
+        self.last_sid = n_st - 1
         for k in range(n_st):
             self._drive_to(lambda k=k: self.station_s[k])
             self.events.append({"t": self.t, "kind": "arrive_station", "sid": k})
@@ -831,6 +1007,7 @@ class _Sim:
             cell_target_kg=self.target.copy(), cell_blocked=self.blocked.copy(), kpis={}, ms_shots=ms_shots,
         )
         res.kpis = compute_mission_kpis(res, drones, self.tender)
+        res.kpis["drone_separation_hold_h"] = round(self.hold_s / 3600.0, 2)
         return res
 
 

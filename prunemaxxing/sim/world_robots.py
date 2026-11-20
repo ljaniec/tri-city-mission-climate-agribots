@@ -27,7 +27,7 @@ FRAME_Z0 = 1.0
 DECK_Z = 1.40
 MODULE_TOP = 2.25
 PAD_TOP_Z = 2.36
-DOCKS = [(1.45, 1.05), (1.45, -1.05), (-1.45, 1.05), (-1.45, -1.05)]  # dock_0..3: FL, FR, RL, RR
+DOCKS = [(1.45, 1.25), (1.45, -1.25), (-1.45, 1.25), (-1.45, -1.25)]  # dock_0..3: FL, FR, RL, RR
 
 DRONE_ARM_R = 0.75
 DRONE_PROP_R = 0.35

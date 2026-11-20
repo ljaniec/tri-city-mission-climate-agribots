@@ -24,7 +24,7 @@ import numpy as np  # noqa: E402
 from PIL import Image, ImageDraw, ImageFont  # noqa: E402
 
 from prunemaxxing.planning import ms_effectors as fx  # noqa: E402
-from prunemaxxing.planning.mission import LABEL_CODES, MissionResult  # noqa: E402
+from prunemaxxing.planning.mission import MissionResult  # noqa: E402
 from prunemaxxing.planning.swarm import PHASE_APPLY, PHASE_BACK, PHASE_CLIMB, PHASE_LAND, PHASE_OUT  # noqa: E402
 from prunemaxxing.sim import world_builder as wb  # noqa: E402
 from prunemaxxing.sim.world_robots import DOCKS, DRONE_SKID_Z, PAD_TOP_Z  # noqa: E402
@@ -476,7 +476,8 @@ class ReplayScene:
 
 def _caption(img: np.ndarray, title: str, sub: str = "", corner: str = "", alpha: float = 1.0,
              lift: float = 0.0) -> np.ndarray:
-    if alpha <= 0.01 or (not title and not corner):
+    title = title if alpha > 0.01 else ""
+    if not title and not corner:
         return img
     im = Image.fromarray(img).convert("RGBA")
     ov = Image.new("RGBA", im.size, (0, 0, 0, 0))
@@ -614,13 +615,33 @@ class Shot:
     title: str = ""
     sub: str = ""
     mulch_dt: float = 900.0
+    tfun: Callable[[float], float] | None = None  # u -> mission time, overrides t0 + speed
+    xfade: bool = True  # dissolve in from the previous shot (False: continuous camera move)
 
 
 def _ease(u: float) -> float:
     return 0.5 - 0.5 * math.cos(math.pi * min(max(u, 0.0), 1.0))
 
 
-def plan_cinematic(scene: ReplayScene) -> list[Shot]:
+def _in_view(cam: CamSpec, p, fovy_deg: float, aspect: float = 16 / 9, margin: float = 0.8) -> bool:
+    """Is world point p inside the (shrunk) frustum of a MuJoCo free camera?"""
+    az, el = math.radians(cam.azimuth), math.radians(cam.elevation)
+    fwd = np.array([math.cos(el) * math.cos(az), math.cos(el) * math.sin(az), math.sin(el)])
+    v = np.asarray(p, float) - (np.asarray(cam.lookat, float) - cam.distance * fwd)
+    d = float(v @ fwd)
+    if d <= 0.0:
+        return False
+    right = np.cross(fwd, [0.0, 0.0, 1.0])
+    right /= max(np.linalg.norm(right), 1e-9)
+    up = np.cross(right, fwd)
+    th = math.tan(math.radians(fovy_deg) / 2) * margin
+    return abs(float(v @ up) / d) < th and abs(float(v @ right) / d) < th * aspect
+
+
+CINE_SPEEDUP = 2.0  # every live shot plays the simulation this much faster (the time-lapse keeps its own pace)
+
+
+def plan_cinematic(scene: ReplayScene, speedup: float = CINE_SPEEDUP) -> list[Shot]:
     res = scene.res
     k = res.kpis
     S = res.sorties
@@ -628,10 +649,12 @@ def plan_cinematic(scene: ReplayScene) -> list[Shot]:
     mode = scene.mode
     shots: list[Shot] = []
     cx, cy = 0.0, 0.0
-    shots.append(Shot(0.0, 5.0, 0.6, lambda t, u: CamSpec((cx, cy, 2.0), 420 - 120 * _ease(u), 205 + 35 * u, -34 + 6 * u),
+    x = speedup
+    shots.append(Shot(0.0, 5.0, 0.6 * x, lambda t, u: CamSpec((cx, cy, 2.0), 420 - 120 * _ease(u), 205 + 35 * u,
+                                                               -34 + 6 * u),
                       "PruneMaxxing", f"{k['area_treated_ha']:.1f} ha pilot · Parc Agrari del Baix Llobregat · "
                       f"1:1 digital twin from 10 m DEM"))
-    shots.append(Shot(0.0, 6.0, 4.0, lambda t, u: scene.chase_cam(t, 13.0 - 2 * u, -16.0, -35 + 25 * u),
+    shots.append(Shot(0.0, 5.0, 4.0 * x, lambda t, u: scene.chase_cam(t, 13.0 - 2 * u, -16.0, -35 + 25 * u),
                       "Mothership leaves the depot", "wood-chip hopper 2.5 t · 4 drones docked on the deck"))
     t_l = v0["t_arrive"] - 3.0
 
@@ -639,8 +662,8 @@ def plan_cinematic(scene: ReplayScene) -> list[Shot]:
         ms = scene.ms_world(t)
         return CamSpec((ms["wx"], ms["wy"], ms["wz"] + 3.0), 19.0 - 3 * u, math.degrees(ms["yaw"]) + 100 + 70 * u, -18)
 
-    shots.append(Shot(t_l, 9.0, 1.0, orbit, f"Drone station 1 of {len(res.plan.stations)}",
-                      "swarm launch · wireless deck charging · battery swap every ~25 sorties"))
+    shots.append(Shot(t_l, 7.0, 1.0 * x, orbit, f"Drone station 1 of {len(res.plan.stations)}",
+                      "staggered launch · separate cruise layers · wireless deck charging"))
     idx = np.where((S["station"] == v0["sid"]) & (S["t_launch"] > v0["t_arrive"] + 40))[0]
     if len(idx):
         ks = int(idx[1] if len(idx) > 1 else idx[0])
@@ -649,7 +672,8 @@ def plan_cinematic(scene: ReplayScene) -> list[Shot]:
         dur = float(S["t_land"][ks] - S["t_launch"][ks]) + 2.0
         label = ("Dust mode · 25 kg spinner-spread wood shavings" if mode == "dust"
                  else "Cartridge mode · 16 seed + mycelium pucks per sortie")
-        shots.append(Shot(t_s, dur / 1.5, 1.5, lambda t, u, dd=dd: scene.drone_cam(t, dd, 7.0 - 1.5 * u), label,
+        shots.append(Shot(t_s, max(dur / (1.5 * x), 6.0), 1.5 * x,
+                          lambda t, u, dd=dd: scene.drone_cam(t, dd, 7.0 - 1.5 * u), label,
                           "planned sortie vs wind-disturbed actual track · logged at 4 Hz"))
         ta = float(S["apply_t0"][ks]) - 1.5
         tr = res.trajectory(ks)
@@ -657,70 +681,97 @@ def plan_cinematic(scene: ReplayScene) -> list[Shot]:
         pc = tr.actual[m].mean(axis=0) if m.any() else tr.actual[len(tr.actual) // 2]
         px, py = scene.world(pc[0], pc[1])
         gz = scene.ground(px, py)
-        shots.append(Shot(ta, 5.0, 1.0, lambda t, u, px=px, py=py, gz=gz: CamSpec((px, py, gz + 1.6), 9.0 - 2 * u,
-                                                                                 230 + 20 * u, -12),
+        shots.append(Shot(ta, 5.0, 1.0 * x, lambda t, u, px=px, py=py, gz=gz: CamSpec((px, py, gz + 1.6), 9.0 - 2 * u,
+                                                                                     230 + 20 * u, -12),
                           "Effector close-up", "cradle lowered on the winch · application at 2-3 m AGL"))
     em = _effector_moment(scene)
     if em is not None:
-        shots.append(Shot(em[0] - 1.5, 7.0, 1.0, em[1], em[2], em[3]))
-    # lane drive: find a long lane stretch
-    L = res.ms_log
-    lane = np.where((L["mode"] == LABEL_CODES["lane"]) & (L["v"] > 0.9))[0]
-    if len(lane) > 200:
-        t_lane = float(L["t"][lane[len(lane) // 3]])
-        shots.append(Shot(t_lane, 6.0, 1.5, lambda t, u: scene.chase_cam(t, 7.5, -6.0, 85.0 - 20 * u),
-                          "Wheels locked in the furrows",
-                          f"pure pursuit + actuator limits · lane cross-track RMS {100 * k['cte_rms_lane_m']:.1f} cm"))
-    for det in res.detours[:2]:
+        shots.append(Shot(em[0] - 1.5, 6.0, 1.0 * x, em[1], em[2], em[3]))
+    # one lidar bypass: the chase camera leads the mothership, so keep the obstacle it actually frames
+    fovy = float(scene.model.vis.global_.fovy)
+    obs_s, obs_speed = 6.0, 4.0 * x
+    obs_cam = lambda t, u: scene.chase_cam(t, 34.0 - 8 * u, -38.0, -40 + 30 * u)  # noqa: E731
+    best = None
+    for det in res.detours:
         ob = next(o for o in res.site.obstacles if o.oid == det["oid"])
+        ring = list(ob.polygon.exterior.segmentize(1.5).coords) + [ob.polygon.centroid.coords[0]]
+        pts = []
+        for px_, py_ in ring:
+            wx, wy = scene.world(px_, py_)
+            pts.append((wx, wy, scene.ground(wx, wy) + 0.5 * ob.height_m))
+        us = np.linspace(0.0, 1.0, 12)
+        seen = float(np.mean([any(_in_view(obs_cam(det["t"] - 4.0 + obs_s * obs_speed * u, u), p, fovy, margin=0.9)
+                                  for p in pts) for u in us]))
+        if seen >= 0.6 and (best is None or seen > best[0]):
+            best = (seen, det, ob)
+    if best is not None:
+        _, det, ob = best
         ev = next(e for e in res.events if e["kind"] == "obstacle_detected" and e["oid"] == det["oid"])
-        shots.append(Shot(det["t"] - 4.0, 9.0, 4.0, lambda t, u: scene.chase_cam(t, 34.0 - 8 * u, -38.0, -40 + 30 * u),
-                          f"Unknown {ob.kind} — not in the satellite map",
+        shots.append(Shot(det["t"] - 4.0, obs_s, obs_speed, obs_cam, f"Unknown {ob.kind} — not in the satellite map",
                           f"lidar contact at {ev['range_m']:.1f} m · local re-plan {ev.get('action', '')}"))
-    # headland turn
-    hl = np.where((L["mode"] == LABEL_CODES["headland"]) & (np.abs(L["steer"]) > 0.25))[0]
-    if len(hl):
-        t_h = float(L["t"][hl[len(hl) // 2]]) - 10.0
-        shots.append(Shot(t_h, 5.0, 4.0, lambda t, u: scene.chase_cam(t, 26.0, -62.0, 0.0 + 40 * u),
-                          "Headland U-turn", "6.5 m radius · no wheel on a bed"))
-    # time-lapse overview
+    # finale: eased time-lapse of the whole mission, camera keeps drifting into the end card
     T = res.t_end
-    shots.append(Shot(0.0, 8.0, T / 8.0, lambda t, u: CamSpec((0.0, -10.0, 2.0), 330.0 - 40 * u, 220 + 25 * u, -42),
-                      f"{k['mission_time_h']:.0f} h in 8 s",
+    tl_s, hold_s = 9.0, 4.0
+    split = tl_s / (tl_s + hold_s)
+
+    def tl_cam(v):
+        return CamSpec((0.0, -10.0, 2.0), 330.0 - 40 * v, 220 + 25 * v, -42)
+
+    shots.append(Shot(0.0, tl_s, T / tl_s, lambda t, u: tl_cam(split * u),
+                      f"{k['mission_time_h']:.0f} h in {tl_s:.0f} s",
                       f"{k['biomass_applied_t']:,.0f} t {'mulch' if mode == 'dust' else 'seed cartridges'} · "
                       f"{k['sorties']:,} sorties · {len(k['obstacles_detected'])} unknown obstacles bypassed",
-                      mulch_dt=0.0))
-    shots.append(Shot(T - 1.0, 4.0, 0.25, lambda t, u: scene.chase_cam(T - 1.0, 16 + 4 * u, -18, 60 + 40 * u),
-                      "Mission complete",
-                      f"{k['area_treated_ha']:.2f} ha at {k['dose_kg_per_m2']:.1f} kg/m² · CV {100 * k['dose_cv']:.1f} %",
-                      mulch_dt=0.0))
+                      mulch_dt=0.0, tfun=lambda u: T * _ease(u)))
+    shots.append(Shot(T, hold_s, 0.0, lambda t, u: tl_cam(split + (1 - split) * u), "Mission complete",
+                      f"{k['area_treated_ha']:.2f} ha at {k['dose_kg_per_m2']:.1f} kg/m² · "
+                      f"{k['cells_complete_pct']:.0f} % of cells at dose · CV {100 * k['dose_cv']:.2f} %",
+                      mulch_dt=0.0, tfun=lambda u: T, xfade=False))
     return shots
 
 
 def render_cinematic(scene: ReplayScene, out_path: Path, fps: int = 24, size=(1920, 1080),
-                     preview: bool = False, kpi_bar: bool = True) -> Path:
+                     preview: bool = False, kpi_bar: bool = True, xfade_s: float = 0.5) -> Path:
     from prunemaxxing.viz.kpi_overlay import KpiOverlay
     from prunemaxxing.viz.video_io import video_writer
 
     shots = plan_cinematic(scene)
+    scale = 0.25 if preview else 1.0
     if preview:
         size = (960, 540)
     overlay = KpiOverlay(scene.res) if kpi_bar else None
+    nf = lambda s: max(1, int(round(s * fps * scale)))  # noqa: E731
+    n_x, n_cap, n_in, n_out = nf(xfade_s), nf(0.4), nf(0.6), nf(1.0)
+    tail: list[np.ndarray] = []  # last frames of the previous shot, blended into the next one
+
+    def finish(img, t, k, sh, i, n, x_in, x_out):
+        speed_txt = ("mission complete" if sh.speed <= 0.0 else "real time" if sh.speed <= 1.01 else
+                     f"x{sh.speed:.3g}" if sh.speed < 200 else f"time-lapse x{sh.speed:,.0f}")
+        cap_a = float(np.clip(min((i - x_in) / n_cap, (n - x_out - 1 - i) / n_cap), 0.0, 1.0))
+        bar_a = 0.0 if overlay is None or k == 0 else (min(1.0, i / n_in) if k == 1 else 1.0)
+        if bar_a > 0.0:
+            img = overlay.draw(img, t, compact=True, alpha=bar_a)
+        img = _caption(img, sh.title, sh.sub, f"{_clock(t)}  ·  {speed_txt}", alpha=cap_a,
+                       lift=66.0 if overlay is not None and k > 0 else 0.0)
+        g = min(1.0, (i + 1) / n_in) if k == 0 else min(1.0, (n - 1 - i) / n_out) if k == len(shots) - 1 else 1.0
+        return img if g >= 1.0 else (img.astype(np.float32) * g).astype(np.uint8)
+
     with video_writer(out_path, fps) as writer:
         for k, sh in enumerate(shots):
-            n = max(1, int(round(sh.seconds * fps * (0.25 if preview else 1.0))))
+            n = nf(sh.seconds)
+            x_in = len(tail) if sh.xfade else 0
+            x_out = n_x if k + 1 < len(shots) and shots[k + 1].xfade else 0
+            new_tail: list[np.ndarray] = []
             for i in range(n):
                 u = i / max(1, n - 1)
-                t = min(sh.t0 + (i / fps) * sh.speed * (4.0 if preview else 1.0), scene.res.t_end)
+                t = sh.tfun(u) if sh.tfun else min(sh.t0 + (i / fps) * sh.speed / scale, scene.res.t_end)
                 scene.set_time(t)
                 img = scene.render(sh.cam(t, u), *size, mulch_min_dt=sh.mulch_dt)
-                fade = min(1.0, i / (0.4 * fps), (n - 1 - i) / (0.4 * fps) + 0.15)
-                speed_txt = "real time" if sh.speed <= 1.01 else (f"x{sh.speed:.0f}" if sh.speed < 200 else
-                                                                  f"time-lapse x{sh.speed:,.0f}")
-                bar_a = 0.0 if overlay is None or k == 0 else (min(1.0, i / (0.6 * fps)) if k == 1 else 1.0)
-                if bar_a > 0.0:
-                    img = overlay.draw(img, t, compact=True, alpha=bar_a)
-                img = _caption(img, sh.title, sh.sub, f"{_clock(t)}  ·  {speed_txt}", alpha=max(0.0, fade),
-                               lift=66.0 if overlay is not None and k > 0 else 0.0)
-                writer.append_data(img)
+                if i < x_in:
+                    a = (i + 1) / (x_in + 1)
+                    img = (tail[i].astype(np.float32) * (1 - a) + img * a + 0.5).astype(np.uint8)
+                if i >= n - x_out:
+                    new_tail.append(img)
+                    continue
+                writer.append_data(finish(img, t, k, sh, i, n, x_in, x_out))
+            tail = new_tail
     return out_path

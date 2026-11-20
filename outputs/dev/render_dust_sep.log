@@ -1,0 +1,9 @@
+[15:03:04] site + digital twin
+[15:03:04] mission simulation (dust, 4 drones)
+[15:12:49]   122.4 h mission, 45,731 sorties, 1360 t, lane x-track RMS 1.1 cm, 4 hidden obstacles found (584.5 s wall)
+[15:12:49] basemap + poster + tracking report
+[15:12:53] MuJoCo world + replay scene
+[world] assets cached (key 323bc3cb39593492)
+[world] world ready in 0.0s -> /home/ljaniec/Repositories/tri-city-mission-climate-agribots/prunemaxxing/sim/assets/world/world_dust_n4.xml
+[15:13:00] cinematic MuJoCo video
+[15:14:22] dashboard video

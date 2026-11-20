@@ -80,7 +80,6 @@ def prop_assets() -> str:
         '<material name="rim_light" rgba="0.78 0.78 0.74 1" specular="0.7"/>',
         '<material name="pallet_wood" rgba="0.70 0.56 0.36 1" specular="0.05"/>',
         '<material name="bigbag" rgba="0.90 0.89 0.84 1" specular="0.15"/>',
-        '<material name="ibc" rgba="0.92 0.94 0.95 0.85" specular="0.6"/>',
         '<material name="tractor_red" rgba="0.62 0.13 0.09 1" specular="0.35" shininess="0.4"/>',
         '<material name="tractor_rust" rgba="0.42 0.22 0.12 1" specular="0.1"/>',
         '<material name="tractor_grey" rgba="0.30 0.31 0.31 1" specular="0.3"/>',
@@ -269,9 +268,6 @@ def pallets_and_bags(cx, cy, ground, rng) -> list[str]:
         for s in (-1, 1):
             P.add("capsule", [0.02], fromto=[x - 0.35, y + s * 0.35, 1.05, x - 0.35, y + s * 0.35, 1.25],
                   material="bigbag")
-    for k in range(2):
-        P.add("box", [0.5, 0.6, 0.5], [3.0, -0.7 + k * 1.35, 0.58], material="ibc")
-        P.add("box", [0.52, 0.62, 0.06], [3.0, -0.7 + k * 1.35, 0.06], material="galv")
     return P.out
 
 

@@ -1,0 +1,10 @@
+cartridge sim 163s T h 37.89 sorties 13365 t 108.82 hold h 8.94 mean sortie s 29.0 ms share 3.7
+  audit 6s min dd 4.25 {'sid': 33, 't': 81140.34686745507, 'drones': (0, 3), 'pa': [418647.26, 4570750.62, 3.12], 'pb': [418650.11, 4570753.76, 3.02]}
+  min dMS 1.26 {'sid': 43, 't': 104055.53822578496, 'drone': 0, 'p': [418699.55, 4570670.21, 7.15]}
+  pad-conflict s 0.0
+  pair-s below {2.5: 0, 3.0: 0, 4.0: 0} MS-s below {0.5: 0, 1.0: 0, 1.5: 1}
+  holds: frac>0 0.648 mean 2.41 p50/p90/p99/max [ 1.5  6.5 12.5 49. ]
+   drone 0 sorties 3386 mean hold 3.09
+   drone 1 sorties 3308 mean hold 1.9
+   drone 2 sorties 3307 mean hold 1.78
+   drone 3 sorties 3364 mean hold 2.84

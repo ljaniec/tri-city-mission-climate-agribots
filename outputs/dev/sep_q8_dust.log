@@ -1,0 +1,10 @@
+dust sim 57s T h 17.75 sorties 6626 t 194.29 hold h 4.13 mean sortie s 28.5 ms share 15.6
+  audit 5s min dd 4.24 {'sid': 5, 't': 42264.0937026909, 'drones': (0, 1), 'pa': [418472.95, 4570721.63, 3.85], 'pb': [418468.86, 4570722.74, 3.71]}
+  min dMS 2.00 {'sid': 2, 't': 19707.137793047026, 'drone': 3, 'p': [418435.81, 4570664.63, 8.51]}
+  pad-conflict s 0.0
+  pair-s below {2.5: 0, 3.0: 0, 4.0: 0} MS-s below {0.5: 0, 1.0: 0, 1.5: 0}
+  holds: frac>0 0.635 mean 2.25 p50/p90/p99/max [ 1.5  6.  12.5 34. ]
+   drone 0 sorties 1684 mean hold 3.01
+   drone 1 sorties 1631 mean hold 1.78
+   drone 2 sorties 1643 mean hold 1.78
+   drone 3 sorties 1668 mean hold 2.38

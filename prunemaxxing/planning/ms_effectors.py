@@ -52,6 +52,7 @@ class EffectorParams:
     cannon_slew_dps: float = 90.0
     cannon_sigma_m: float = 0.15  # landing scatter = sigma + per_m * range
     cannon_sigma_per_m: float = 0.012
+    cannon_arc_deg: tuple[float, float] = (45.0, 135.0)  # off the bow; shots pass above / outside parked rotors
     unit_kg: float = 0.5  # one cartridge
 
 
@@ -66,6 +67,14 @@ def reachable(pattern: np.ndarray, origin_xy: np.ndarray, p: EffectorParams) -> 
     xs, ys = np.interp(u, seg, pattern[:, 0]), np.interp(u, seg, pattern[:, 1])
     d = np.hypot(xs - origin_xy[0], ys - origin_xy[1])
     return bool(d.max() <= p.range_max_m and d.min() >= p.range_min_m)
+
+
+def in_cannon_arc(pattern: np.ndarray, pivot_xy: np.ndarray, ms_yaw: float, side: int, p: EffectorParams) -> bool:
+    """Every vertex of the pattern lies inside the turret's lateral firing arc."""
+    rel = np.arctan2(pattern[:, 1] - pivot_xy[1], pattern[:, 0] - pivot_xy[0]) - ms_yaw
+    rel = np.degrees((rel + math.pi) % (2 * math.pi) - math.pi) * (1.0 if side == 0 else -1.0)
+    lo, hi = p.cannon_arc_deg
+    return bool(np.all((rel >= lo) & (rel <= hi)))
 
 
 def drop_points(pattern: np.ndarray, n: int) -> np.ndarray:

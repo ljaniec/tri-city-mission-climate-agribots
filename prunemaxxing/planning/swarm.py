@@ -1,7 +1,10 @@
 """Drone sortie model: timed legs, spread patterns, wind-disturbed actual tracks.
 
-A sortie = load on the mothership deck -> vertical climb -> transit to the patch
-(descending to work altitude) -> application pattern -> transit back -> land.
+A sortie = load on the mothership deck -> vertical climb in the pad column to the
+drone's cruise layer -> transit to the patch (descending to work altitude) ->
+application pattern -> transit back -> vertical descent onto the pad.  Port pads
+cruise on the low layer, starboard pads on the high one, so crossing transits
+are vertically separated; near the pad the RTK / visual lock holds the column.
 
 * DUST: 2.5 m x 2.5 m zig-zag over a sub-patch of the cell (spinner spreader).
 * CARTRIDGE: a straight line along one bed ridge of the cell, dropping 16 pucks.
@@ -29,7 +32,9 @@ PHASE_NAMES = ("docked", "climb", "outbound", "apply", "return", "land")
 
 @dataclass
 class DroneParams:
-    cruise_agl_m: float = 8.0
+    cruise_agl_m: float = 8.0  # low (port) layer
+    layer_step_m: float = 2.0  # starboard pads cruise this much higher
+    pad_lock_m: float = 6.0  # gust error fades out within this radius of the pad (precision landing lock)
     climb_mps: float = 2.5
     descend_mps: float = 1.8
     v_loaded_mps: float = 7.0
@@ -45,17 +50,50 @@ class DroneParams:
     wind_gust_std_mps: float = 1.6
     wind_tau_s: float = 4.0
     pos_ctrl_tau_s: float = 0.9
+    gust_err_gain: float = 0.5  # RTK position loop rejects half of the gust-driven drift
     sample_dt_s: float = 0.25
 
 
-# Dock pads relative to mothership origin (x fwd, y left), metres
-DOCK_OFFSETS = np.array([[1.45, 1.05], [1.45, -1.05], [-1.45, 1.05], [-1.45, -1.05]])  # = sim.world_robots.DOCKS
+# Dock pads relative to mothership origin (x fwd, y left), metres.  The 2.9 m x 2.5 m pad
+# pitch leaves >= 0.5 m between parked rotor discs (2.2 m tip-to-tip).
+DOCK_OFFSETS = np.array([[1.45, 1.25], [1.45, -1.25], [-1.45, 1.25], [-1.45, -1.25]])  # = sim.world_robots.DOCKS
+DOCK_LAYER = (0, 1, 1, 0)  # cruise layer per pad: diagonal pads share one, adjacent pads are 2 m apart
+
+
+def cruise_agl(p: DroneParams, k: int) -> float:
+    return p.cruise_agl_m + p.layer_step_m * DOCK_LAYER[k % len(DOCK_LAYER)]
 
 
 def dock_xy(ms_x: float, ms_y: float, ms_yaw: float, k: int) -> np.ndarray:
     off = DOCK_OFFSETS[k % len(DOCK_OFFSETS)]
     c, s = math.cos(ms_yaw), math.sin(ms_yaw)
     return np.array([ms_x + c * off[0] - s * off[1], ms_y + s * off[0] + c * off[1]])
+
+
+GLIDE_SLOPE = 1.0  # transits stay on the cruise layer and descend / climb at 45 deg next to the patch
+LEVEL_NEAR_PAD_M = 3.0  # ... and are level for at least this far out from the pad column
+
+
+def _glide_run(h: float, drop: float) -> float:
+    """Horizontal length of the glide between the cruise layer and the patch."""
+    g = drop / GLIDE_SLOPE
+    return min(h, g, max(h - LEVEL_NEAR_PAD_M, 0.5 * g))
+
+
+def _transit_len(h: float, drop: float) -> float:
+    g = _glide_run(h, drop)
+    return (h - g) + math.hypot(g, drop)
+
+
+def _transit_poly(top: np.ndarray, end: np.ndarray) -> np.ndarray:
+    """Level at ``top`` height above the pad, then a glide onto ``end`` (both (3,) points)."""
+    dxy = end[:2] - top[:2]
+    h = float(np.hypot(*dxy))
+    g = _glide_run(h, max(top[2] - end[2], 0.0))
+    if h - g < 0.05:
+        return np.vstack([top, end])
+    q = np.array([*(top[:2] + dxy * (1.0 - g / h)), top[2]])
+    return np.vstack([top, q, end])
 
 
 def _leg_time(d: float, v: float, a: float) -> float:
@@ -156,12 +194,12 @@ def _apply_length(pattern: np.ndarray) -> float:
     return float(np.sum(np.hypot(*np.diff(pattern, axis=0).T))) if len(pattern) > 1 else 0.0
 
 
-def sortie_timing(dock: np.ndarray, pattern: np.ndarray, spec: PayloadSpec, p: DroneParams) -> SortieTiming:
-    climb_h = p.cruise_agl_m - p.deck_height_m
-    out_h = math.hypot(*(pattern[0] - dock))
-    out_d = math.hypot(out_h, p.cruise_agl_m - spec.apply_alt_agl_m)
-    back_h = math.hypot(*(pattern[-1] - dock))
-    back_d = math.hypot(back_h, p.cruise_agl_m - spec.apply_alt_agl_m)
+def sortie_timing(dock: np.ndarray, pattern: np.ndarray, spec: PayloadSpec, p: DroneParams,
+                  cruise_m: float | None = None) -> SortieTiming:
+    cruise = p.cruise_agl_m if cruise_m is None else cruise_m
+    climb_h = cruise - p.deck_height_m
+    out_d = _transit_len(math.hypot(*(pattern[0] - dock)), cruise - spec.apply_alt_agl_m)
+    back_d = _transit_len(math.hypot(*(pattern[-1] - dock)), cruise - spec.apply_alt_agl_m)
     ap = _apply_length(pattern)
     return SortieTiming(
         t_climb=_leg_time(climb_h, p.climb_mps, p.accel_mps2),
@@ -223,21 +261,22 @@ def synthesize_trajectory(
     p: DroneParams,
     ground_z,  # callable (x, y) -> z, vectorised
     wind_mean: np.ndarray,
+    cruise_m: float | None = None,
 ) -> SortieTrajectory:
-    tm = sortie_timing(dock, pattern, spec, p)
+    cruise = p.cruise_agl_m if cruise_m is None else cruise_m
     dt = p.sample_dt_s
     z_dock = float(ground_z(dock[0], dock[1])) + p.deck_height_m
     gz_pat = np.asarray(ground_z(pattern[:, 0], pattern[:, 1]), dtype=float)
-    cruise_dock = float(ground_z(dock[0], dock[1])) + p.cruise_agl_m
+    cruise_dock = float(ground_z(dock[0], dock[1])) + cruise
     work = gz_pat + spec.apply_alt_agl_m
     p0 = np.array([dock[0], dock[1], z_dock])
     p1 = np.array([dock[0], dock[1], cruise_dock])
     pat3 = np.column_stack([pattern, work])
     legs = [
         (np.vstack([p0, p1]), p.climb_mps, p.accel_mps2, PHASE_CLIMB),
-        (np.vstack([p1, pat3[0]]), p.v_loaded_mps, p.accel_mps2, PHASE_OUT),
+        (_transit_poly(p1, pat3[0]), p.v_loaded_mps, p.accel_mps2, PHASE_OUT),
         (pat3, spec.apply_speed_mps, 1.5, PHASE_APPLY),
-        (np.vstack([pat3[-1], p1]), p.v_empty_mps, p.accel_mps2, PHASE_BACK),
+        (_transit_poly(p1, pat3[-1])[::-1], p.v_empty_mps, p.accel_mps2, PHASE_BACK),
         (np.vstack([p1, p0]), p.descend_mps, 1.2, PHASE_LAND),
     ]
     ts, pts, phs = [], [], []
@@ -277,6 +316,8 @@ def synthesize_trajectory(
     err = np.column_stack([lfilter([(1 - a_c) * p.pos_ctrl_tau_s], [1.0, -a_c], gust[:, k]) for k in range(2)])
     airborne = (phase != PHASE_CLIMB) | (t_rel > 1.0)
     w = np.clip(np.minimum(t_rel, t_rel[-1] - t_rel) / 2.0, 0.0, 1.0) * airborne
+    pad_d = np.hypot(planned[:, 0] - dock[0], planned[:, 1] - dock[1])
+    w = w * np.clip(pad_d / p.pad_lock_m, 0.08, 1.0) * p.gust_err_gain
     actual[:, :2] += err * w[:, None]
     actual[:, 2] += 0.12 * np.sin(t_rel * 1.7 + rng.uniform(0, 6)) * w
 

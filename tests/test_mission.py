@@ -15,6 +15,9 @@ from prunemaxxing.planning import ms_effectors as fx
 from prunemaxxing.planning.mission import LABEL_CODES, MissionConfig, run_mission
 from prunemaxxing.planning.path_geometry import curvature, fillet_polyline, pieces_to_path
 from prunemaxxing.planning.route_planner import plan_global_route
+from prunemaxxing.planning.separation import H_SEP_M, separation_report
+from prunemaxxing.planning.swarm import DOCK_OFFSETS, PHASE_OUT, cruise_agl
+from prunemaxxing.sim.world_robots import DOCKS, DRONE_ARM_R, DRONE_PROP_R
 
 ROOT = Path(__file__).resolve().parents[1]
 DEM = ROOT / "viladecans_full_dem_10m.TIF"
@@ -185,11 +188,49 @@ def test_ms_air_cannons_fire_both_sides_and_land_on_target(cartridge_mission):
     v = res.ms_volley(k)
     assert len(v["t_fire"]) == int(M["units"][k])
     assert set(np.unique(v["barrel"])) == {0, 1}  # twin barrels alternate
-    ms_xy = np.array([M["ms_x"][k], M["ms_y"][k]])
-    assert np.hypot(*(v["land"][:, :2] - ms_xy).T).max() <= fx.REACH_M + 0.5
+    piv = fx.mount_world(M["ms_x"][k], M["ms_y"][k], M["ms_yaw"][k], fx.CANNON_PIVOTS[int(M["side"][k])])
+    assert np.hypot(*(v["land"][:, :2] - piv).T).max() <= fx.REACH_M + 0.9  # reach + 3 sigma scatter
     st = res.ms_effector_state(float(v["t_fire"][1]) + 0.2)
     side = int(M["side"][k])
     assert st[side]["firing"] and len(st[side]["pellets"]) >= 1
     comp = res.completion_at([res.t_end])[0]
     done = [c for vis in res.visits for c in vis["cells"]]
     assert np.nanmin(comp[done]) > 0.99
+
+
+def test_cannons_never_fire_across_the_drone_pads(cartridge_mission):
+    res = cartridge_mission
+    M = res.ms_shots
+    ep = res.cfg.effectors
+    for k in range(len(M["kg"])):
+        side = int(M["side"][k])
+        piv = fx.mount_world(M["ms_x"][k], M["ms_y"][k], M["ms_yaw"][k], fx.CANNON_PIVOTS[side])
+        pat = res.patterns[int(M["cell"][k])][int(M["pattern"][k])]
+        assert fx.in_cannon_arc(pat, piv, float(M["ms_yaw"][k]), side, ep)
+
+
+def test_parked_rotor_discs_keep_clear():
+    assert np.allclose(DOCKS, DOCK_OFFSETS)
+    ang = np.radians(np.arange(6) * 60.0)  # hexacopter arms, aligned with the mothership while parked
+    motors = [np.column_stack([x + DRONE_ARM_R * np.cos(ang), y + DRONE_ARM_R * np.sin(ang)]) for x, y in DOCKS]
+    for i in range(4):
+        for j in range(i + 1, 4):
+            gap = np.linalg.norm(motors[i][:, None] - motors[j][None], axis=2).min() - 2 * DRONE_PROP_R
+            assert gap >= 0.4, (i, j, gap)
+
+
+@pytest.mark.parametrize("which", ["short_mission", "cartridge_mission"])
+def test_drones_keep_separation_from_each_other_and_the_mothership(which, request):
+    res = request.getfixturevalue(which)
+    rep = separation_report(res, dt=0.1)
+    assert rep.sampled_s > 3600.0
+    assert rep.min_drone_drone_m >= H_SEP_M, rep.worst_pair
+    assert rep.pad_conflict_s == 0.0
+    assert rep.min_drone_ms_m >= 1.0, rep.worst_ms
+    # cruise layers: adjacent pads fly 2 m apart, so crossing transits are vertically separated
+    S = res.sorties
+    for d in range(4):
+        k = int(np.flatnonzero(S["drone"] == d)[len(S["drone"]) // 8])
+        tr = res.trajectory(k)
+        top = tr.planned[tr.phase == PHASE_OUT][:, 2].max() - float(res.ground_z(S["dock_x"][k], S["dock_y"][k]))
+        assert abs(top - cruise_agl(res.cfg.drone, d)) < 1e-6

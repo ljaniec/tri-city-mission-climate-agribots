@@ -48,12 +48,21 @@ when complete, so the previous video stays playable during a re-render.
      transit, apply, return, land. Patterns are a dust zig-zag or cartridge drops along a
      bed ridge. Actual tracks include wind gusts and controller lag. Battery swaps,
      hopper level and a 2-truck tender are tracked.
+   - Airspace separation (`planning/separation.py`). Each pad has its own cruise layer
+     (8 or 10 m AGL, diagonal pads share one). Drones climb and land vertically in their
+     pad column, transit level and glide 45° down only near the patch. Every sortie is
+     checked against the already booked flights (4 m horizontal or 1.5 m vertical, sampled
+     at 0.25 s with velocity slack) and the mothership hull plus parked drones. If it
+     conflicts, the drone holds on the deck. Patches too close to the parked mothership
+     for a safe glide go to its effector, or carry over to the next station. A
+     full-mission audit is part of the test suite.
    - Near-field effectors on the mothership (`planning/ms_effectors.py`), with up to
      40 ft (12.19 m) reach from the parked machine. Dust mode uses a snow-blower style
      chip thrower: an impeller with a slewing chute and a deflector hood (1.2 kg/s,
      35° throw). Cartridge mode uses twin pneumatic air cannons: port and starboard
      turrets, two alternating barrels each, one shot per 0.8 s per turret, with
-     ballistic flight and scatter that grows with range. At every station, patches
+     ballistic flight and scatter that grows with range. The cannons only fire
+     45–135° off the bow, never across the drone pads. At every station, patches
      that lie entirely inside the 3–12.19 m ring go to the mothership. The swarm works
      the rest in parallel, and both draw from the same hopper and tender logistics.
 4. **Visuals** (`viz/`): orthophoto-style basemap, per-sortie mulch painting, map poster,
@@ -65,7 +74,7 @@ when complete, so the previous video stays playable during a re-render.
 | File | Content |
 |------|---------|
 | `dashboard.mp4` | live map (planned vs actual route, re-plans, drone sorties, mulch), MuJoCo chase + drone cams, minimap, charts, telemetry, and a strip of live KPI cards along the bottom |
-| `cinematic_showcase_<payload>.mp4` | MuJoCo shots: depot departure, swarm launch, drone follow, drone effector close-up, 40 ft chip blower / air-cannon shot, furrow tracking, obstacle bypass, time-lapse. A lower-third KPI bar counts up in sync with the mission clock |
+| `cinematic_showcase_<payload>.mp4` | ~53 s MuJoCo showcase, recorded at 2× simulation speed or faster (`CINE_SPEEDUP` in `sim/replay.py`), with dissolves between shots: aerial intro, depot departure, swarm launch, drone follow, drone effector close-up, 40 ft chip blower / air-cannon shot, lidar bypass of an unmapped fallen log, and an eased whole-mission time-lapse that settles into the "Mission complete" end card. A lower-third KPI bar counts up in sync with the mission clock |
 | `infographic.mp4` | 60 s motion-graphics infographic synced to the mission: progress ring, live counters, material-flow Sankey, drone activity lanes, drones vs mothership split, parcel bars, event log, and an impact outro with sources |
 | `replay.html` | interactive offline replay in one file (no network): play/scrub/speed, follow the mothership, layer toggles, live KPI panel, charts and event list. Shareable state in the URL (`#t=0.42&play=0&follow=1`); press `?` for keyboard shortcuts |
 | `impact_poster.png` | climate impact one-pager for this mode (3840×2160) |
@@ -80,13 +89,14 @@ when complete, so the previous video stays playable during a re-render.
 | | Dust (15 kg/m²) | Cartridge (1.2 kg/m²) |
 |---|---|---|
 | Area / material | 9.08 ha / 1,360 t | 9.08 ha / 109 t (≈218 k cartridges, 653 k seeds) |
-| Mission time | 109 h (10.9 × 10 h shifts; 128 h without the blower) | 31 h (33 h without the cannons) |
-| Drone sorties | 45,637 | 12,508 |
-| Mothership effector (≤ 12.19 m) | chip blower: 229 t = 16.8 % in 4,745 bursts | air cannons: 10.2 t = 9.4 %, 20,492 cartridges in 1,375 volleys |
+| Mission time | 122 h (12.2 × 10 h shifts; 148 h without the blower) | 38 h (39 h without the cannons) |
+| Drone sorties | 45,731 | 13,365 |
+| Drone separation | ≥ 4.2 m between drones, ≥ 1.5 m from the mothership hull, 0 pad conflicts (31 drone-hours of deck holds) | ≥ 4.2 m, ≥ 1.8 m, 0 pad conflicts (9 drone-hours of holds) |
+| Mothership effector (≤ 12.19 m) | chip blower: 228 t = 16.7 % in 4,717 bursts | air cannons: 4.0 t = 3.7 %, 8,010 cartridges in 560 volleys |
 | Coverage | 100 % of cells at dose, CV 1.85 % | same |
 | Lane cross-track RMS / max | 1.1 / 9.2 cm (100 % within ±20 cm) | same controller |
 | Hidden obstacles | 4/4 detected, bypassed online (+202 m) | 4/4 |
-| Cost (€/1000 m²) | 1,942 vs REGENSOL 2,408.77 (−467 €, 91 % of the overhead recovered) | 570 (528 of it cartridge material) |
+| Cost (€/1000 m²) | 1,954 vs REGENSOL 2,408.77 (−455 €, 89 % of the overhead recovered) | 578 (528 of it cartridge material) |
 
 ## Climate impact (`outputs/impact/`)
 
@@ -120,7 +130,7 @@ MuJoCo multibody check (4 t Ackermann rover on the DEM heightfield, same control
 | Module | Role |
 |--------|------|
 | `prunemaxxing.geo` | DEM, CRS, cell twin, site model (`site.py`) |
-| `prunemaxxing.planning` | `route_planner`, `path_geometry`, `vehicle`, `swarm`, `ms_effectors`, `mission`, `payload_modes` |
+| `prunemaxxing.planning` | `route_planner`, `path_geometry`, `vehicle`, `swarm`, `separation`, `ms_effectors`, `mission`, `payload_modes` |
 | `prunemaxxing.sim` | `world_frame` (1:1 frame + terrain), `world_builder` (MuJoCo world; `world_robots`, `world_effectors`, `world_props`, `world_textures`, `world_meshes`), `replay`, `rover_physics` |
 | `prunemaxxing.viz` | `basemap`, `mission_viz` (poster, tracking report, dashboard), `mission_stats` (`MissionTimeline`: every KPI at any mission time), `kpi_overlay` (animated KPI cards for the videos), `infographic`, `html_replay`, `impact_poster`, `video_io` |
 | `prunemaxxing.kpis` | `impact` (climate impact vs pile burning, with sourced factors), legacy KPI helpers |
