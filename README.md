@@ -91,7 +91,7 @@ when complete, so the previous video stays playable during a re-render.
 | Area / material | 9.08 ha / 1,360 t | 9.08 ha / 109 t (≈218 k cartridges, 653 k seeds) |
 | Mission time | 122 h (12.2 × 10 h shifts; 148 h without the blower) | 38 h (39 h without the cannons) |
 | Drone sorties | 45,731 | 13,365 |
-| Drone separation | ≥ 4.2 m between drones, ≥ 1.5 m from the mothership hull, 0 pad conflicts (31 drone-hours of deck holds) | ≥ 4.2 m, ≥ 1.8 m, 0 pad conflicts (9 drone-hours of holds) |
+| Drone separation | ≥ 4.2 m between drones, ≥ 1.7 m from the mothership hull, 0 pad conflicts (31 drone-hours of deck holds) | ≥ 4.2 m, ≥ 1.2 m, 0 pad conflicts (9 drone-hours of holds) |
 | Mothership effector (≤ 12.19 m) | chip blower: 228 t = 16.7 % in 4,717 bursts | air cannons: 4.0 t = 3.7 %, 8,010 cartridges in 560 volleys |
 | Coverage | 100 % of cells at dose, CV 1.85 % | same |
 | Lane cross-track RMS / max | 1.1 / 9.2 cm (100 % within ±20 cm) | same controller |
